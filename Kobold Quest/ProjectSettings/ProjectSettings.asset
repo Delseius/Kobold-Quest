@@ -688,11 +688,11 @@ PlayerSettings:
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: 34ed2196-ab63-4f5b-b4f2-dee40e1a92e6
+  cloudProjectId: a6b179ac-b9f1-4da6-aff9-1deca93058dd
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Kobold Quest
-  organizationId: nuke300and1
+  projectName: KobaldQuest
+  organizationId: kobaldquest
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
