@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,6 +24,7 @@ public class pickupobject : MonoBehaviour
     bool Tool = false;
     bool block = false;
     bool drop = false;
+    bool PlayerMove = false;
     //bool block = false;
     public float speed = 5.5F;
     public static GameObject heldObject;
@@ -63,8 +65,8 @@ public class pickupobject : MonoBehaviour
             {
                 ObjectCollider.enabled = false;
             }
-            Vector3 ObjectOffset = new Vector3(7, 0, 0);
-            ToolTransform.position = PlayerTransform.position;
+            //Vector3 ObjectOffset = new Vector3(7, 0, 0);
+            //ToolTransform.position = PlayerTransform.position;
             PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, ToolTransform.position, speed * Time.deltaTime);
             ObjectBody.bodyType = RigidbodyType2D.Kinematic;
 
@@ -75,6 +77,10 @@ public class pickupobject : MonoBehaviour
             Pressed = false;
             held = true;
             Tool = true;
+            drop = false;
+            block = false;
+            PlayerMove = true;
+           
 
         }
         
@@ -105,6 +111,8 @@ public class pickupobject : MonoBehaviour
             Pressed = false;
             held = false;
             Tool = false;
+            block = false;
+            drop = true;
 
         }
         else if (Pressed && gameObject.CompareTag("Block") && !release)
@@ -128,23 +136,45 @@ public class pickupobject : MonoBehaviour
             Pressed = false;
             held = true;
             Tool = false;
+            block = true;
+            drop = false;
 
 
         }
-        if (held == true && Tool == true)
+        if(held == true && Tool == true && PlayerMove == false )
         {
             //UnityEngine.Debug.Log("held");
             // Smoothly move the object toward the player's position every frame
-            Vector3 ObjectOffset = new Vector3(2.0f, 0.0f, 0.0f);
-            ToolTransform.position = Vector3.MoveTowards(ToolTransform.position, PlayerTransform.position + ObjectOffset, speed * Time.deltaTime);
-        }
+            //Vector3 ObjectOffset = new Vector3(2.0f, 0.0f, 0.0f);
+            ToolTransform.position = Vector3.MoveTowards(ToolTransform.position, PlayerTransform.position, speed * Time.deltaTime);
+            UnityEngine.Debug.Log("follow player");
+            //Vector3 ObjectOffset = new Vector3(2.0f, 0.0f, 0.0f);
+            //PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, ToolTransform.position, speed * Time.deltaTime)
 
+
+            //ToolTransform.position = Vector3.MoveTowards(ToolTransform.position, PlayerTransform.position + ObjectOffset, speed * Time.deltaTime);
+            //PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, ToolTransform.position, speed * Time.deltaTime);
+
+            //ToolTransform.position = Vector3.MoveTowards(ToolTransform.position, PlayerTransform.position + ObjectOffset, speed * Time.deltaTime);
+        }
+    
+        else if (held == true && Tool == true && PlayerMove == true)
+        {
+            UnityEngine.Debug.Log("move to object");
+            PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, ToolTransform.position, speed * Time.deltaTime);
+            if (PlayerTransform.position == ToolTransform.position && PlayerMove == true)
+            {
+                UnityEngine.Debug.Log("player = tool");
+                PlayerMove = false;
+            }
+        }
+        
 
         /*if (Holding && PlayerTransform != null)
         {
             transform.position = PlayerTransform.position + PosOffset;
         }*/
-        //transform.position = PlayerTransform.position;
+            //transform.position = PlayerTransform.position;
 
     }
 }
