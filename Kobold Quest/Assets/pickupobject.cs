@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,13 @@ public class pickupobject : MonoBehaviour
 {
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private Transform BlockTransform;
+    [SerializeField] private Transform ToolTransform;
+    [SerializeField] private Transform ConsumableTransform;
+    [SerializeField] private Transform PlaceBlockTransform;
+
+
+
+
     bool Pressed = false;
     bool release = false;
     public static GameObject heldObject;
@@ -23,30 +31,13 @@ public class pickupobject : MonoBehaviour
     }
 
     private void OnMouseDown()
-    {
-        /*if (!Holding)
-        {
-            // Pick up the object
-            Holding = true;
-            ObjectBody.bodyType = RigidbodyType2D.Kinematic; // Prevent physics from pulling it down while holding
-            ObjectBody.linearVelocity = Vector2.zero;        // Stop any current movement
-            ObjectCollider.enabled = false;              // Disable collider so it doesn't bump into the player
-        }
-        else
-        {
-            // Drop the object
-            Holding = false;
-            ObjectBody.bodyType = RigidbodyType2D.Dynamic;   // Re-enable physics
-            ObjectCollider.enabled = true;               // Re-enable collisions
-        }*/
+    { 
         Pressed = true;
         Debug.Log($"You clicked directly on {gameObject.name}!");
         if (ObjectBody != null)
         {
             ObjectBody.bodyType = RigidbodyType2D.Kinematic;
         }
-        //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-        //ObjectCollider = GetComponent<Collider2D>();
         //SceneManager.LoadScene(1);
     }
 
@@ -55,10 +46,6 @@ public class pickupobject : MonoBehaviour
         if (Pressed && gameObject.CompareTag("Tools") && !release)
         {
             UnityEngine.Debug.Log("pickup");
-            //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            //transform.position = mousePos;
-            //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            //ObjectCollider.enabled = false;
             if (ObjectBody != null)
             {
                 ObjectBody.bodyType = RigidbodyType2D.Dynamic;
@@ -67,13 +54,18 @@ public class pickupobject : MonoBehaviour
             {
                 ObjectCollider.enabled = false;
             }
-            transform.position = PlayerTransform.position;
+            Vector3 ObjectOffset = new Vector3(88, 0, 0);
+            transform.position = PlayerTransform.position += ObjectOffset;
+            ObjectBody.bodyType = RigidbodyType2D.Kinematic;
+            
+            
+
             heldObject = gameObject;
             release = true;
             Pressed = false;
             
         }
-        else if (Pressed && gameObject.CompareTag("Block"))
+        else if (Pressed && gameObject.CompareTag("Block") && heldObject != null)
         {
             UnityEngine.Debug.Log("drop");
             if (ObjectCollider != null)
@@ -98,10 +90,36 @@ public class pickupobject : MonoBehaviour
             release = false;
             Pressed = false;
         }
+        else if (Pressed && gameObject.CompareTag("Block"))
+        {
+            UnityEngine.Debug.Log("pickup2");
+            //Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            //transform.position = mousePos;
+            //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            //ObjectCollider.enabled = false;
+            if (ObjectBody != null)
+            {
+                ObjectBody.bodyType = RigidbodyType2D.Dynamic;
+            }
+            if (ObjectCollider != null)
+            {
+                ObjectCollider.enabled = false;
+            }
+            transform.position = PlayerTransform.position;
+            heldObject = gameObject;
+            release = true;
+            Pressed = false;
+
+        }
+        else if{
+            transform.position = PlayerTransform.position;
+        }
+
         /*if (Holding && PlayerTransform != null)
         {
             transform.position = PlayerTransform.position + PosOffset;
         }*/
+        transform.position = PlayerTransform.position;
 
     }
 }

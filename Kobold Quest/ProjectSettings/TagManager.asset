@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Tools
   - Block
+  - Consumable
+  - farmingTool
+  - Thrown
   layers:
   - Default
   - TransparentFX
