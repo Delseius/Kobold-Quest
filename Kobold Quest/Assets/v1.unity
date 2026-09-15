@@ -152,7 +152,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::pickupobject
   PlayerTransform: {fileID: 1387945661}
-  BlockTransform: {fileID: 315074177}
+  BlockTransform: {fileID: 603427984}
+  ToolTransform: {fileID: 1671305984}
+  ConsumableTransform: {fileID: 0}
+  PlaceBlockTransform: {fileID: 315074177}
+  normalCollider: {fileID: 0}
+  temporaryCollider: {fileID: 0}
+  speed: 5.5
 --- !u!50 &315074174
 Rigidbody2D:
   serializedVersion: 5
@@ -335,6 +341,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::pickupobject
   PlayerTransform: {fileID: 1387945661}
   BlockTransform: {fileID: 603427984}
+  ToolTransform: {fileID: 1671305984}
+  ConsumableTransform: {fileID: 0}
+  PlaceBlockTransform: {fileID: 315074177}
+  normalCollider: {fileID: 0}
+  temporaryCollider: {fileID: 0}
+  speed: 5.5
 --- !u!50 &603427981
 Rigidbody2D:
   serializedVersion: 5
@@ -534,20 +546,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.32, y: 0.03999999}
   m_EdgeRadius: 0
---- !u!114 &619753782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619753778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16fcfe5b6be273046b3a994d363f09e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::pickupobject
-  PlayerTransform: {fileID: 1387945661}
-  BlockTransform: {fileID: 603427984}
 --- !u!50 &619753785
 Rigidbody2D:
   serializedVersion: 5
@@ -586,6 +584,10 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
       propertyPath: m_Name
       value: Kobold Attempt 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
       propertyPath: m_LocalScale.x
@@ -648,9 +650,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1387945655}
-    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1387945654}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1387945658}
@@ -731,9 +730,6 @@ PrefabInstance:
       addedObject: {fileID: 619753779}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: aa794261f3600954b944f8c3929c70f0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 619753782}
-    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: aa794261f3600954b944f8c3929c70f0, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 619753785}
   m_SourcePrefab: {fileID: -8435245712485981826, guid: aa794261f3600954b944f8c3929c70f0, type: 3}
 --- !u!1 &1387945649 stripped
@@ -781,20 +777,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1387945654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387945649}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16fcfe5b6be273046b3a994d363f09e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  PlayerTransform: {fileID: 0}
-  BlockTransform: {fileID: 0}
 --- !u!61 &1387945655
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -972,7 +954,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::pickupobject
   PlayerTransform: {fileID: 1387945661}
-  BlockTransform: {fileID: 0}
+  BlockTransform: {fileID: 603427984}
+  ToolTransform: {fileID: 1671305984}
+  ConsumableTransform: {fileID: 0}
+  PlaceBlockTransform: {fileID: 315074177}
+  normalCollider: {fileID: 0}
+  temporaryCollider: {fileID: 0}
+  speed: 5.5
 --- !u!4 &1387945661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 5b7e1b22770d7354787d10e2e98e96f3, type: 3}
@@ -1029,20 +1017,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.32, y: 0.09}
   m_EdgeRadius: 0
---- !u!114 &1671305979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671305975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16fcfe5b6be273046b3a994d363f09e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::pickupobject
-  PlayerTransform: {fileID: 1387945661}
-  BlockTransform: {fileID: 603427984}
 --- !u!50 &1671305982
 Rigidbody2D:
   serializedVersion: 5
@@ -1070,6 +1044,31 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!4 &1671305984 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: a9f00bf5441c69440afc934b52c7f762, type: 3}
+  m_PrefabInstance: {fileID: 1849662268}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1671305985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671305975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16fcfe5b6be273046b3a994d363f09e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::pickupobject
+  PlayerTransform: {fileID: 1387945661}
+  BlockTransform: {fileID: 603427984}
+  ToolTransform: {fileID: 1671305984}
+  ConsumableTransform: {fileID: 0}
+  PlaceBlockTransform: {fileID: 315074177}
+  normalCollider: {fileID: 0}
+  temporaryCollider: {fileID: 0}
+  speed: 5.5
 --- !u!1001 &1849662268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1143,10 +1142,10 @@ PrefabInstance:
       addedObject: {fileID: 1671305976}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: a9f00bf5441c69440afc934b52c7f762, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1671305979}
+      addedObject: {fileID: 1671305982}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: a9f00bf5441c69440afc934b52c7f762, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1671305982}
+      addedObject: {fileID: 1671305985}
   m_SourcePrefab: {fileID: -8435245712485981826, guid: a9f00bf5441c69440afc934b52c7f762, type: 3}
 --- !u!1 &1956880614
 GameObject:
