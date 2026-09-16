@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -437,12 +437,20 @@ PrefabInstance:
       value: Kobold_Idle_downV2
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalPosition.z
