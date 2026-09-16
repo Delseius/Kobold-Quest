@@ -17,7 +17,7 @@ public class pickupobject : MonoBehaviour
 
     [SerializeField] private Collider2D normalCollider;
     [SerializeField] private Collider2D temporaryCollider;
-    [SerializeField] private float holdOffsetDistance = 1.2f;
+    [SerializeField] private float holdOffsetDistance = 0.6f;
 
     bool Pressed = false;
     bool release = false;
@@ -26,13 +26,20 @@ public class pickupobject : MonoBehaviour
     bool block = false;
     bool drop = false;
     bool PlayerMove = false;
+    //heldObject == null;
 
     public float speed = 5.5F;
     public static GameObject heldObject;
+    
 
     private Rigidbody2D ObjectBody;
     private Collider2D ObjectCollider;
 
+    private void Awake()
+    {
+        // Explicitly sets the object to null before anything else runs
+        heldObject = null;
+    }
     void Start()
     {
         ObjectBody = GetComponent<Rigidbody2D>();
@@ -195,7 +202,7 @@ public class pickupobject : MonoBehaviour
         else if (held && PlayerMove && Tool)
         {
             PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, ToolTransform.position, speed * Time.deltaTime);
-            if (Vector3.Distance(PlayerTransform.position, ToolTransform.position) < 0.01f)
+            if (Vector3.Distance(PlayerTransform.position, ToolTransform.position) < 0.2f)
             {
                 PlayerMove = false;
                 Vector3 targetHoldPos = PlayerTransform.position + (facingDirection * holdOffsetDistance);
@@ -205,7 +212,7 @@ public class pickupobject : MonoBehaviour
         else if (held && PlayerMove && block)
         {
             PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, BlockTransform.position, speed * Time.deltaTime);
-            if (Vector3.Distance(PlayerTransform.position, BlockTransform.position) < 0.01f)
+            if (Vector3.Distance(PlayerTransform.position, BlockTransform.position) < 0.2f)
             {
                 PlayerMove = false;
                 Vector3 targetHoldPos = PlayerTransform.position + (facingDirection * holdOffsetDistance);
@@ -219,11 +226,12 @@ public class pickupobject : MonoBehaviour
             transformToMove.position = Vector3.MoveTowards(transformToMove.position, PlaceBlockTransform.position, speed * Time.deltaTime);
             PlayerTransform.position = Vector3.MoveTowards(PlayerTransform.position, PlaceBlockTransform.position, speed * Time.deltaTime);
 
-            if (Vector3.Distance(transformToMove.position, PlaceBlockTransform.position) < 0.1f ||
-                Vector3.Distance(PlayerTransform.position, PlaceBlockTransform.position) < 0.1f)
+            if (Vector3.Distance(transformToMove.position, PlaceBlockTransform.position) < 0.2f ||
+                Vector3.Distance(PlayerTransform.position, PlaceBlockTransform.position) < 0.2f)
             {
                 ExecuteDropRelease();
             }
         }
     }
 }
+
