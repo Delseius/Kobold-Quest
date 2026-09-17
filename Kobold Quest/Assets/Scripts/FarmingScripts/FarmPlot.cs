@@ -48,14 +48,27 @@ public class FarmPlot : MonoBehaviour
         return true;
     }
 
-    public int Harvest()
+    public void Harvest()
     {
         if (!CanHarvest())
         {
-            return 0;
+            return;
         }
 
-        int yield = crop.GetHarvestYield();
+        foreach (CropHarvest harvest in crop.HarvestProducts)
+        {
+            if (harvest == null)
+            {
+                continue;
+            }
+
+            int quantity = harvest.GetQuantity();
+
+            Debug.Log(
+                "Harvested " + quantity +
+                " of " + harvest.ItemPrefab.name
+            );
+        }
 
         if (crop.SurvivesHarvest)
         {
@@ -68,8 +81,6 @@ public class FarmPlot : MonoBehaviour
             crop = null;
             state = FarmPlotState.Empty;
         }
-
-        return yield;
     }
 
     private void Update()
