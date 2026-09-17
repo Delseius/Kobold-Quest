@@ -131,14 +131,20 @@ public class pickupobject : MonoBehaviour
 
 
         }
-        if (held == true && Tool == true)
-        {
-            //UnityEngine.Debug.Log("held");
-            // Smoothly move the object toward the player's position every frame
-            Vector3 ObjectOffset = new Vector3(2.0f, 0.0f, 0.0f);
-            ToolTransform.position = Vector3.MoveTowards(ToolTransform.position, PlayerTransform.position + ObjectOffset, speed * Time.deltaTime);
-        }
-
+if (held == true)
+{
+    if (Tool == true)
+    {
+        // Smoothly move the tool toward the player's position every frame
+        Vector3 ObjectOffset = new Vector3(2.0f, 0.0f, 0.0f);
+        ToolTransform.position = Vector3.MoveTowards(ToolTransform.position, PlayerTransform.position + ObjectOffset, speed * Time.deltaTime);
+    }
+    else
+    {
+        // Non-tool items snap to player position immediately (Gridspace behavior)
+        transform.position = PlayerTransform.position;
+    }
+}
 
         /*if (Holding && PlayerTransform != null)
         {
