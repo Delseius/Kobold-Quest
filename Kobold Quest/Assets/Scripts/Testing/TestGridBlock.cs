@@ -1,17 +1,13 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TestGridBlock : GridObject
 {
-    protected override void Start()
+    private void Update()
     {
-        base.Start();
-
-        Debug.Log(
-            gameObject.name +
-            " is in grid cell " +
-            GridPosition
-        );
-
-        GridSpace.Instance.DebugCell(GridPosition);
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            SnapToGrid();
+        }
     }
 }
