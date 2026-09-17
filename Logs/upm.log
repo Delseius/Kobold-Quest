@@ -1,0 +1,4 @@
+[2026-09-17T04:55:43.237Z][INFO] Command-line: 'C:\\Program Files\\Unity\\Hub\\Editor\\6000.5.8f1\\Editor\\Data\\Resources\\PackageManager\\Server\\UnityPackageManager.exe' server -s 48028 --ipc-path Unity-Upm-48028 -l 2 --log-file C:\\Users\\lukea\\OneDrive\\Documents\\GitHub\\Kobold-Quest/Logs/upm.log
+[2026-09-17T04:55:43.276Z][INFO] IPC server started (IPC path=Unity-Upm-48028).
+[2026-09-17T04:55:43.276Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-48028.
+[2026-09-17T04:55:48.303Z][INFO] Shutting down UnityPackageManager.exe: parent process [48028] is no longer running.
