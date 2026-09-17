@@ -19,4 +19,48 @@ public class FarmPlot : MonoBehaviour
     {
         return state == FarmPlotState.Mature;
     }
+
+    public bool Plant(Crop newCrop)
+    {
+        if (!CanPlant())
+        {
+            return false;
+        }
+
+        if (newCrop == null)
+        {
+            return false;
+        }
+
+        crop = newCrop;
+        state = FarmPlotState.Growing;
+
+        return true;
+    }
+
+    public Crop Harvest()
+    {
+        if (!CanHarvest())
+        {
+            return null;
+        }
+
+        Crop harvestedCrop = crop;
+
+        crop = null;
+        state = FarmPlotState.Empty;
+
+        return harvestedCrop;
+    }
+
+    private void Update()
+    {
+        if (state == FarmPlotState.Growing && crop != null)
+        {
+            if (crop.IsMature)
+            {
+                state = FarmPlotState.Mature;
+            }
+        }
+    }
 }
