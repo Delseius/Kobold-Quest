@@ -111,10 +111,10 @@ public class pickupobject : MonoBehaviour
             Pressed = false;
 
         }
-        else if{
+        else if(1==1){
             transform.position = PlayerTransform.position;
         }
-
+        
         /*if (Holding && PlayerTransform != null)
         {
             transform.position = PlayerTransform.position + PosOffset;
