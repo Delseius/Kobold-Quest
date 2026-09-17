@@ -21,6 +21,12 @@ public class TestGridOccupancy : MonoBehaviour
             return;
         }
 
+        if (testObject == null)
+        {
+            Debug.LogError("Test object has not been assigned.");
+            return;
+        }
+
         Vector2Int gridPosition =
             GridSpace.Instance.WorldToGrid(testObject.transform.position);
 
