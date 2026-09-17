@@ -76,4 +76,15 @@ public class GridSpace : MonoBehaviour
     {
         return cellSize;
     }
+    public void DebugCell(Vector2Int position)
+    {
+        GridCell cell = GetCell(position);
+
+        Debug.Log(
+            "Cell " + position +
+            " | Block: " + cell.Block +
+            " | World Object: " + cell.WorldObject +
+            " | Item: " + cell.Item
+        );
+    }
 }
