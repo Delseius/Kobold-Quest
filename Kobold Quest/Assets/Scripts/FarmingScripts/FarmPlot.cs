@@ -5,6 +5,9 @@ public class FarmPlot : MonoBehaviour
     [SerializeField]
     private FarmPlotState state = FarmPlotState.Empty;
 
+    [SerializeField]
+    private Crop cropPrefab;
+
     private Crop crop;
 
     public FarmPlotState State => state;
@@ -20,19 +23,26 @@ public class FarmPlot : MonoBehaviour
         return state == FarmPlotState.Mature;
     }
 
-    public bool Plant(Crop newCrop)
+    public bool Plant()
     {
         if (!CanPlant())
         {
             return false;
         }
 
-        if (newCrop == null)
+        if (cropPrefab == null)
         {
+            Debug.LogError("No crop prefab assigned to FarmPlot.");
             return false;
         }
 
-        crop = newCrop;
+        crop = Instantiate(
+            cropPrefab,
+            transform.position,
+            Quaternion.identity,
+            transform
+        );
+
         state = FarmPlotState.Growing;
 
         return true;
