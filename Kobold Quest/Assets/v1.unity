@@ -841,9 +841,9 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1387945650}
+      - m_Target: {fileID: 1387945649}
         m_TargetAssemblyTypeName: move, Assembly-CSharp
-        m_MethodName: OnMove
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
