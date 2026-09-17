@@ -48,19 +48,28 @@ public class FarmPlot : MonoBehaviour
         return true;
     }
 
-    public Crop Harvest()
+    public int Harvest()
     {
         if (!CanHarvest())
         {
-            return null;
+            return 0;
         }
 
-        Crop harvestedCrop = crop;
+        int yield = crop.GetHarvestYield();
 
-        crop = null;
-        state = FarmPlotState.Empty;
+        if (crop.SurvivesHarvest)
+        {
+            crop.ResetGrowth();
+            state = FarmPlotState.Growing;
+        }
+        else
+        {
+            Destroy(crop.gameObject);
+            crop = null;
+            state = FarmPlotState.Empty;
+        }
 
-        return harvestedCrop;
+        return yield;
     }
 
     private void Update()
