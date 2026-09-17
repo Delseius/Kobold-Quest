@@ -10,19 +10,17 @@ public abstract class Crop : MonoBehaviour
 
     [Header("Harvest")]
     [SerializeField]
-    private int minHarvestYield = 2;
-
-    [SerializeField]
-    private int maxHarvestYield = 3;
-
-    [SerializeField]
     private bool survivesHarvest = false;
+
+    [Header("Harvest Products")]
+    [SerializeField]
+    private CropHarvest[] harvestProducts;
 
     public bool IsMature { get; protected set; }
 
-    public int MinHarvestYield => minHarvestYield;
-    public int MaxHarvestYield => maxHarvestYield;
     public bool SurvivesHarvest => survivesHarvest;
+
+    public CropHarvest[] HarvestProducts => harvestProducts;
 
     protected virtual void Update()
     {
@@ -44,10 +42,6 @@ public abstract class Crop : MonoBehaviour
         IsMature = true;
     }
 
-    public int GetHarvestYield()
-    {
-        return Random.Range(minHarvestYield, maxHarvestYield + 1);
-    }
     public virtual void ResetGrowth()
     {
         currentGrowthTime = 0f;
