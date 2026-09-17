@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5068e13d4f97a274cbc5aadb5a9a1388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrownMushroomCrop
-  growthTime: 60
+  growthTime: 10
