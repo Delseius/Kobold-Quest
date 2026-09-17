@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class TestGridOccupancy : MonoBehaviour
 {
-    [SerializeField] private GridObject testObject;
 
     private void Update()
     {
@@ -21,14 +20,8 @@ public class TestGridOccupancy : MonoBehaviour
             return;
         }
 
-        if (testObject == null)
-        {
-            Debug.LogError("Test object has not been assigned.");
-            return;
-        }
-
         Vector2Int gridPosition =
-            GridSpace.Instance.WorldToGrid(testObject.transform.position);
+            GridSpace.Instance.WorldToGrid(transform.position);
 
         GridCell cell =
             GridSpace.Instance.GetCell(gridPosition);
