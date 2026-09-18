@@ -109,8 +109,7 @@ public class PickupDropSystem : GridObject
     public void ExecuteDropRelease()
     {
         UnityEngine.Debug.Log(
-            $"{pickup.gameObject.name} snapped perfectly " +
-            $"to drop targets."
+            $"{pickup.gameObject.name} released."
         );
 
         pickup.transform.SetParent(null);
@@ -122,32 +121,33 @@ public class PickupDropSystem : GridObject
         pickup.transform.position =
             pickup.CalculatedDropTarget;
 
-        // All completed drops use GridObject to snap to the nearest
-        // grid cell. This keeps E drops and target drops consistent.
-        GridObject gridObject =
-            pickup.gameObject.GetComponent<GridObject>();
-
-        if (gridObject != null)
+        // ONLY Block objects snap to the grid.
+        if (pickup.gameObject.CompareTag("Block"))
         {
-            gridObject.SnapToGrid();
+            GridObject gridObject =
+                pickup.gameObject.GetComponent<GridObject>();
 
-            pickup.CalculatedDropTarget =
-                pickup.transform.position;
-        }
-        else if (GridSpace.Instance != null)
-        {
-            // Fallback for pickup objects that do not have a GridObject
-            // component yet. This uses the same grid conversion as GridObject.
-            Vector2Int gridPosition =
-                GridSpace.Instance.WorldToGrid(
-                    pickup.CalculatedDropTarget
-                );
+            if (gridObject != null)
+            {
+                gridObject.SnapToGrid();
 
-            pickup.CalculatedDropTarget =
-                GridSpace.Instance.GridToWorld(gridPosition);
+                pickup.CalculatedDropTarget =
+                    pickup.transform.position;
+            }
+            else if (GridSpace.Instance != null)
+            {
+                // Fallback for Block objects without a GridObject component.
+                Vector2Int gridPosition =
+                    GridSpace.Instance.WorldToGrid(
+                        pickup.CalculatedDropTarget
+                    );
 
-            pickup.transform.position =
-                pickup.CalculatedDropTarget;
+                pickup.CalculatedDropTarget =
+                    GridSpace.Instance.GridToWorld(gridPosition);
+
+                pickup.transform.position =
+                    pickup.CalculatedDropTarget;
+            }
         }
 
         if (
