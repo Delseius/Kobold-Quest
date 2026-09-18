@@ -14338,6 +14338,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1281170038}
+  - component: {fileID: 1281170039}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -14361,6 +14362,21 @@ Transform:
   - {fileID: 1767313939}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1281170039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281170037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5caeee55ca2587e409611393431bba67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hammer
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1314880601
 GameObject:
   m_ObjectHideFlags: 0
@@ -14370,6 +14386,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1314880602}
+  - component: {fileID: 1314880603}
   m_Layer: 0
   m_Name: stone_Shovel
   m_TagString: Untagged
@@ -14392,6 +14409,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1494857838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1314880603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314880601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0827068d0b0a4a84a8d99abc67567ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::stone_Shovel
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1337013405
 GameObject:
   m_ObjectHideFlags: 0
@@ -14422,8 +14454,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1509189344}
   - {fileID: 1731424644}
+  - {fileID: 1509189344}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1337013407
@@ -14438,6 +14470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcbd30b3de34ad04795b68b6486f7c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickaxe
+  toolDurability: 0
   toolType: 0
   toughness: 0
 --- !u!1 &1373572203
@@ -14551,6 +14584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35312c9d98034549bfe27b5d5048818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tool
+  toolDurability: 0
 --- !u!1 &1494857837
 GameObject:
   m_ObjectHideFlags: 0
@@ -14560,6 +14594,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1494857838}
+  - component: {fileID: 1494857839}
   m_Layer: 0
   m_Name: Shovel
   m_TagString: Untagged
@@ -14584,6 +14619,21 @@ Transform:
   - {fileID: 916796104}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1494857839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494857837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363e3e995947bcb4c92cf503af9aed12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Shovel
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1509189343
 GameObject:
   m_ObjectHideFlags: 0
@@ -14655,6 +14705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637988237}
+  - component: {fileID: 1637988238}
   m_Layer: 0
   m_Name: stone_Hoe
   m_TagString: Untagged
@@ -14677,6 +14728,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1743581226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1637988238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637988236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06e75d41dd04bec43b23bed5925197d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::stone_Hoe
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1674712428
 GameObject:
   m_ObjectHideFlags: 0
@@ -14766,6 +14832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e427cb1289376834eab42e4a3968220e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::stone_Pickaxe
+  toolDurability: 60
   toolType: 0
   toughness: 0
 --- !u!1 &1742460406
@@ -14809,6 +14876,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1743581226}
+  - component: {fileID: 1743581227}
   m_Layer: 0
   m_Name: Hoe
   m_TagString: Untagged
@@ -14833,6 +14901,21 @@ Transform:
   - {fileID: 581409645}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1743581227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743581225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0a15c066a363c49a82d525cf003d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hoe
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1767313938
 GameObject:
   m_ObjectHideFlags: 0
@@ -14842,6 +14925,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767313939}
+  - component: {fileID: 1767313940}
   m_Layer: 0
   m_Name: mallet_Hammer
   m_TagString: Untagged
@@ -14864,6 +14948,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1281170038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1767313940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767313938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32f7628f1c176a41a7a2de2366be3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::mallet_Hammer
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1784603528
 GameObject:
   m_ObjectHideFlags: 0
