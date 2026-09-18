@@ -1,5 +1,3 @@
-
-
 using UnityEngine;
 
 public class pickupobject : MonoBehaviour
@@ -18,6 +16,8 @@ public class pickupobject : MonoBehaviour
 
     public float speed = 5.5F;
 
+    // This is the one source of truth for every picked-up object:
+    // pickaxes, shovels, hoes, hammers, mushrooms and blocks.
     public static GameObject heldObject;
 
     private Rigidbody2D objectBody;
@@ -126,9 +126,16 @@ public class pickupobject : MonoBehaviour
 
     public void InitiatePickup()
     {
+        if (heldObject != null && heldObject != gameObject)
+        {
+            return;
+        }
+
         Pressed = true;
 
-        UnityEngine.Debug.Log($"Pickup sequence triggered for: {gameObject.name}");
+        UnityEngine.Debug.Log(
+            $"Pickup sequence triggered for: {gameObject.name}"
+        );
 
         if (objectBody != null)
         {
@@ -151,6 +158,21 @@ public class pickupobject : MonoBehaviour
         pickupDropSystem.ExecuteDropRelease();
     }
 
+    public void ClearHeldState()
+    {
+        if (heldObject == gameObject)
+        {
+            heldObject = null;
+        }
+
+        held = false;
+        release = false;
+        Tool = false;
+        block = false;
+        drop = false;
+        PlayerMove = false;
+    }
+
     private void Update()
     {
         pickupInput.HandleKeyboardInput();
@@ -161,15 +183,24 @@ public class pickupobject : MonoBehaviour
         }
 
         HandlePickupState();
-
         pickupMovement.UpdateMovement();
     }
 
     private void HandlePickupState()
     {
-        if (Pressed && gameObject.CompareTag("Tools") && !release)
+        if (Pressed && !release)
         {
-            UnityEngine.Debug.Log("pickuptool");
+            bool isItem = gameObject.CompareTag("Item");
+            bool isBlock = gameObject.CompareTag("Block");
+
+            if (!isItem && !isBlock)
+            {
+                return;
+            }
+
+            UnityEngine.Debug.Log(
+                isBlock ? "pickupBlock" : "pickupItem"
+            );
 
             if (objectBody != null)
             {
@@ -186,45 +217,19 @@ public class pickupobject : MonoBehaviour
                 objectSpriteRenderer.sortingOrder = 15;
             }
 
-            heldObject = gameObject;
-
-            release = true;
-            Pressed = false;
-            held = true;
-            Tool = true;
-            drop = false;
-            block = false;
-            PlayerMove = true;
-        }
-        else if (Pressed && gameObject.CompareTag("Block") && !release)
-        {
-            UnityEngine.Debug.Log("pickupBlock");
-
-            if (objectBody != null)
-            {
-                objectBody.bodyType = RigidbodyType2D.Kinematic;
-            }
-
-            if (objectCollider != null)
-            {
-                objectCollider.enabled = false;
-            }
-
-            if (objectSpriteRenderer != null)
-            {
-                objectSpriteRenderer.sortingOrder = 15;
-            }
-
+            // Always store the actual clicked object.
+            // No ToolTransform or ConsumableTransform is required.
             heldObject = gameObject;
 
             release = true;
             Pressed = false;
             held = true;
             Tool = false;
-            block = true;
+            block = isBlock;
             drop = false;
+
+            // Move the Kobold toward this exact object first.
             PlayerMove = true;
         }
     }
 }
-

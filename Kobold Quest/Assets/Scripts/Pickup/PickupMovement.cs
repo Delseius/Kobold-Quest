@@ -14,16 +14,21 @@ public class PickupMovement
         Transform player =
             pickup.PlayerTransformReference;
 
-        Transform tool =
-            pickup.ToolTransformReference;
-
-        Transform block =
-            pickup.BlockTransformReference;
-
         if (player == null)
         {
             return;
         }
+
+        // Always move the actual object stored in heldObject.
+        // This makes every Item behave identically regardless of
+        // whether it is a pickaxe, shovel, hoe, hammer or mushroom.
+        GameObject heldGameObject =
+            pickupobject.heldObject;
+
+        Transform heldTransform =
+            heldGameObject != null
+                ? heldGameObject.transform
+                : null;
 
         Vector3 facingDirection = Vector3.right;
 
@@ -32,141 +37,66 @@ public class PickupMovement
             facingDirection = Vector3.left;
         }
 
-        // Holding a tool and player is ready
+        Vector3 targetHoldPos =
+            player.position +
+            (facingDirection * pickup.HoldOffsetDistance);
+
+        // Move the Kobold toward the exact held object after pickup.
         if (
             pickup.held &&
-            pickup.Tool &&
-            !pickup.PlayerMove
-        )
-        {
-            Vector3 targetHoldPos =
-                player.position +
-                (facingDirection * pickup.HoldOffsetDistance);
-
-            if (tool != null)
-            {
-                tool.position =
-                    Vector3.MoveTowards(
-                        tool.position,
-                        targetHoldPos,
-                        pickup.speed * Time.deltaTime
-                    );
-            }
-        }
-
-        // Holding a block and player is ready
-        else if (
-            pickup.held &&
-            pickup.block &&
-            !pickup.PlayerMove
-        )
-        {
-            Vector3 targetHoldPos =
-                player.position +
-                (facingDirection * pickup.HoldOffsetDistance);
-
-            if (block != null)
-            {
-                block.position =
-                    Vector3.MoveTowards(
-                        block.position,
-                        targetHoldPos,
-                        pickup.speed * Time.deltaTime
-                    );
-            }
-        }
-
-        // Move player toward tool after pickup
-        else if (
-            pickup.held &&
             pickup.PlayerMove &&
-            pickup.Tool
+            heldTransform != null
         )
         {
-            if (tool == null)
-            {
-                return;
-            }
-
             player.position =
                 Vector3.MoveTowards(
                     player.position,
-                    tool.position,
+                    heldTransform.position,
                     pickup.speed * Time.deltaTime
                 );
 
             if (
                 Vector3.Distance(
                     player.position,
-                    tool.position
+                    heldTransform.position
                 ) < 0.05f
             )
             {
                 pickup.PlayerMove = false;
-
-                Vector3 targetHoldPos =
-                    player.position +
-                    (facingDirection * pickup.HoldOffsetDistance);
-
-                tool.position = targetHoldPos;
+                heldTransform.position = targetHoldPos;
             }
+
+            return;
         }
 
-        // Move player toward block after pickup
-        else if (
+        // Once the Kobold reaches the object, keep the exact object
+        // attached to the Kobold's hand position every frame.
+        if (
             pickup.held &&
-            pickup.PlayerMove &&
-            pickup.block
+            !pickup.PlayerMove &&
+            heldTransform != null
         )
         {
-            if (block == null)
-            {
-                return;
-            }
-
-            player.position =
+            heldTransform.position =
                 Vector3.MoveTowards(
-                    player.position,
-                    block.position,
+                    heldTransform.position,
+                    targetHoldPos,
                     pickup.speed * Time.deltaTime
                 );
 
-            if (
-                Vector3.Distance(
-                    player.position,
-                    block.position
-                ) < 0.05f
-            )
-            {
-                pickup.PlayerMove = false;
-
-                Vector3 targetHoldPos =
-                    player.position +
-                    (facingDirection * pickup.HoldOffsetDistance);
-
-                block.position = targetHoldPos;
-            }
+            return;
         }
 
-        // Move object and player toward drop zone
-        else if (
+        // During a drop, still use the actual held object.
+        if (
             pickup.drop &&
-            pickup.PlaceBlockTransform != null
+            pickup.PlaceBlockTransform != null &&
+            heldTransform != null
         )
         {
-            Transform transformToMove =
-                pickup.Tool
-                    ? tool
-                    : block;
-
-            if (transformToMove == null)
-            {
-                return;
-            }
-
-            transformToMove.position =
+            heldTransform.position =
                 Vector3.MoveTowards(
-                    transformToMove.position,
+                    heldTransform.position,
                     pickup.CalculatedDropTarget,
                     pickup.speed * Time.deltaTime
                 );
@@ -185,7 +115,7 @@ public class PickupMovement
                 ) < 0.1f
                 ||
                 Vector3.Distance(
-                    transformToMove.position,
+                    heldTransform.position,
                     pickup.CalculatedDropTarget
                 ) < 0.1f
             )

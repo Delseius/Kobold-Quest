@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,6 +37,8 @@ public class PickupInput
             return;
         }
 
+        // Every pickupable object uses the same heldObject reference.
+        // The clicked leaf object becomes the held object directly.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -65,7 +66,7 @@ public class PickupInput
             return;
         }
 
-        // E = Drop at player's feet
+        // E = Drop held object at player's feet.
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -76,7 +77,20 @@ public class PickupInput
             return;
         }
 
-        // C = Pick up nearby object
+        // F = Use the currently held object.
+        if (
+            pickup.held &&
+            !pickup.PlayerMove &&
+            pickupobject.heldObject != null &&
+            Keyboard.current.fKey.wasPressedThisFrame
+        )
+        {
+            UseHeldItem();
+            return;
+        }
+
+        // C = Pick up the nearest object represented by this
+        // pickupobject component.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -106,6 +120,48 @@ public class PickupInput
                     pickup.InitiatePickup();
                 }
             }
+        }
+    }
+
+    private void UseHeldItem()
+    {
+        GameObject heldObject =
+            pickupobject.heldObject;
+
+        if (heldObject == null)
+        {
+            return;
+        }
+
+        IUsable usable =
+            heldObject.GetComponent<IUsable>();
+
+        if (usable == null)
+        {
+            UnityEngine.Debug.Log(
+                $"{heldObject.name} cannot be used."
+            );
+
+            return;
+        }
+
+        Transform player =
+            pickup.PlayerTransformReference;
+
+        if (player == null)
+        {
+            return;
+        }
+
+        GameObject user =
+            player.gameObject;
+
+        bool consumed =
+            usable.Use(user);
+
+        if (consumed)
+        {
+            pickup.ClearHeldState();
         }
     }
 }
