@@ -38,6 +38,31 @@ public class PickupInput
 
             return;
         }
+        // Clicking a block with a pickaxe activates it.
+        // It does NOT immediately pick it up.
+        if (currentObject.CompareTag("Block"))
+        {
+            if (pickupobject.IsPickaxeHeld())
+            {
+                pickup.UnlockBlockForPickup();
+
+                UnityEngine.Debug.Log(
+                    $"Pickaxe activated " +
+                    $"{currentObject.name}. " +
+                    "The block can now be picked up."
+                );
+            }
+            else
+            {
+                UnityEngine.Debug.Log(
+                    $"{currentObject.name} is locked. " +
+                    "Hold a pickaxe and activate " +
+                    "the block first."
+                );
+            }
+
+            return;
+        }
 
         if (
             pickupobject.heldObject == null &&
@@ -77,6 +102,19 @@ public class PickupInput
             return;
         }
 
+        // F = Activate a block while holding a pickaxe.
+        if (
+            pickup.held &&
+            pickupobject.IsPickaxeHeld() &&
+            Keyboard.current.fKey.wasPressedThisFrame
+        )
+        {
+            if (TryActivateBlockUnderMouse())
+            {
+                return;
+            }
+        }
+
         // F = Use held item
         if (
             pickup.held &&
@@ -86,6 +124,7 @@ public class PickupInput
         )
         {
             UseHeldItem();
+
             return;
         }
 
@@ -141,6 +180,61 @@ public class PickupInput
             }
         }
     }
+    private bool TryActivateBlockUnderMouse()
+    {
+        if (Camera.main == null)
+        {
+            return false;
+        }
+
+        Vector2 mousePosition =
+            Mouse.current.position.ReadValue();
+
+        Vector3 worldPosition =
+            Camera.main.ScreenToWorldPoint(
+                new Vector3(
+                    mousePosition.x,
+                    mousePosition.y,
+                    -Camera.main.transform.position.z
+                )
+            );
+
+        Collider2D hit =
+            Physics2D.OverlapPoint(
+                new Vector2(
+                    worldPosition.x,
+                    worldPosition.y
+                )
+            );
+
+        if (hit == null)
+        {
+            return false;
+        }
+
+        pickupobject block =
+            hit.GetComponent<pickupobject>();
+
+        if (
+            block == null ||
+            !block.CompareTag("Block")
+        )
+        {
+            return false;
+        }
+
+        block.UnlockBlockForPickup();
+
+        UnityEngine.Debug.Log(
+            $"F activated " +
+            $"{block.gameObject.name} " +
+            "with the pickaxe. " +
+            "The block can now be picked up."
+        );
+
+        return true;
+    }
+
 
     private void UseHeldItem()
     {
