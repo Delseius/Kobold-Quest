@@ -846,6 +846,7 @@ MonoBehaviour:
   toolDurability: 0
   toolType: 0
   toughness: 0
+
 --- !u!1 &1373572203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tool
   toolDurability: 0
+
 --- !u!1 &1494857837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,6 +1323,7 @@ MonoBehaviour:
   toolDurability: 0
   toolType: 0
   toughness: 0
+
 --- !u!1 &1742460406
 GameObject:
   m_ObjectHideFlags: 0
