@@ -45,7 +45,7 @@ public class PickupDropSystem
         pickup.held = false;
 
         // Tools are tagged "Item" in the Unity scene.
-        pickup.Tool = pickup.gameObject.CompareTag("Item");
+        pickup.Tool = 
             pickup.gameObject.CompareTag("Item");
 
         pickup.block =
@@ -69,6 +69,28 @@ public class PickupDropSystem
 
         pickup.CalculatedDropTarget =
             pickup.PlayerTransformReference.position;
+
+        // When E is pressed, use the GridObject system to snap the
+        // dropped object to the nearest grid cell.
+        GridObject gridObject =
+            pickup.gameObject.GetComponent<GridObject>();
+
+        if (gridObject != null)
+        {
+            gridObject.SnapToGrid();
+            pickup.CalculatedDropTarget =
+                pickup.transform.position;
+        }
+        else if (GridSpace.Instance != null)
+        {
+            // Fallback for pickup objects that do not have a GridObject
+            // component yet. This uses the same grid conversion as GridObject.
+            Vector2Int gridPosition =
+                GridSpace.Instance.WorldToGrid(pickup.CalculatedDropTarget);
+
+            pickup.CalculatedDropTarget =
+                GridSpace.Instance.GridToWorld(gridPosition);
+        }
 
         if (pickup.ObjectSpriteRenderer != null)
         {
