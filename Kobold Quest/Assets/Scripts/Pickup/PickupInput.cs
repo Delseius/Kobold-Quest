@@ -12,7 +12,8 @@ public class PickupInput
 
     public void HandleMouseDown()
     {
-        GameObject currentObject = pickup.gameObject;
+        GameObject currentObject =
+            pickup.gameObject;
 
         if (currentObject.CompareTag("DropZone"))
         {
@@ -24,7 +25,8 @@ public class PickupInput
                 );
 
                 pickupobject heldScript =
-                    pickupobject.heldObject.GetComponent<pickupobject>();
+                    pickupobject.heldObject
+                    .GetComponent<pickupobject>();
 
                 if (heldScript != null)
                 {
@@ -37,8 +39,6 @@ public class PickupInput
             return;
         }
 
-        // Every pickupable object uses the same heldObject reference.
-        // The clicked leaf object becomes the held object directly.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -66,7 +66,7 @@ public class PickupInput
             return;
         }
 
-        // E = Drop held object at player's feet.
+        // E = Drop held object at player's feet
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -77,7 +77,7 @@ public class PickupInput
             return;
         }
 
-        // F = Use the currently held object.
+        // F = Use held item
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -89,8 +89,8 @@ public class PickupInput
             return;
         }
 
-        // C = Pick up the nearest object represented by this
-        // pickupobject component.
+        // C = Pick up the nearest Item or Block
+        // around the player.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -101,24 +101,43 @@ public class PickupInput
             Transform player =
                 pickup.PlayerTransformReference;
 
-            if (player != null)
+            if (player == null)
+            {
+                player =
+                    pickupobject.FindPlayerTransform();
+            }
+
+            if (player == null)
+            {
+                UnityEngine.Debug.LogWarning(
+                    "C pickup could not find the Player Transform. " +
+                    "Assign PlayerTransform on one pickupobject."
+                );
+
+                return;
+            }
+
+            pickupobject nearest =
+                pickupobject.FindNearestPickupable(
+                    player,
+                    pickup.PickupRadius
+                );
+
+            if (nearest != null)
             {
                 float distanceToPlayer =
                     Vector3.Distance(
-                        pickup.transform.position,
+                        nearest.transform.position,
                         player.position
                     );
 
-                if (distanceToPlayer <= pickup.PickupRadius)
-                {
-                    UnityEngine.Debug.Log(
-                        $"C Key Pressed near " +
-                        $"{pickup.gameObject.name}! " +
-                        $"(Distance: {distanceToPlayer})"
-                    );
+                UnityEngine.Debug.Log(
+                    $"C Key Pressed: picking up nearest object " +
+                    $"{nearest.gameObject.name} " +
+                    $"(Distance: {distanceToPlayer})"
+                );
 
-                    pickup.InitiatePickup();
-                }
+                nearest.InitiatePickup();
             }
         }
     }
@@ -147,6 +166,12 @@ public class PickupInput
 
         Transform player =
             pickup.PlayerTransformReference;
+
+        if (player == null)
+        {
+            player =
+                pickupobject.FindPlayerTransform();
+        }
 
         if (player == null)
         {

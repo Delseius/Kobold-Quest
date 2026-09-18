@@ -9,7 +9,9 @@ public class PickupDropSystem
         this.pickup = pickup;
     }
 
-    public void InitiateDropFromBlock(Transform targetDestination)
+    public void InitiateDropFromBlock(
+        Transform targetDestination
+    )
     {
         if (targetDestination == null)
         {
@@ -42,7 +44,8 @@ public class PickupDropSystem
         pickup.Pressed = false;
         pickup.held = false;
 
-        pickup.Tool = false;
+        pickup.Tool =
+            pickup.gameObject.CompareTag("Tools");
 
         pickup.block =
             pickup.gameObject.CompareTag("Block");
@@ -74,7 +77,9 @@ public class PickupDropSystem
         ExecuteDropRelease();
     }
 
-    public void HandleTriggerEnter(Collider2D other)
+    public void HandleTriggerEnter(
+        Collider2D other
+    )
     {
         if (
             pickup.drop &&
@@ -86,7 +91,9 @@ public class PickupDropSystem
         }
     }
 
-    public void HandleCollisionEnter(Collision2D collision)
+    public void HandleCollisionEnter(
+        Collision2D collision
+    )
     {
         if (
             pickup.drop &&
@@ -120,7 +127,7 @@ public class PickupDropSystem
         {
             SpriteRenderer blockRenderer =
                 pickup.PlaceBlockTransform
-                    .GetComponent<SpriteRenderer>();
+                .GetComponent<SpriteRenderer>();
 
             if (blockRenderer != null)
             {
@@ -138,7 +145,8 @@ public class PickupDropSystem
             pickup.ObjectBody.linearVelocity =
                 Vector2.zero;
 
-            pickup.ObjectBody.angularVelocity = 0f;
+            pickup.ObjectBody.angularVelocity =
+                0f;
 
             pickup.ObjectBody.bodyType =
                 RigidbodyType2D.Static;

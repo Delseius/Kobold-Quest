@@ -16,8 +16,6 @@ public class pickupobject : MonoBehaviour
 
     public float speed = 5.5F;
 
-    // This is the one source of truth for every picked-up object:
-    // pickaxes, shovels, hoes, hammers, mushrooms and blocks.
     public static GameObject heldObject;
 
     private Rigidbody2D objectBody;
@@ -79,6 +77,84 @@ public class pickupobject : MonoBehaviour
         get { return pickupRadius; }
     }
 
+    public static Transform FindPlayerTransform()
+    {
+        pickupobject[] pickupObjects =
+            FindObjectsOfType<pickupobject>();
+
+        foreach (pickupobject candidate in pickupObjects)
+        {
+            if (candidate.PlayerTransformReference != null)
+            {
+                return candidate.PlayerTransformReference;
+            }
+        }
+
+        return null;
+    }
+
+    public static pickupobject FindNearestPickupable(
+        Transform player,
+        float radius
+    )
+    {
+        if (player == null)
+        {
+            return null;
+        }
+
+        pickupobject[] pickupObjects =
+            FindObjectsOfType<pickupobject>();
+
+        pickupobject nearest = null;
+        float nearestDistance = radius;
+
+        foreach (pickupobject candidate in pickupObjects)
+        {
+            if (
+                candidate == null ||
+                !candidate.gameObject.activeInHierarchy
+            )
+            {
+                continue;
+            }
+
+            bool isItem =
+                candidate.CompareTag("Item");
+
+            bool isBlock =
+                candidate.CompareTag("Block");
+
+            if (!isItem && !isBlock)
+            {
+                continue;
+            }
+
+            if (
+                candidate.held ||
+                candidate.drop ||
+                candidate.release
+            )
+            {
+                continue;
+            }
+
+            float distance =
+                Vector3.Distance(
+                    candidate.transform.position,
+                    player.position
+                );
+
+            if (distance <= nearestDistance)
+            {
+                nearestDistance = distance;
+                nearest = candidate;
+            }
+        }
+
+        return nearest;
+    }
+
     public Rigidbody2D ObjectBody
     {
         get { return objectBody; }
@@ -100,13 +176,39 @@ public class pickupobject : MonoBehaviour
 
     private void Start()
     {
-        objectBody = GetComponent<Rigidbody2D>();
-        objectCollider = GetComponent<Collider2D>();
-        objectSpriteRenderer = GetComponent<SpriteRenderer>();
+        if (
+            heldObject != null &&
+            !heldObject.activeInHierarchy
+        )
+        {
+            heldObject = null;
+        }
 
-        pickupInput = new PickupInput(this);
-        pickupMovement = new PickupMovement(this);
-        pickupDropSystem = new PickupDropSystem(this);
+        Pressed = false;
+        release = false;
+        held = false;
+        Tool = false;
+        block = false;
+        drop = false;
+        PlayerMove = false;
+
+        objectBody =
+            GetComponent<Rigidbody2D>();
+
+        objectCollider =
+            GetComponent<Collider2D>();
+
+        objectSpriteRenderer =
+            GetComponent<SpriteRenderer>();
+
+        pickupInput =
+            new PickupInput(this);
+
+        pickupMovement =
+            new PickupMovement(this);
+
+        pickupDropSystem =
+            new PickupDropSystem(this);
     }
 
     private void OnMouseDown()
@@ -114,23 +216,22 @@ public class pickupobject : MonoBehaviour
         pickupInput.HandleMouseDown();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(
+        Collider2D other
+    )
     {
         pickupDropSystem.HandleTriggerEnter(other);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(
+        Collision2D collision
+    )
     {
         pickupDropSystem.HandleCollisionEnter(collision);
     }
 
     public void InitiatePickup()
     {
-        if (heldObject != null && heldObject != gameObject)
-        {
-            return;
-        }
-
         Pressed = true;
 
         UnityEngine.Debug.Log(
@@ -139,13 +240,18 @@ public class pickupobject : MonoBehaviour
 
         if (objectBody != null)
         {
-            objectBody.bodyType = RigidbodyType2D.Kinematic;
+            objectBody.bodyType =
+                RigidbodyType2D.Kinematic;
         }
     }
 
-    public void InitiateDropFromBlock(Transform targetDestination)
+    public void InitiateDropFromBlock(
+        Transform targetDestination
+    )
     {
-        pickupDropSystem.InitiateDropFromBlock(targetDestination);
+        pickupDropSystem.InitiateDropFromBlock(
+            targetDestination
+        );
     }
 
     public void DropAtFeet()
@@ -183,53 +289,60 @@ public class pickupobject : MonoBehaviour
         }
 
         HandlePickupState();
+
         pickupMovement.UpdateMovement();
     }
 
     private void HandlePickupState()
     {
-        if (Pressed && !release)
+        if (!Pressed || release)
         {
-            bool isItem = gameObject.CompareTag("Item");
-            bool isBlock = gameObject.CompareTag("Block");
-
-            if (!isItem && !isBlock)
-            {
-                return;
-            }
-
-            UnityEngine.Debug.Log(
-                isBlock ? "pickupBlock" : "pickupItem"
-            );
-
-            if (objectBody != null)
-            {
-                objectBody.bodyType = RigidbodyType2D.Kinematic;
-            }
-
-            if (objectCollider != null)
-            {
-                objectCollider.enabled = false;
-            }
-
-            if (objectSpriteRenderer != null)
-            {
-                objectSpriteRenderer.sortingOrder = 15;
-            }
-
-            // Always store the actual clicked object.
-            // No ToolTransform or ConsumableTransform is required.
-            heldObject = gameObject;
-
-            release = true;
-            Pressed = false;
-            held = true;
-            Tool = false;
-            block = isBlock;
-            drop = false;
-
-            // Move the Kobold toward this exact object first.
-            PlayerMove = true;
+            return;
         }
+
+        bool isItem =
+            gameObject.CompareTag("Item");
+
+        bool isBlock =
+            gameObject.CompareTag("Block");
+
+        if (!isItem && !isBlock)
+        {
+            return;
+        }
+
+        UnityEngine.Debug.Log(
+            isBlock
+                ? "pickupBlock"
+                : "pickupItem"
+        );
+
+        if (objectBody != null)
+        {
+            objectBody.bodyType =
+                RigidbodyType2D.Kinematic;
+        }
+
+        if (objectCollider != null)
+        {
+            objectCollider.enabled = false;
+        }
+
+        if (objectSpriteRenderer != null)
+        {
+            objectSpriteRenderer.sortingOrder = 15;
+        }
+
+        heldObject = gameObject;
+
+        release = true;
+        Pressed = false;
+        held = true;
+
+        Tool = isItem;
+        block = isBlock;
+
+        drop = false;
+        PlayerMove = true;
     }
 }
