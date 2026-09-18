@@ -81,6 +81,8 @@ public class pickupobject : MonoBehaviour
     {
         pickupobject[] pickupObjects =
             FindObjectsOfType<pickupobject>();
+            
+            //FindObjectsByType<GridObject>(FindObjectsSortMode.None)
 
         foreach (pickupobject candidate in pickupObjects)
         {
