@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Hoe : Tool
+public class Hoe : Tool, IUsable
 {
     [Header("Tool Type")]
     [SerializeField]
@@ -18,13 +18,13 @@ public class Hoe : Tool
     /// Uses the hoe on the grid cell immediately
     /// in front of the kobold.
     /// </summary>
-    public void hoeUse()
+    public bool Use(GameObject user)
     {
         // Check durability.
         if (toolDurability <= 0)
         {
             Debug.Log("Hoe is broken.");
-            return;
+            return false;
         }
 
         // Find the grid cell in front of the kobold.
@@ -38,7 +38,7 @@ public class Hoe : Tool
                 "there is no valid target cell."
             );
 
-            return;
+            return false;
         }
 
         // Check that the target cell has terrain.
@@ -50,7 +50,7 @@ public class Hoe : Tool
                 ": there is no terrain."
             );
 
-            return;
+            return false;
         }
 
         // Ask the terrain whether it can be hoed.
@@ -62,7 +62,7 @@ public class Hoe : Tool
                 ": terrain rejected the action."
             );
 
-            return;
+            return false;
         }
 
         // Convert the target grid position into
@@ -78,10 +78,12 @@ public class Hoe : Tool
         // Reduce durability only after a successful use.
         toolDurability -= 1;
 
+
         Debug.Log(
             "Hoe successfully used on grid cell " +
             targetCell.Position
         );
+        return true;
     }
 
     /// <summary>

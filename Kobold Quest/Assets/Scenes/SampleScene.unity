@@ -1964,7 +1964,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2253911629886400664, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_Name
-      value: Kobold_Idle_downV2
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalScale.x
@@ -2462,7 +2466,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2126593263256522009, guid: 03509772004bc684ea75333459dc5584, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2126593263256522009, guid: 03509772004bc684ea75333459dc5584, type: 3}
       propertyPath: toughness
