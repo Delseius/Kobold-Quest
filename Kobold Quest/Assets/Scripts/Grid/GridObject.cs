@@ -87,6 +87,25 @@ public abstract class GridObject : MonoBehaviour
     {
         UnregisterFromGrid();
     }
+    // ADD THESE TWO FUNCTIONS HERE
+
+    public void DisableGridObject()
+    {
+        // Remove this object from the grid.
+        UnregisterFromGrid();
+
+        // Disable the GridObject component.
+        enabled = false;
+    }
+
+    public void EnableGridObject()
+    {
+        // Enable the GridObject component.
+        enabled = true;
+
+        // Add the object back to the grid.
+        RegisterWithGrid();
+    }
 
     public void SnapToGrid()
     {

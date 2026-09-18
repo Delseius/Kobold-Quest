@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PickupDropSystem : GridObject
+public class PickupDropSystem
 {
     private pickupobject pickup;
 
@@ -70,10 +70,10 @@ public class PickupDropSystem : GridObject
         pickup.CalculatedDropTarget =
             pickup.PlayerTransformReference.position;
 
-if (pickup.ObjectSpriteRenderer != null)
-{
-    pickup.ObjectSpriteRenderer.sortingOrder = 5;
-}
+        if (pickup.ObjectSpriteRenderer != null)
+        {
+            pickup.ObjectSpriteRenderer.sortingOrder = 5;
+        }
 
         ExecuteDropRelease();
     }
@@ -112,16 +112,18 @@ if (pickup.ObjectSpriteRenderer != null)
             $"{pickup.gameObject.name} released."
         );
 
+        // Remove the object from the player's hierarchy.
         pickup.transform.SetParent(null);
 
+        // Reset rotation when released.
         pickup.transform.rotation =
             Quaternion.identity;
 
-        // Put the object at its calculated drop position first.
+        // Move the object to the calculated drop position.
         pickup.transform.position =
             pickup.CalculatedDropTarget;
 
-        // ONLY Block objects snap to the grid.
+        // ONLY Block objects use GridObject snapping.
         if (pickup.gameObject.CompareTag("Block"))
         {
             GridObject gridObject =
@@ -129,28 +131,15 @@ if (pickup.ObjectSpriteRenderer != null)
 
             if (gridObject != null)
             {
+                gridObject.EnableGridObject();
                 gridObject.SnapToGrid();
 
                 pickup.CalculatedDropTarget =
                     pickup.transform.position;
             }
-            else if (GridSpace.Instance != null)
-            {
-                // Fallback for Block objects without a GridObject component.
-                Vector2Int gridPosition =
-                    GridSpace.Instance.WorldToGrid(
-                        pickup.CalculatedDropTarget
-                    );
-
-                pickup.CalculatedDropTarget =
-GridSpace.Instance.GridToWorld(gridPosition);
-
-
-                pickup.transform.position =
-                    pickup.CalculatedDropTarget;
-            }
         }
 
+        // Set the released object's sorting order.
         if (
             pickup.ObjectSpriteRenderer != null &&
             pickup.PlaceBlockTransform != null
@@ -170,7 +159,12 @@ GridSpace.Instance.GridToWorld(gridPosition);
                 pickup.ObjectSpriteRenderer.sortingOrder = 5;
             }
         }
+        else if (pickup.ObjectSpriteRenderer != null)
+        {
+            pickup.ObjectSpriteRenderer.sortingOrder = 5;
+        }
 
+        // Stop the object's movement.
         if (pickup.ObjectBody != null)
         {
             pickup.ObjectBody.linearVelocity =
@@ -183,16 +177,20 @@ GridSpace.Instance.GridToWorld(gridPosition);
                 RigidbodyType2D.Static;
         }
 
+        // Re-enable the collider as a normal collider.
         if (pickup.ObjectCollider != null)
         {
             pickup.ObjectCollider.enabled = true;
             pickup.ObjectCollider.isTrigger = false;
         }
 
+        // Clear the held object.
         pickupobject.heldObject = null;
 
+        // Clear the drop target.
         pickup.PlaceBlockTransform = null;
 
+        // Reset pickup/drop state.
         pickup.drop = false;
         pickup.release = false;
         pickup.held = false;

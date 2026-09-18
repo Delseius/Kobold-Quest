@@ -38,6 +38,57 @@ public class PickupInput
 
             return;
         }
+        // Clicking a block with a pickaxe activates it.
+        // It does NOT immediately pick it up.
+        /*if (currentObject.CompareTag("Block"))
+        {
+            if (pickupobject.IsPickaxeHeld())
+            {
+                pickup.UnlockBlockForPickup();
+
+                UnityEngine.Debug.Log(
+                    $"Pickaxe activated " +
+                    $"{currentObject.name}. " +
+                    "The block can now be picked up."
+                );
+            }
+            else
+            {
+                UnityEngine.Debug.Log(
+                    $"{currentObject.name} is locked. " +
+                    "Hold a pickaxe and activate " +
+                    "the block first."
+                );
+            }
+
+            return;
+        }*/
+
+        // Clicking a block with the correct tool activates the block.
+        // Pickaxe -> stone blocks
+        // Shovel  -> dirt blocks
+        if (currentObject.CompareTag("Block"))
+        {
+            if (pickupobject.IsCorrectToolForBlock(currentObject))
+            {
+                pickup.UnlockBlockForPickup();
+
+                UnityEngine.Debug.Log(
+                    $"{pickupobject.GetHeldToolName()} activated " +
+                    $"{currentObject.name}. Press C to pick it up."
+                );
+            }
+            else
+            {
+                UnityEngine.Debug.Log(
+                    $"{currentObject.name} cannot be activated with " +
+                    $"{pickupobject.GetHeldToolName()}. " +
+                    "Use the correct tool."
+                );
+            }
+
+            return;
+        }
 
         if (
             pickupobject.heldObject == null &&
@@ -77,6 +128,22 @@ public class PickupInput
             return;
         }
 
+        // F = Use the correct tool on the block under the mouse.
+        // Pickaxe -> stone blocks
+        // Shovel  -> dirt blocks
+        // This is checked before normal F item use.
+        if (
+            pickup.held &&
+            pickupobject.IsCorrectToolHeld() &&
+            Keyboard.current.fKey.wasPressedThisFrame
+        )
+        {
+            if (TryActivateBlockUnderMouse())
+            {
+                return;
+            }
+        }
+
         // F = Use held item
         if (
             pickup.held &&
@@ -86,6 +153,7 @@ public class PickupInput
         )
         {
             UseHeldItem();
+
             return;
         }
 
@@ -141,6 +209,61 @@ public class PickupInput
             }
         }
     }
+    private bool TryActivateBlockUnderMouse()
+    {
+        if (Camera.main == null)
+        {
+            return false;
+        }
+
+        Vector2 mousePosition =
+            Mouse.current.position.ReadValue();
+
+        Vector3 worldPosition =
+            Camera.main.ScreenToWorldPoint(
+                new Vector3(
+                    mousePosition.x,
+                    mousePosition.y,
+                    -Camera.main.transform.position.z
+                )
+            );
+
+        Collider2D hit =
+            Physics2D.OverlapPoint(
+                new Vector2(
+                    worldPosition.x,
+                    worldPosition.y
+                )
+            );
+
+        if (hit == null)
+        {
+            return false;
+        }
+
+        pickupobject block =
+            hit.GetComponent<pickupobject>();
+
+        if (
+            block == null ||
+            !block.CompareTag("Block") ||
+            !pickupobject.IsCorrectToolForBlock(block.gameObject)
+        )
+        {
+            return false;
+        }
+
+        pickupobject.SelectBlock(block);
+        block.UnlockBlockForPickup();
+
+        UnityEngine.Debug.Log(
+            $"F used {pickupobject.GetHeldToolName()} on " +
+            $"{block.gameObject.name}. The block can now be picked up."
+        );
+
+        return true;
+    }
+
 
     private void UseHeldItem()
     {
