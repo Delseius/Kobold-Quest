@@ -55,30 +55,24 @@ public abstract class GridObject : MonoBehaviour
         switch (objectType)
         {
             case GridObjectType.WorldObject:
-
                 if (cell.WorldObject == gameObject)
                 {
                     cell.WorldObject = null;
                 }
-
                 break;
 
             case GridObjectType.Block:
-
                 if (cell.Block == gameObject)
                 {
                     cell.Block = null;
                 }
-
                 break;
 
             case GridObjectType.Item:
-
                 if (cell.Item == gameObject)
                 {
                     cell.Item = null;
                 }
-
                 break;
         }
     }
@@ -86,6 +80,18 @@ public abstract class GridObject : MonoBehaviour
     protected virtual void OnDestroy()
     {
         UnregisterFromGrid();
+    }
+
+    public void DisableGridObject()
+    {
+        UnregisterFromGrid();
+        enabled = false;
+    }
+
+    public void EnableGridObject()
+    {
+        enabled = true;
+        RegisterWithGrid();
     }
 
     public void SnapToGrid()
