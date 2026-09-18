@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PickupDropSystem
+public class PickupDropSystem : GridObject
 {
     private pickupobject pickup;
 
