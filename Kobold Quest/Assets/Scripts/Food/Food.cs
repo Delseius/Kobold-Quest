@@ -12,17 +12,19 @@ public abstract class Food : MonoBehaviour, IUsable
 
     public virtual void Eat(GameObject consumer)
     {
-        KoboldHunger hunger =
-            consumer.GetComponent<KoboldHunger>();
+        //KoboldHunger hunger =
+            //consumer.GetComponent<KoboldHunger>();
 
-        if (hunger == null)
-        {
-            return;
-        }
+        //if (hunger == null)
+        //{
+            //return;
+       // }
 
-        hunger.ConsumeCalories(calories);
+        //hunger.ConsumeCalories(calories);
 
         Destroy(gameObject);
+        Debug.Log("Food eaten by " + consumer.name + ". Calories consumed: " + calories);
+
     }
 
     public virtual bool Use(GameObject user)
