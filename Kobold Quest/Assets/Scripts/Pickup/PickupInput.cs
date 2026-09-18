@@ -122,7 +122,8 @@ public class PickupInput
 
     private void UseHeldItem()
     {
-        GameObject heldObject = pickupobject.heldObject;
+        GameObject heldObject =
+            pickupobject.heldObject;
 
         if (heldObject == null)
         {
@@ -149,10 +150,15 @@ public class PickupInput
             return;
         }
 
-        GameObject user = player.gameObject;
+        GameObject user =
+            player.gameObject;
 
-        pickup.ClearHeldState();
+        bool consumed =
+            usable.Use(user);
 
-        usable.Use(user);
+        if (consumed)
+        {
+            pickup.ClearHeldState();
+        }
     }
 }

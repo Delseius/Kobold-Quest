@@ -12,7 +12,8 @@ public abstract class Food : MonoBehaviour, IUsable
 
     public virtual void Eat(GameObject consumer)
     {
-        KoboldHunger hunger = consumer.GetComponent<KoboldHunger>();
+        KoboldHunger hunger =
+            consumer.GetComponent<KoboldHunger>();
 
         if (hunger == null)
         {
@@ -24,8 +25,10 @@ public abstract class Food : MonoBehaviour, IUsable
         Destroy(gameObject);
     }
 
-    public virtual void Use(GameObject user)
+    public virtual bool Use(GameObject user)
     {
         Eat(user);
+
+        return true;
     }
 }

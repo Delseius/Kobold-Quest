@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IUsable
 {
-    void Use(GameObject user);
+    bool Use(GameObject user);
 }
