@@ -302,6 +302,59 @@ public class pickupobject : MonoBehaviour
         return heldName.Contains("pickaxe");
     }
 
+    public static bool IsShovelHeld()
+    {
+        if (heldObject == null)
+        {
+            return false;
+        }
+
+        string heldName =
+            heldObject.name.ToLowerInvariant();
+
+        return heldName.Contains("shovel");
+    }
+
+    public static bool IsCorrectToolForBlock(GameObject blockObject)
+    {
+        if (blockObject == null || !blockObject.CompareTag("Block"))
+        {
+            return false;
+        }
+
+        string blockName =
+            blockObject.name.ToLowerInvariant();
+
+        // Dirt blocks require a shovel.
+        if (blockName.Contains("dirt"))
+        {
+            return IsShovelHeld();
+        }
+
+        // Stone blocks require a pickaxe.
+        if (blockName.Contains("stone"))
+        {
+            return IsPickaxeHeld();
+        }
+
+        return false;
+    }
+
+    public static string GetHeldToolName()
+    {
+        if (heldObject == null)
+        {
+            return "No tool";
+        }
+
+        return heldObject.name;
+    }
+
+    public static bool IsCorrectToolHeld()
+    {
+        return IsPickaxeHeld() || IsShovelHeld();
+    }
+
     public static void SelectBlock(pickupobject block)
     {
         if (block != null && block.CompareTag("Block"))
