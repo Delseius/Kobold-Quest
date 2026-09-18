@@ -169,5 +169,6 @@ public class PickupDropSystem
         pickup.Tool = false;
         pickup.block = false;
         pickup.PlayerMove = false;
+        pickup.ObjectCollider.isTrigger = true;
     }
 }
