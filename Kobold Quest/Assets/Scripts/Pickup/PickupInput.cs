@@ -64,7 +64,7 @@ public class PickupInput
             return;
         }
 
-        // E = Drop at player's feet
+        // E = Drop held object at player's feet
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -75,9 +75,21 @@ public class PickupInput
             return;
         }
 
+        // F = Use held item
+        if (
+            pickup.held &&
+            !pickup.PlayerMove &&
+            pickupobject.heldObject != null &&
+            Keyboard.current.fKey.wasPressedThisFrame
+        )
+        {
+            UseHeldItem();
+            return;
+        }
+
         // C = Pick up the nearest Item or Block around the player.
-        // Only the pickupobject that has the PlayerTransform reference
-        // should handle the C key, so every pickup does not trigger it.
+        // Find the player once, then let the nearest pickupable object
+        // handle the actual pickup.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -125,6 +137,53 @@ public class PickupInput
 
                 nearest.InitiatePickup();
             }
+        }
+    }
+
+    private void UseHeldItem()
+    {
+        GameObject heldObject =
+            pickupobject.heldObject;
+
+        if (heldObject == null)
+        {
+            return;
+        }
+
+        IUsable usable =
+            heldObject.GetComponent<IUsable>();
+
+        if (usable == null)
+        {
+            UnityEngine.Debug.Log(
+                $"{heldObject.name} cannot be used."
+            );
+
+            return;
+        }
+
+        Transform player =
+            pickup.PlayerTransformReference;
+
+        if (player == null)
+        {
+            player = pickupobject.FindPlayerTransform();
+        }
+
+        if (player == null)
+        {
+            return;
+        }
+
+        GameObject user =
+            player.gameObject;
+
+        bool consumed =
+            usable.Use(user);
+
+        if (consumed)
+        {
+            pickup.ClearHeldState();
         }
     }
 }
