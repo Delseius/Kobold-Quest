@@ -22,10 +22,16 @@ public class pickupobject : MonoBehaviour
     private Collider2D objectCollider;
     private SpriteRenderer objectSpriteRenderer;
 
-    // Blocks start locked and must be activated by a pickaxe.
+    // A block starts locked. It becomes pickupable after a pickaxe
+    // has been used on/clicked on that block.
     private bool blockPickupUnlocked = false;
 
-    // The block currently selected/activated.
+    public bool IsBlockPickupUnlocked
+    {
+        get { return blockPickupUnlocked; }
+    }
+
+    // Remembers the last block clicked so F can activate it with a pickaxe.
     private static pickupobject selectedBlock;
 
 
@@ -135,6 +141,12 @@ public class pickupobject : MonoBehaviour
                 candidate.CompareTag("Block");
 
             if (!isItem && !isBlock)
+            {
+                continue;
+            }
+
+            // Blocks cannot be picked up until a pickaxe has activated them.
+            if (isBlock && !candidate.IsBlockPickupUnlocked)
             {
                 continue;
             }
@@ -305,6 +317,62 @@ public class pickupobject : MonoBehaviour
         return heldName.Contains("pickaxe");
     }
 
+    public static bool IsShovelHeld()
+    {
+        if (heldObject == null)
+        {
+            return false;
+        }
+
+        string heldName =
+            heldObject.name.ToLowerInvariant();
+
+        return heldName.Contains("shovel");
+    }
+
+    public static bool IsCorrectToolForBlock(GameObject blockObject)
+    {
+        if (
+            blockObject == null ||
+            !blockObject.CompareTag("Block")
+        )
+        {
+            return false;
+        }
+
+        string blockName =
+            blockObject.name.ToLowerInvariant();
+
+        // Dirt blocks require a shovel.
+        if (blockName.Contains("dirt"))
+        {
+            return IsShovelHeld();
+        }
+
+        // Stone blocks require a pickaxe.
+        if (blockName.Contains("stone"))
+        {
+            return IsPickaxeHeld();
+        }
+
+        return false;
+    }
+
+    public static string GetHeldToolName()
+    {
+        if (heldObject == null)
+        {
+            return "No tool";
+        }
+
+        return heldObject.name;
+    }
+
+    public static bool IsCorrectToolHeld()
+    {
+        return IsPickaxeHeld() || IsShovelHeld();
+    }
+
     public static void SelectBlock(
         pickupobject block
     )
@@ -327,6 +395,9 @@ public class pickupobject : MonoBehaviour
     {
         selectedBlock = null;
     }
+
+
+    
 
 
     public void ClearHeldState()
@@ -378,11 +449,8 @@ public class pickupobject : MonoBehaviour
             return;
         }
 
-        // Blocks must be activated by a pickaxe first.
-        if (
-            isBlock &&
-            !blockPickupUnlocked
-        )
+        // A block must first be activated by a pickaxe.
+        if (isBlock && !blockPickupUnlocked)
         {
             Pressed = false;
 
@@ -393,6 +461,7 @@ public class pickupobject : MonoBehaviour
 
             return;
         }
+
 
         UnityEngine.Debug.Log(
             isBlock

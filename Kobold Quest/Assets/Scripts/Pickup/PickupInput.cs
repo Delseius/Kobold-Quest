@@ -40,7 +40,7 @@ public class PickupInput
         }
         // Clicking a block with a pickaxe activates it.
         // It does NOT immediately pick it up.
-        if (currentObject.CompareTag("Block"))
+        /*if (currentObject.CompareTag("Block"))
         {
             if (pickupobject.IsPickaxeHeld())
             {
@@ -58,6 +58,32 @@ public class PickupInput
                     $"{currentObject.name} is locked. " +
                     "Hold a pickaxe and activate " +
                     "the block first."
+                );
+            }
+
+            return;
+        }*/
+
+        // Clicking a block with the correct tool activates the block.
+        // Pickaxe -> stone blocks
+        // Shovel  -> dirt blocks
+        if (currentObject.CompareTag("Block"))
+        {
+            if (pickupobject.IsCorrectToolForBlock(currentObject))
+            {
+                pickup.UnlockBlockForPickup();
+
+                UnityEngine.Debug.Log(
+                    $"{pickupobject.GetHeldToolName()} activated " +
+                    $"{currentObject.name}. Press C to pick it up."
+                );
+            }
+            else
+            {
+                UnityEngine.Debug.Log(
+                    $"{currentObject.name} cannot be activated with " +
+                    $"{pickupobject.GetHeldToolName()}. " +
+                    "Use the correct tool."
                 );
             }
 
@@ -102,10 +128,13 @@ public class PickupInput
             return;
         }
 
-        // F = Activate a block while holding a pickaxe.
+        // F = Use the correct tool on the block under the mouse.
+        // Pickaxe -> stone blocks
+        // Shovel  -> dirt blocks
+        // This is checked before normal F item use.
         if (
             pickup.held &&
-            pickupobject.IsPickaxeHeld() &&
+            pickupobject.IsCorrectToolHeld() &&
             Keyboard.current.fKey.wasPressedThisFrame
         )
         {
@@ -217,19 +246,19 @@ public class PickupInput
 
         if (
             block == null ||
-            !block.CompareTag("Block")
+            !block.CompareTag("Block") ||
+            !pickupobject.IsCorrectToolForBlock(block.gameObject)
         )
         {
             return false;
         }
 
+        pickupobject.SelectBlock(block);
         block.UnlockBlockForPickup();
 
         UnityEngine.Debug.Log(
-            $"F activated " +
-            $"{block.gameObject.name} " +
-            "with the pickaxe. " +
-            "The block can now be picked up."
+            $"F used {pickupobject.GetHeldToolName()} on " +
+            $"{block.gameObject.name}. The block can now be picked up."
         );
 
         return true;
