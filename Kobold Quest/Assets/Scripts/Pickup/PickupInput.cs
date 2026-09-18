@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -76,7 +75,9 @@ public class PickupInput
             return;
         }
 
-        // C = Pick up nearby object
+        // C = Pick up the nearest Item or Block around the player.
+        // Only the pickupobject that has the PlayerTransform reference
+        // should handle the C key, so every pickup does not trigger it.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -87,24 +88,42 @@ public class PickupInput
             Transform player =
                 pickup.PlayerTransformReference;
 
-            if (player != null)
+            if (player == null)
+            {
+                player = pickupobject.FindPlayerTransform();
+            }
+
+            if (player == null)
+            {
+                UnityEngine.Debug.LogWarning(
+                    "C pickup could not find the Player Transform. " +
+                    "Assign PlayerTransform on one pickupobject."
+                );
+
+                return;
+            }
+
+            pickupobject nearest =
+                pickupobject.FindNearestPickupable(
+                    player,
+                    pickup.PickupRadius
+                );
+
+            if (nearest != null)
             {
                 float distanceToPlayer =
                     Vector3.Distance(
-                        pickup.transform.position,
+                        nearest.transform.position,
                         player.position
                     );
 
-                if (distanceToPlayer <= pickup.PickupRadius)
-                {
-                    UnityEngine.Debug.Log(
-                        $"C Key Pressed near " +
-                        $"{pickup.gameObject.name}! " +
-                        $"(Distance: {distanceToPlayer})"
-                    );
+                UnityEngine.Debug.Log(
+                    $"C Key Pressed: picking up nearest object " +
+                    $"{nearest.gameObject.name} " +
+                    $"(Distance: {distanceToPlayer})"
+                );
 
-                    pickup.InitiatePickup();
-                }
+                nearest.InitiatePickup();
             }
         }
     }
