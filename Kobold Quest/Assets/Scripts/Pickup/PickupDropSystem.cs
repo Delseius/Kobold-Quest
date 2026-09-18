@@ -45,7 +45,7 @@ public class PickupDropSystem : GridObject
         pickup.held = false;
 
         // Tools are tagged "Item" in the Unity scene.
-        pickup.Tool = 
+        pickup.Tool =
             pickup.gameObject.CompareTag("Item");
 
         pickup.block =
@@ -69,28 +69,6 @@ public class PickupDropSystem : GridObject
 
         pickup.CalculatedDropTarget =
             pickup.PlayerTransformReference.position;
-
-        // When E is pressed, use the GridObject system to snap the
-        // dropped object to the nearest grid cell.
-        GridObject gridObject =
-            pickup.gameObject.GetComponent<GridObject>();
-
-        if (gridObject != null)
-        {
-            gridObject.SnapToGrid();
-            pickup.CalculatedDropTarget =
-                pickup.transform.position;
-        }
-        else if (GridSpace.Instance != null)
-        {
-            // Fallback for pickup objects that do not have a GridObject
-            // component yet. This uses the same grid conversion as GridObject.
-            Vector2Int gridPosition =
-                GridSpace.Instance.WorldToGrid(pickup.CalculatedDropTarget);
-
-            pickup.CalculatedDropTarget =
-                GridSpace.Instance.GridToWorld(gridPosition);
-        }
 
         if (pickup.ObjectSpriteRenderer != null)
         {
@@ -140,8 +118,37 @@ public class PickupDropSystem : GridObject
         pickup.transform.rotation =
             Quaternion.identity;
 
+        // Put the object at its calculated drop position first.
         pickup.transform.position =
             pickup.CalculatedDropTarget;
+
+        // All completed drops use GridObject to snap to the nearest
+        // grid cell. This keeps E drops and target drops consistent.
+        GridObject gridObject =
+            pickup.gameObject.GetComponent<GridObject>();
+
+        if (gridObject != null)
+        {
+            gridObject.SnapToGrid();
+
+            pickup.CalculatedDropTarget =
+                pickup.transform.position;
+        }
+        else if (GridSpace.Instance != null)
+        {
+            // Fallback for pickup objects that do not have a GridObject
+            // component yet. This uses the same grid conversion as GridObject.
+            Vector2Int gridPosition =
+                GridSpace.Instance.WorldToGrid(
+                    pickup.CalculatedDropTarget
+                );
+
+            pickup.CalculatedDropTarget =
+                GridSpace.Instance.GridToWorld(gridPosition);
+
+            pickup.transform.position =
+                pickup.CalculatedDropTarget;
+        }
 
         if (
             pickup.ObjectSpriteRenderer != null &&
@@ -191,6 +198,5 @@ public class PickupDropSystem : GridObject
         pickup.Tool = false;
         pickup.block = false;
         pickup.PlayerMove = false;
-        pickup.ObjectCollider.isTrigger = true;
     }
 }
