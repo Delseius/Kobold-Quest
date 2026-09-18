@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PickupDropSystem
@@ -43,8 +42,7 @@ public class PickupDropSystem
         pickup.Pressed = false;
         pickup.held = false;
 
-        pickup.Tool =
-            pickup.gameObject.CompareTag("Tools");
+        pickup.Tool = false;
 
         pickup.block =
             pickup.gameObject.CompareTag("Block");
