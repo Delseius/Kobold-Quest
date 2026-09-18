@@ -307,7 +307,7 @@ MonoBehaviour:
   BlockTransform: {fileID: 0}
   ToolTransform: {fileID: 105798105}
   ConsumableTransform: {fileID: 0}
-  holdOffsetDistance: 1.2
+  holdOffsetDistance: 0.2
   verticalDropOffset: 0.6
   pickupRadius: 2
   speed: 5.5
@@ -338,6 +338,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &174339184
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174339179}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.31}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.25, y: -0.5862069}
+    oldSize: {x: 0.12, y: 0.29}
+    newSize: {x: 0.12, y: 0.29}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.22, y: 0.27999997}
+  m_EdgeRadius: 0
 --- !u!1 &451622345
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,6 +2461,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2126593263256522009, guid: 03509772004bc684ea75333459dc5584, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2126593263256522009, guid: 03509772004bc684ea75333459dc5584, type: 3}
       propertyPath: toughness
       value: 64
       objectReference: {fileID: 0}
@@ -2466,6 +2516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Iron_Hoe
       objectReference: {fileID: 0}
+    - target: {fileID: 5489117186139051280, guid: 03509772004bc684ea75333459dc5584, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2476,6 +2530,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5489117186139051280, guid: 03509772004bc684ea75333459dc5584, type: 3}
       insertIndex: -1
       addedObject: {fileID: 174339183}
+    - targetCorrespondingSourceObject: {fileID: 5489117186139051280, guid: 03509772004bc684ea75333459dc5584, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 174339184}
   m_SourcePrefab: {fileID: 100100000, guid: 03509772004bc684ea75333459dc5584, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
