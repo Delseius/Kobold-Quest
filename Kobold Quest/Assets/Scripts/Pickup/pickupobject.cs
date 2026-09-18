@@ -79,6 +79,72 @@ public class pickupobject : MonoBehaviour
         get { return pickupRadius; }
     }
 
+    public static Transform FindPlayerTransform()
+    {
+        pickupobject[] pickupObjects = FindObjectsOfType<pickupobject>();
+
+        foreach (pickupobject candidate in pickupObjects)
+        {
+            if (candidate.PlayerTransformReference != null)
+            {
+                return candidate.PlayerTransformReference;
+            }
+        }
+
+        return null;
+    }
+
+    public static pickupobject FindNearestPickupable(
+        Transform player,
+        float radius
+    )
+    {
+        if (player == null)
+        {
+            return null;
+        }
+
+        pickupobject[] pickupObjects = FindObjectsOfType<pickupobject>();
+        pickupobject nearest = null;
+        float nearestDistance = radius;
+
+        foreach (pickupobject candidate in pickupObjects)
+        {
+            if (candidate == null ||
+                !candidate.gameObject.activeInHierarchy ||
+                candidate == null)
+            {
+                continue;
+            }
+
+            bool isItem = candidate.CompareTag("Item");
+            bool isBlock = candidate.CompareTag("Block");
+
+            if (!isItem && !isBlock)
+            {
+                continue;
+            }
+
+            if (candidate.held || candidate.drop || candidate.release)
+            {
+                continue;
+            }
+
+            float distance = Vector3.Distance(
+                candidate.transform.position,
+                player.position
+            );
+
+            if (distance <= nearestDistance)
+            {
+                nearestDistance = distance;
+                nearest = candidate;
+            }
+        }
+
+        return nearest;
+    }
+
     public Rigidbody2D ObjectBody
     {
         get { return objectBody; }
@@ -167,64 +233,49 @@ public class pickupobject : MonoBehaviour
 
     private void HandlePickupState()
     {
-        if (Pressed && gameObject.CompareTag("Tools") && !release)
+        if (!Pressed || release)
         {
-            UnityEngine.Debug.Log("pickuptool");
-
-            if (objectBody != null)
-            {
-                objectBody.bodyType = RigidbodyType2D.Kinematic;
-            }
-
-            if (objectCollider != null)
-            {
-                objectCollider.enabled = false;
-            }
-
-            if (objectSpriteRenderer != null)
-            {
-                objectSpriteRenderer.sortingOrder = 15;
-            }
-
-            heldObject = gameObject;
-
-            release = true;
-            Pressed = false;
-            held = true;
-            Tool = true;
-            drop = false;
-            block = false;
-            PlayerMove = true;
+            return;
         }
-        else if (Pressed && gameObject.CompareTag("Block") && !release)
+
+        bool isItem = gameObject.CompareTag("Item");
+        bool isBlock = gameObject.CompareTag("Block");
+
+        if (!isItem && !isBlock)
         {
-            UnityEngine.Debug.Log("pickupBlock");
-
-            if (objectBody != null)
-            {
-                objectBody.bodyType = RigidbodyType2D.Kinematic;
-            }
-
-            if (objectCollider != null)
-            {
-                objectCollider.enabled = false;
-            }
-
-            if (objectSpriteRenderer != null)
-            {
-                objectSpriteRenderer.sortingOrder = 15;
-            }
-
-            heldObject = gameObject;
-
-            release = true;
-            Pressed = false;
-            held = true;
-            Tool = false;
-            block = true;
-            drop = false;
-            PlayerMove = true;
+            return;
         }
+
+        UnityEngine.Debug.Log(
+            isBlock
+                ? "pickupBlock"
+                : "pickupItem"
+        );
+
+        if (objectBody != null)
+        {
+            objectBody.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (objectCollider != null)
+        {
+            objectCollider.enabled = false;
+        }
+
+        if (objectSpriteRenderer != null)
+        {
+            objectSpriteRenderer.sortingOrder = 15;
+        }
+
+        heldObject = gameObject;
+
+        release = true;
+        Pressed = false;
+        held = true;
+        Tool = isItem;
+        block = isBlock;
+        drop = false;
+        PlayerMove = true;
     }
 }
 
