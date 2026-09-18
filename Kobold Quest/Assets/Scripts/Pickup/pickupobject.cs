@@ -1,5 +1,3 @@
-
-
 using UnityEngine;
 
 public class pickupobject : MonoBehaviour
@@ -111,8 +109,7 @@ public class pickupobject : MonoBehaviour
         foreach (pickupobject candidate in pickupObjects)
         {
             if (candidate == null ||
-                !candidate.gameObject.activeInHierarchy ||
-                candidate == null)
+                !candidate.gameObject.activeInHierarchy)
             {
                 continue;
             }
@@ -170,6 +167,43 @@ public class pickupobject : MonoBehaviour
         objectCollider = GetComponent<Collider2D>();
         objectSpriteRenderer = GetComponent<SpriteRenderer>();
 
+        // Reset all pickup state so every item starts ready to be picked up.
+        Pressed = false;
+        release = false;
+        held = false;
+        Tool = false;
+        block = false;
+        drop = false;
+        PlayerMove = false;
+
+        PlaceBlockTransform = null;
+        CalculatedDropTarget = Vector3.zero;
+
+        // Make sure the object itself starts in a normal pickup-ready state.
+        if (objectBody != null)
+        {
+            objectBody.bodyType = RigidbodyType2D.Dynamic;
+            objectBody.linearVelocity = Vector2.zero;
+            objectBody.angularVelocity = 0f;
+        }
+
+        if (objectCollider != null)
+        {
+            objectCollider.enabled = true;
+            objectCollider.isTrigger = false;
+        }
+
+        if (objectSpriteRenderer != null)
+        {
+            objectSpriteRenderer.sortingOrder = 5;
+        }
+
+        // Clear the shared held object if it points to an inactive object.
+        if (heldObject != null && !heldObject.activeInHierarchy)
+        {
+            heldObject = null;
+        }
+
         pickupInput = new PickupInput(this);
         pickupMovement = new PickupMovement(this);
         pickupDropSystem = new PickupDropSystem(this);
@@ -215,6 +249,21 @@ public class pickupobject : MonoBehaviour
     public void ExecuteDropRelease()
     {
         pickupDropSystem.ExecuteDropRelease();
+    }
+
+    public void ClearHeldState()
+    {
+        heldObject = null;
+
+        Pressed = false;
+        release = false;
+        held = false;
+        Tool = false;
+        block = false;
+        drop = false;
+        PlayerMove = false;
+        PlaceBlockTransform = null;
+        CalculatedDropTarget = Vector3.zero;
     }
 
     private void Update()
@@ -278,4 +327,3 @@ public class pickupobject : MonoBehaviour
         PlayerMove = true;
     }
 }
-
