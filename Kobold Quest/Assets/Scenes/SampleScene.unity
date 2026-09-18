@@ -403,6 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 575608711}
+  - component: {fileID: 575608712}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -427,6 +428,20 @@ Transform:
   - {fileID: 1784603529}
   m_Father: {fileID: 2122427465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575608712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575608710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168c4d0ed97b5b446ae555bd4c3c5fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Floor
+  objectType: 0
+  isTillable: 0
 --- !u!1 &581409644
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,6 +587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 739202629}
+  - component: {fileID: 739202630}
   m_Layer: 0
   m_Name: dirt_Floor
   m_TagString: Untagged
@@ -594,6 +610,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 575608711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &739202630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739202628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21703cb49ba0f3d43a7d8c5723fe2be7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dirt_Floor
+  objectType: 0
+  isTillable: 1
 --- !u!1 &916796103
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1281170038}
+  - component: {fileID: 1281170039}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -766,6 +797,21 @@ Transform:
   - {fileID: 1767313939}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1281170039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281170037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5caeee55ca2587e409611393431bba67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hammer
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1314880601
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,6 +821,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1314880602}
+  - component: {fileID: 1314880603}
   m_Layer: 0
   m_Name: stone_Shovel
   m_TagString: Untagged
@@ -797,6 +844,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1494857838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1314880603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314880601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0827068d0b0a4a84a8d99abc67567ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::stone_Shovel
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1337013405
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,8 +889,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1509189344}
   - {fileID: 1731424644}
+  - {fileID: 1509189344}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1337013407
@@ -1112,6 +1174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1494857838}
+  - component: {fileID: 1494857839}
   m_Layer: 0
   m_Name: Shovel
   m_TagString: Untagged
@@ -1136,6 +1199,21 @@ Transform:
   - {fileID: 916796104}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1494857839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494857837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363e3e995947bcb4c92cf503af9aed12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Shovel
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1509189343
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,6 +1285,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637988237}
+  - component: {fileID: 1637988238}
   m_Layer: 0
   m_Name: stone_Hoe
   m_TagString: Untagged
@@ -1229,6 +1308,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1743581226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1637988238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637988236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06e75d41dd04bec43b23bed5925197d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::stone_Hoe
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
+  farmPlotPrefab: {fileID: 0}
 --- !u!1 &1674712428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,7 +1413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e427cb1289376834eab42e4a3968220e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::stone_Pickaxe
-  toolDurability: 0
+  toolDurability: 60
   toolType: 0
   toughness: 0
 --- !u!1 &1742460406
@@ -1362,6 +1457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1743581226}
+  - component: {fileID: 1743581227}
   m_Layer: 0
   m_Name: Hoe
   m_TagString: Untagged
@@ -1386,6 +1482,22 @@ Transform:
   - {fileID: 581409645}
   m_Father: {fileID: 1471810400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1743581227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743581225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0a15c066a363c49a82d525cf003d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hoe
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
+  farmPlotPrefab: {fileID: 8690774898849940234, guid: 11291bf318a243d489bbd5d9fd3e84f9, type: 3}
 --- !u!1 &1767313938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1395,6 +1507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767313939}
+  - component: {fileID: 1767313940}
   m_Layer: 0
   m_Name: mallet_Hammer
   m_TagString: Untagged
@@ -1417,6 +1530,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1281170038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1767313940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767313938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32f7628f1c176a41a7a2de2366be3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::mallet_Hammer
+  toolDurability: 0
+  toolType: 0
+  toughness: 0
 --- !u!1 &1784603528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,7 +1888,7 @@ Transform:
   m_GameObject: {fileID: 1943421420}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.69, y: -0.27, z: 0}
+  m_LocalPosition: {x: 1.6, y: -0.38, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1788,6 +1916,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122427465}
+  - component: {fileID: 2122427467}
+  - component: {fileID: 2122427466}
   m_Layer: 0
   m_Name: worldObject
   m_TagString: Untagged
@@ -1811,6 +1941,46 @@ Transform:
   - {fileID: 575608711}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2122427466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122427464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1a1dc1a31ea9441a1b11990dcf2d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::worldObject
+  objectType: 0
+--- !u!50 &2122427467
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122427464}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
