@@ -44,8 +44,8 @@ public class PickupDropSystem
         pickup.Pressed = false;
         pickup.held = false;
 
-        pickup.Tool =
-            pickup.gameObject.CompareTag("Tools");
+        pickup.Tool = 
+            pickup.gameObject.CompareTag("Item");
 
         pickup.block =
             pickup.gameObject.CompareTag("Block");

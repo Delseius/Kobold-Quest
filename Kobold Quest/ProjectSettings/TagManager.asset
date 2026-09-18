@@ -9,6 +9,8 @@ TagManager:
   - Consumable
   - farmingTool
   - Thrown
+  - DropZone
+  - Item
   layers:
   - Default
   - TransparentFX
