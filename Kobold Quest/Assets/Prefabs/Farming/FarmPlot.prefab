@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8924976003135687901}
   - component: {fileID: 1671657323934922242}
   - component: {fileID: 1674796938777107439}
+  - component: {fileID: -6034751969913751362}
   m_Layer: 0
   m_Name: FarmPlot
   m_TagString: Untagged
@@ -106,4 +107,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
   state: 0
-  cropPrefab: {fileID: 0}
+  cropPrefab: {fileID: 4534622976145102929, guid: 4f94ef3a5e69c5446a4a6c0b4263e780, type: 3}
+  mushroomFoodPrefab: {fileID: 8925920531295942169, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
+  foodSpawnOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &-6034751969913751362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300503445955425157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1178cbb0e3e36d746ac66e88de906c48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestFarmPlot
+  farmPlot: {fileID: 0}

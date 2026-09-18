@@ -72,7 +72,7 @@ public class Hoe : Tool, IUsable
                 targetCell.Position
            );
 
-        spawnPosition.z = 0;
+        
 
         // Spawn the farm plot.
         spawnFarmPlot(spawnPosition);
