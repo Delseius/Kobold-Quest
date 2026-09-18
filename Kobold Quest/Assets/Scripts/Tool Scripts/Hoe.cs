@@ -18,7 +18,7 @@ public class Hoe : Tool
             //Code to check if it can be tilled
             if(checkSpace() == 1)
             {
-                spawnFarmPlot();
+                //spawnFarmPlot();
                 toolDurability -= 1; //Reduce durability
             } else
             {
