@@ -79,7 +79,8 @@ public class pickupobject : MonoBehaviour
 
     public static Transform FindPlayerTransform()
     {
-        pickupobject[] pickupObjects = FindObjectsOfType<pickupobject>();
+        pickupobject[] pickupObjects =
+            FindObjectsByType<pickupobject>(FindObjectsSortMode.None);
 
         foreach (pickupobject candidate in pickupObjects)
         {
@@ -102,7 +103,9 @@ public class pickupobject : MonoBehaviour
             return null;
         }
 
-        pickupobject[] pickupObjects = FindObjectsOfType<pickupobject>();
+        pickupobject[] pickupObjects =
+            FindObjectsByType<pickupobject>(FindObjectsSortMode.None);
+
         pickupobject nearest = null;
         float nearestDistance = radius;
 
@@ -122,7 +125,9 @@ public class pickupobject : MonoBehaviour
                 continue;
             }
 
-            if (candidate.held || candidate.drop || candidate.release)
+            if (candidate.held ||
+                candidate.drop ||
+                candidate.release)
             {
                 continue;
             }
@@ -167,7 +172,6 @@ public class pickupobject : MonoBehaviour
         objectCollider = GetComponent<Collider2D>();
         objectSpriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Reset all pickup state so every item starts ready to be picked up.
         Pressed = false;
         release = false;
         held = false;
@@ -179,7 +183,6 @@ public class pickupobject : MonoBehaviour
         PlaceBlockTransform = null;
         CalculatedDropTarget = Vector3.zero;
 
-        // Make sure the object itself starts in a normal pickup-ready state.
         if (objectBody != null)
         {
             objectBody.bodyType = RigidbodyType2D.Dynamic;
@@ -198,7 +201,6 @@ public class pickupobject : MonoBehaviour
             objectSpriteRenderer.sortingOrder = 5;
         }
 
-        // Clear the shared held object if it points to an inactive object.
         if (heldObject != null && !heldObject.activeInHierarchy)
         {
             heldObject = null;
@@ -228,7 +230,9 @@ public class pickupobject : MonoBehaviour
     {
         Pressed = true;
 
-        UnityEngine.Debug.Log($"Pickup sequence triggered for: {gameObject.name}");
+        UnityEngine.Debug.Log(
+            $"Pickup sequence triggered for: {gameObject.name}"
+        );
 
         if (objectBody != null)
         {
@@ -270,11 +274,6 @@ public class pickupobject : MonoBehaviour
     {
         pickupInput.HandleKeyboardInput();
 
-        if (gameObject.CompareTag("DropZone"))
-        {
-            return;
-        }
-
         HandlePickupState();
 
         pickupMovement.UpdateMovement();
@@ -309,6 +308,14 @@ public class pickupobject : MonoBehaviour
         if (objectCollider != null)
         {
             objectCollider.enabled = false;
+        }
+
+        GridObject gridObject =
+            GetComponent<GridObject>();
+
+        if (gridObject != null)
+        {
+            gridObject.DisableGridObject();
         }
 
         if (objectSpriteRenderer != null)
