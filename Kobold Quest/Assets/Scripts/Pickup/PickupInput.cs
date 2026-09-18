@@ -37,6 +37,8 @@ public class PickupInput
             return;
         }
 
+        // Every pickupable object uses the same heldObject reference.
+        // The clicked leaf object becomes the held object directly.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -64,7 +66,7 @@ public class PickupInput
             return;
         }
 
-        // E = Drop held object at player's feet
+        // E = Drop held object at player's feet.
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -75,7 +77,7 @@ public class PickupInput
             return;
         }
 
-        // F = Use held item
+        // F = Use the currently held object.
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -87,7 +89,8 @@ public class PickupInput
             return;
         }
 
-        // C = Pick up nearby object
+        // C = Pick up the nearest object represented by this
+        // pickupobject component.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
