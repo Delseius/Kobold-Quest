@@ -45,7 +45,7 @@ public class PickupDropSystem
         pickup.held = false;
 
         // Tools are tagged "Item" in the Unity scene.
-        pickup.Tool = 
+        pickup.Tool =
             pickup.gameObject.CompareTag("Item");
 
         pickup.block =
@@ -69,28 +69,6 @@ public class PickupDropSystem
 
         pickup.CalculatedDropTarget =
             pickup.PlayerTransformReference.position;
-
-        // When E is pressed, use the GridObject system to snap the
-        // dropped object to the nearest grid cell.
-        GridObject gridObject =
-            pickup.gameObject.GetComponent<GridObject>();
-
-        if (gridObject != null)
-        {
-            gridObject.SnapToGrid();
-            pickup.CalculatedDropTarget =
-                pickup.transform.position;
-        }
-        else if (GridSpace.Instance != null)
-        {
-            // Fallback for pickup objects that do not have a GridObject
-            // component yet. This uses the same grid conversion as GridObject.
-            Vector2Int gridPosition =
-                GridSpace.Instance.WorldToGrid(pickup.CalculatedDropTarget);
-
-            pickup.CalculatedDropTarget =
-                GridSpace.Instance.GridToWorld(gridPosition);
-        }
 
         if (pickup.ObjectSpriteRenderer != null)
         {
@@ -131,18 +109,37 @@ public class PickupDropSystem
     public void ExecuteDropRelease()
     {
         UnityEngine.Debug.Log(
-            $"{pickup.gameObject.name} snapped perfectly " +
-            $"to drop targets."
+            $"{pickup.gameObject.name} released."
         );
 
+        // Remove the object from the player's hierarchy.
         pickup.transform.SetParent(null);
 
+        // Reset rotation when released.
         pickup.transform.rotation =
             Quaternion.identity;
 
+        // Move the object to the calculated drop position.
         pickup.transform.position =
             pickup.CalculatedDropTarget;
 
+        // ONLY Block objects use GridObject snapping.
+        if (pickup.gameObject.CompareTag("Block"))
+        {
+            GridObject gridObject =
+                pickup.gameObject.GetComponent<GridObject>();
+
+            if (gridObject != null)
+            {
+                gridObject.EnableGridObject();
+                gridObject.SnapToGrid();
+
+                pickup.CalculatedDropTarget =
+                    pickup.transform.position;
+            }
+        }
+
+        // Set the released object's sorting order.
         if (
             pickup.ObjectSpriteRenderer != null &&
             pickup.PlaceBlockTransform != null
@@ -162,7 +159,12 @@ public class PickupDropSystem
                 pickup.ObjectSpriteRenderer.sortingOrder = 5;
             }
         }
+        else if (pickup.ObjectSpriteRenderer != null)
+        {
+            pickup.ObjectSpriteRenderer.sortingOrder = 5;
+        }
 
+        // Stop the object's movement.
         if (pickup.ObjectBody != null)
         {
             pickup.ObjectBody.linearVelocity =
@@ -175,22 +177,25 @@ public class PickupDropSystem
                 RigidbodyType2D.Static;
         }
 
+        // Re-enable the collider as a normal collider.
         if (pickup.ObjectCollider != null)
         {
             pickup.ObjectCollider.enabled = true;
             pickup.ObjectCollider.isTrigger = false;
         }
 
+        // Clear the held object.
         pickupobject.heldObject = null;
 
+        // Clear the drop target.
         pickup.PlaceBlockTransform = null;
 
+        // Reset pickup/drop state.
         pickup.drop = false;
         pickup.release = false;
         pickup.held = false;
         pickup.Tool = false;
         pickup.block = false;
         pickup.PlayerMove = false;
-        pickup.ObjectCollider.isTrigger = true;
     }
 }
