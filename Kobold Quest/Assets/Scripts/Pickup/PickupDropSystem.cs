@@ -180,7 +180,10 @@ public class PickupDropSystem
         // Re-enable the collider as a normal collider.
         if (pickup.ObjectCollider != null)
         {
-            pickup.ObjectCollider.enabled = true;
+            if (pickup.block == true)
+            {
+                pickup.ObjectCollider.enabled = true;
+            }
             pickup.ObjectCollider.isTrigger = false;
         }
 

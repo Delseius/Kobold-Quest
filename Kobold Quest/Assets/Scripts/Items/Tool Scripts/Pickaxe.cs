@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using UnityEngine;
 
-public class Pickaxe : Tool
+public class Pickaxe : Tool, IUsable
 {
     [Header("Tool Type")]
     [SerializeField]
@@ -10,13 +10,13 @@ public class Pickaxe : Tool
     [SerializeField]
     public int toughness;
     
-    public void pickaxeUse()
+    public bool Use(GameObject user)
     {
         // Check durability.
         if (toolDurability <= 0)
         {
             Debug.Log("Pickaxe is broken.");
-            return;
+            return false;
         }
 
         // Find the grid cell in front of the kobold.
@@ -30,14 +30,17 @@ public class Pickaxe : Tool
                 "there is no valid target cell."
             );
 
-            return;
+            return false;
         }
 
-        // Check that the grid cell is a block that can be destroyed.
+        // pickupobject block = .GetComponent<pickupobject>();
 
-
-        // Make the block able to be picked up.
+        // // Check that the grid cell is a block that can be destroyed.
         
+
+        // // Make the block able to be picked up.
+        // pickupobject.SelectBlock(block);
+        // block.UnlockBlockForPickup();
 
         // Reduce durability only after a successful use.
         toolDurability -= toughness;
@@ -46,6 +49,7 @@ public class Pickaxe : Tool
             "Pickaxe successfully used on grid cell " +
             targetCell.Position
         );
+        return true;
     }
 
 }
