@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PickupDropSystem
@@ -103,8 +102,7 @@ public class PickupDropSystem
     public void ExecuteDropRelease()
     {
         UnityEngine.Debug.Log(
-            $"{pickup.gameObject.name} snapped perfectly " +
-            $"to drop targets."
+            $"{pickup.gameObject.name} released."
         );
 
         pickup.transform.SetParent(null);
@@ -114,6 +112,30 @@ public class PickupDropSystem
 
         pickup.transform.position =
             pickup.CalculatedDropTarget;
+
+        // Blocks re-enable their GridObject and snap to
+        // the nearest GridSpace cell when released.
+        if (pickup.gameObject.CompareTag("Block"))
+        {
+            GridObject gridObject =
+                pickup.gameObject.GetComponent<GridObject>();
+
+            if (gridObject != null)
+            {
+                gridObject.EnableGridObject();
+                gridObject.SnapToGrid();
+
+                pickup.CalculatedDropTarget =
+                    pickup.transform.position;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(
+                    $"{pickup.gameObject.name} is tagged Block " +
+                    "but does not have a GridObject component."
+                );
+            }
+        }
 
         if (
             pickup.ObjectSpriteRenderer != null &&
@@ -134,13 +156,18 @@ public class PickupDropSystem
                 pickup.ObjectSpriteRenderer.sortingOrder = 5;
             }
         }
+        else if (pickup.ObjectSpriteRenderer != null)
+        {
+            pickup.ObjectSpriteRenderer.sortingOrder = 5;
+        }
 
         if (pickup.ObjectBody != null)
         {
             pickup.ObjectBody.linearVelocity =
                 Vector2.zero;
 
-            pickup.ObjectBody.angularVelocity = 0f;
+            pickup.ObjectBody.angularVelocity =
+                0f;
 
             pickup.ObjectBody.bodyType =
                 RigidbodyType2D.Static;
