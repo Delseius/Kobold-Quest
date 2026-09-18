@@ -330,6 +330,13 @@ public class pickupobject : MonoBehaviour
         {
             objectCollider.enabled = false;
         }
+        GridObject gridObject =
+            GetComponent<GridObject>();
+
+        if (gridObject != null)
+        {
+            gridObject.DisableGridObject();
+        }
 
         if (objectSpriteRenderer != null)
         {
