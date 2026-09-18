@@ -45,7 +45,7 @@ public class PickupDropSystem : GridObject
         pickup.held = false;
 
         // Tools are tagged "Item" in the Unity scene.
-        pickup.Tool = 
+        pickup.Tool =
             pickup.gameObject.CompareTag("Item");
 
         pickup.block =
@@ -69,6 +69,11 @@ public class PickupDropSystem : GridObject
 
         pickup.CalculatedDropTarget =
             pickup.PlayerTransformReference.position;
+
+if (pickup.ObjectSpriteRenderer != null)
+{
+    pickup.ObjectSpriteRenderer.sortingOrder = 5;
+}
 
         ExecuteDropRelease();
     }
@@ -138,9 +143,8 @@ public class PickupDropSystem : GridObject
                     );
 
                 pickup.CalculatedDropTarget =
-                    GridSpace.Instance.GridToWorld(
-                        gridPosition
-                    );
+GridSpace.Instance.GridToWorld(gridPosition);
+
 
                 pickup.transform.position =
                     pickup.CalculatedDropTarget;
