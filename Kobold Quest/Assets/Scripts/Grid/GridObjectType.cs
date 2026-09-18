@@ -2,5 +2,6 @@ public enum GridObjectType
 {
     WorldObject,
     Block,
-    Item
+    Item,
+    Tile    
 }

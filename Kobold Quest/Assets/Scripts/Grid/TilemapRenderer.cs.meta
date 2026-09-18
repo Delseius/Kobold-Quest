@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: d24d283c193065f42aab7eaa7a499065
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tileSprite: {fileID: 21300000, guid: 4430651ccf37e8c4fb76784cbceba53d, type: 3}
+  - tilledDirtSprite: {fileID: 4380810941604121396, guid: d45fa83a9012b354b91f0af6e6f1f252, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

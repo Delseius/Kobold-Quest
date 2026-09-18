@@ -39,6 +39,10 @@ public abstract class GridObject : MonoBehaviour
             case GridObjectType.Item:
                 cell.Item = gameObject;
                 break;
+
+            case GridObjectType.Tile:
+                cell.Tile = gameObject;
+                break;
         }
     }
 
@@ -79,6 +83,12 @@ public abstract class GridObject : MonoBehaviour
                     cell.Item = null;
                 }
 
+                break;
+            case GridObjectType.Tile:
+                if (cell.Tile == gameObject)
+                {
+                    cell.Tile = null;
+                }
                 break;
         }
     }

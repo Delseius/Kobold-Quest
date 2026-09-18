@@ -76,6 +76,32 @@ public class GridSpace : MonoBehaviour
     {
         return cellSize;
     }
+    // Look up an existing cell without creating empty dictionary entries.
+    public bool TryGetCell(Vector2Int position, out GridCell cell)
+    {
+        return cells.TryGetValue(position, out cell);
+    }
+
+    public bool TryHoe(Vector2Int position)
+    {
+        return TryGetCell(position, out GridCell cell)
+            && cell.TerrainTile != null
+            && cell.TerrainTile.TryHoe();
+    }
+
+    public bool TryHoeAtWorldPosition(Vector3 worldPosition)
+    {
+        return TryHoe(WorldToGrid(worldPosition));
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     public void DebugCell(Vector2Int position)
     {
         GridCell cell = GetCell(position);
@@ -85,6 +111,7 @@ public class GridSpace : MonoBehaviour
             " | Block: " + cell.Block +
             " | World Object: " + cell.WorldObject +
             " | Item: " + cell.Item
+            + " | Terrain: " + (cell.TerrainTile == null ? "None" : cell.TerrainTile.Type.ToString())
         );
     }
 }
