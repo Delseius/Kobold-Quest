@@ -54,23 +54,25 @@ public class Hoe : Tool, IUsable
         }
 
         // Ask the terrain whether it can be hoed.
-        if (!targetCell.TerrainTile.TryHoe())
-        {
-            Debug.Log(
-                "Hoe cannot be used on cell " +
-                targetCell.Position +
-                ": terrain rejected the action."
-            );
+      //  if (!targetCell.TerrainTile.TryHoe())
+       // {
+         //   Debug.Log(
+              //  "Hoe cannot be used on cell " +
+             //   targetCell.Position +
+              //  ": terrain rejected the action."
+         //   );
 
-            return false;
-        }
+          //  return false;
+       // }
 
         // Convert the target grid position into
         // a world position.
         Vector3 spawnPosition =
             GridSpace.Instance.GridToWorld(
                 targetCell.Position
-            );
+           );
+
+        spawnPosition.z = 0;
 
         // Spawn the farm plot.
         spawnFarmPlot(spawnPosition);
@@ -90,9 +92,13 @@ public class Hoe : Tool, IUsable
     /// Spawns the farm plot at the supplied world position.
     /// </summary>
     public virtual void spawnFarmPlot(
-        Vector2 spawnPosition
+        Vector3 spawnPosition
     )
     {
+
+        //spawnPosition.x -= spawnPosition.x / 2;
+        //spawnPosition.y -= spawnPosition.y / 2;
+
         if (farmPlotPrefab == null)
         {
             Debug.LogError(
@@ -107,6 +113,10 @@ public class Hoe : Tool, IUsable
             farmPlotPrefab,
             spawnPosition,
             Quaternion.identity
+        );
+        Debug.Log(
+            "Farm plot spawned at " +
+            spawnPosition
         );
     }
 }
