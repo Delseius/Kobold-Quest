@@ -1,5 +1,3 @@
-
-
 using UnityEngine;
 
 public class pickupobject : MonoBehaviour
@@ -128,7 +126,9 @@ public class pickupobject : MonoBehaviour
     {
         Pressed = true;
 
-        UnityEngine.Debug.Log($"Pickup sequence triggered for: {gameObject.name}");
+        UnityEngine.Debug.Log(
+            $"Pickup sequence triggered for: {gameObject.name}"
+        );
 
         if (objectBody != null)
         {
@@ -151,6 +151,18 @@ public class pickupobject : MonoBehaviour
         pickupDropSystem.ExecuteDropRelease();
     }
 
+    public void ClearHeldState()
+    {
+        heldObject = null;
+
+        held = false;
+        release = false;
+        Tool = false;
+        block = false;
+        drop = false;
+        PlayerMove = false;
+    }
+
     private void Update()
     {
         pickupInput.HandleKeyboardInput();
@@ -167,9 +179,14 @@ public class pickupobject : MonoBehaviour
 
     private void HandlePickupState()
     {
-        if (Pressed && gameObject.CompareTag("Tools") && !release)
+        // Pick up an Item
+        if (
+            Pressed &&
+            gameObject.CompareTag("Item") &&
+            !release
+        )
         {
-            UnityEngine.Debug.Log("pickuptool");
+            UnityEngine.Debug.Log("pickupItem");
 
             if (objectBody != null)
             {
@@ -191,12 +208,18 @@ public class pickupobject : MonoBehaviour
             release = true;
             Pressed = false;
             held = true;
-            Tool = true;
-            drop = false;
+            Tool = false;
             block = false;
+            drop = false;
             PlayerMove = true;
         }
-        else if (Pressed && gameObject.CompareTag("Block") && !release)
+
+        // Pick up a Block
+        else if (
+            Pressed &&
+            gameObject.CompareTag("Block") &&
+            !release
+        )
         {
             UnityEngine.Debug.Log("pickupBlock");
 
@@ -227,4 +250,3 @@ public class pickupobject : MonoBehaviour
         }
     }
 }
-

@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -65,7 +64,7 @@ public class PickupInput
             return;
         }
 
-        // E = Drop at player's feet
+        // E = Drop held object at player's feet
         if (
             pickup.held &&
             !pickup.PlayerMove &&
@@ -73,6 +72,18 @@ public class PickupInput
         )
         {
             pickup.DropAtFeet();
+            return;
+        }
+
+        // F = Use held item
+        if (
+            pickup.held &&
+            !pickup.PlayerMove &&
+            pickupobject.heldObject != null &&
+            Keyboard.current.fKey.wasPressedThisFrame
+        )
+        {
+            UseHeldItem();
             return;
         }
 
@@ -107,5 +118,41 @@ public class PickupInput
                 }
             }
         }
+    }
+
+    private void UseHeldItem()
+    {
+        GameObject heldObject = pickupobject.heldObject;
+
+        if (heldObject == null)
+        {
+            return;
+        }
+
+        IUsable usable =
+            heldObject.GetComponent<IUsable>();
+
+        if (usable == null)
+        {
+            UnityEngine.Debug.Log(
+                $"{heldObject.name} cannot be used."
+            );
+
+            return;
+        }
+
+        Transform player =
+            pickup.PlayerTransformReference;
+
+        if (player == null)
+        {
+            return;
+        }
+
+        GameObject user = player.gameObject;
+
+        pickup.ClearHeldState();
+
+        usable.Use(user);
     }
 }

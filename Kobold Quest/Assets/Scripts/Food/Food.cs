@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Food : MonoBehaviour
+public abstract class Food : MonoBehaviour, IUsable
 {
     [SerializeField]
     protected float calories;
@@ -22,5 +22,10 @@ public abstract class Food : MonoBehaviour
         hunger.ConsumeCalories(calories);
 
         Destroy(gameObject);
+    }
+
+    public virtual void Use(GameObject user)
+    {
+        Eat(user);
     }
 }

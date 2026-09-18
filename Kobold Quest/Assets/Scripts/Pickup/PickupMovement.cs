@@ -14,8 +14,8 @@ public class PickupMovement
         Transform player =
             pickup.PlayerTransformReference;
 
-        Transform tool =
-            pickup.ToolTransformReference;
+        Transform item =
+            pickup.ConsumableTransformReference;
 
         Transform block =
             pickup.BlockTransformReference;
@@ -32,10 +32,10 @@ public class PickupMovement
             facingDirection = Vector3.left;
         }
 
-        // Holding a tool and player is ready
+        // Holding an Item and player is ready
         if (
             pickup.held &&
-            pickup.Tool &&
+            !pickup.block &&
             !pickup.PlayerMove
         )
         {
@@ -43,18 +43,18 @@ public class PickupMovement
                 player.position +
                 (facingDirection * pickup.HoldOffsetDistance);
 
-            if (tool != null)
+            if (item != null)
             {
-                tool.position =
+                item.position =
                     Vector3.MoveTowards(
-                        tool.position,
+                        item.position,
                         targetHoldPos,
                         pickup.speed * Time.deltaTime
                     );
             }
         }
 
-        // Holding a block and player is ready
+        // Holding a Block and player is ready
         else if (
             pickup.held &&
             pickup.block &&
@@ -76,14 +76,14 @@ public class PickupMovement
             }
         }
 
-        // Move player toward tool after pickup
+        // Move player toward Item after pickup
         else if (
             pickup.held &&
             pickup.PlayerMove &&
-            pickup.Tool
+            !pickup.block
         )
         {
-            if (tool == null)
+            if (item == null)
             {
                 return;
             }
@@ -91,14 +91,14 @@ public class PickupMovement
             player.position =
                 Vector3.MoveTowards(
                     player.position,
-                    tool.position,
+                    item.position,
                     pickup.speed * Time.deltaTime
                 );
 
             if (
                 Vector3.Distance(
                     player.position,
-                    tool.position
+                    item.position
                 ) < 0.05f
             )
             {
@@ -108,11 +108,11 @@ public class PickupMovement
                     player.position +
                     (facingDirection * pickup.HoldOffsetDistance);
 
-                tool.position = targetHoldPos;
+                item.position = targetHoldPos;
             }
         }
 
-        // Move player toward block after pickup
+        // Move player toward Block after pickup
         else if (
             pickup.held &&
             pickup.PlayerMove &&
@@ -155,9 +155,9 @@ public class PickupMovement
         )
         {
             Transform transformToMove =
-                pickup.Tool
-                    ? tool
-                    : block;
+                pickup.block
+                    ? block
+                    : item;
 
             if (transformToMove == null)
             {
