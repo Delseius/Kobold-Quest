@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 000000005f249ee0b1857059e7f4ec9a
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2695,6 +2695,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1695746841
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -2709,11 +2717,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.024
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -0.589
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3197,6 +3205,10 @@ PrefabInstance:
       propertyPath: toughness
       value: 64
       objectReference: {fileID: 0}
+    - target: {fileID: 2126593263256522009, guid: 03509772004bc684ea75333459dc5584, type: 3}
+      propertyPath: farmPlotPrefab
+      value: 
+      objectReference: {fileID: 1300503445955425157, guid: bc03ce872a914214a9754852e675f27c, type: 3}
     - target: {fileID: 2126593263256522009, guid: 03509772004bc684ea75333459dc5584, type: 3}
       propertyPath: toolDurability
       value: 64

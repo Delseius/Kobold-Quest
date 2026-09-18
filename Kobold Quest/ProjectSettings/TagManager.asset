@@ -15,11 +15,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - farmplots
   - Water
   - UI
-  - 
-  - 
+  - tools
+  - kobolds
   - 
   - 
   - 
@@ -47,6 +47,15 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: farmplots
+    uniqueID: 3768460383
+    locked: 0
+  - name: tools
+    uniqueID: 1500546481
+    locked: 0
+  - name: kobolds
+    uniqueID: 2599220455
     locked: 0
   m_RenderingLayers:
   - Default
