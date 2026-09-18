@@ -178,6 +178,7 @@ public class pickupobject : MonoBehaviour
 
     private void Start()
     {
+        ClearHeldState();
         if (
             heldObject != null &&
             !heldObject.activeInHierarchy
