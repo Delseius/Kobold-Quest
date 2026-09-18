@@ -403,6 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 575608711}
+  - component: {fileID: 575608712}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -427,6 +428,20 @@ Transform:
   - {fileID: 1784603529}
   m_Father: {fileID: 2122427465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575608712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575608710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168c4d0ed97b5b446ae555bd4c3c5fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Floor
+  objectType: 0
+  isTillable: 0
 --- !u!1 &581409644
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,6 +587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 739202629}
+  - component: {fileID: 739202630}
   m_Layer: 0
   m_Name: dirt_Floor
   m_TagString: Untagged
@@ -594,6 +610,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 575608711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &739202630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739202628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21703cb49ba0f3d43a7d8c5723fe2be7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::dirt_Floor
+  objectType: 0
+  isTillable: 1
 --- !u!1 &916796103
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +908,6 @@ MonoBehaviour:
   toolDurability: 0
   toolType: 0
   toughness: 0
-
 --- !u!1 &1373572203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,6 +1323,7 @@ MonoBehaviour:
   toolDurability: 0
   toolType: 0
   toughness: 0
+  farmPlotPrefab: {fileID: 0}
 --- !u!1 &1674712428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,7 +1416,6 @@ MonoBehaviour:
   toolDurability: 60
   toolType: 0
   toughness: 0
-
 --- !u!1 &1742460406
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,6 +1497,7 @@ MonoBehaviour:
   toolDurability: 0
   toolType: 0
   toughness: 0
+  farmPlotPrefab: {fileID: 8690774898849940234, guid: 11291bf318a243d489bbd5d9fd3e84f9, type: 3}
 --- !u!1 &1767313938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1886,6 +1916,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122427465}
+  - component: {fileID: 2122427467}
+  - component: {fileID: 2122427466}
   m_Layer: 0
   m_Name: worldObject
   m_TagString: Untagged
@@ -1909,6 +1941,46 @@ Transform:
   - {fileID: 575608711}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2122427466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122427464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1a1dc1a31ea9441a1b11990dcf2d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::worldObject
+  objectType: 0
+--- !u!50 &2122427467
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122427464}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
