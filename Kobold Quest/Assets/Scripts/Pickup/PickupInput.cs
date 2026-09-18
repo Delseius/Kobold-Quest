@@ -37,6 +37,30 @@ public class PickupInput
             return;
         }
 
+        // Clicking a block while holding a pickaxe activates the block.
+        // It does NOT pick the block up immediately.
+        if (currentObject.CompareTag("Block"))
+        {
+            if (pickupobject.IsPickaxeHeld())
+            {
+                pickup.UnlockBlockForPickup();
+
+                UnityEngine.Debug.Log(
+                    $"Pickaxe activated {currentObject.name}. " +
+                    "Press C to pick it up or click it again."
+                );
+            }
+            else
+            {
+                UnityEngine.Debug.Log(
+                    $"{currentObject.name} is locked. " +
+                    "Hold a pickaxe and click the block first."
+                );
+            }
+
+            return;
+        }
+
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -75,6 +99,20 @@ public class PickupInput
             return;
         }
 
+        // F = Activate the block under the mouse when holding a pickaxe.
+        // This is checked before normal F item use.
+        if (
+            pickup.held &&
+            pickupobject.IsPickaxeHeld() &&
+            Keyboard.current.fKey.wasPressedThisFrame
+        )
+        {
+            if (TryActivateBlockUnderMouse())
+            {
+                return;
+            }
+        }
+
         // F = Use held item
         if (
             pickup.held &&
@@ -87,9 +125,7 @@ public class PickupInput
             return;
         }
 
-        // C = Pick up the nearest Item or Block around the player.
-        // Find the player once, then let the nearest pickupable object
-        // handle the actual pickup.
+        // C = Pick up the nearest unlocked Item or Block around the player.
         if (
             pickupobject.heldObject == null &&
             !pickup.held &&
@@ -138,6 +174,59 @@ public class PickupInput
                 nearest.InitiatePickup();
             }
         }
+    }
+
+    private bool TryActivateBlockUnderMouse()
+    {
+        if (Camera.main == null)
+        {
+            return false;
+        }
+
+        Vector2 mousePosition =
+            Mouse.current.position.ReadValue();
+
+        Vector3 worldPosition =
+            Camera.main.ScreenToWorldPoint(
+                new Vector3(
+                    mousePosition.x,
+                    mousePosition.y,
+                    -Camera.main.transform.position.z
+                )
+            );
+
+        Collider2D hit =
+            Physics2D.OverlapPoint(
+                new Vector2(
+                    worldPosition.x,
+                    worldPosition.y
+                )
+            );
+
+        if (hit == null)
+        {
+            return false;
+        }
+
+        pickupobject block =
+            hit.GetComponent<pickupobject>();
+
+        if (
+            block == null ||
+            !block.CompareTag("Block")
+        )
+        {
+            return false;
+        }
+
+        block.UnlockBlockForPickup();
+
+        UnityEngine.Debug.Log(
+            $"F activated {block.gameObject.name} with the pickaxe. " +
+            "The block can now be picked up."
+        );
+
+        return true;
     }
 
     private void UseHeldItem()
