@@ -22,6 +22,13 @@ public class pickupobject : MonoBehaviour
     private Collider2D objectCollider;
     private SpriteRenderer objectSpriteRenderer;
 
+    // A block starts locked. It becomes pickupable after a pickaxe
+    // has been used on/clicked on that block.
+    private bool blockPickupUnlocked = false;
+
+    // Remembers the last block clicked so F can activate it with a pickaxe.
+    private static pickupobject selectedBlock;
+
     public bool Pressed { get; set; }
     public bool release { get; set; }
     public bool held { get; set; }
@@ -77,6 +84,11 @@ public class pickupobject : MonoBehaviour
         get { return pickupRadius; }
     }
 
+    public bool IsBlockPickupUnlocked
+    {
+        get { return blockPickupUnlocked; }
+    }
+
     public static Transform FindPlayerTransform()
     {
         pickupobject[] pickupObjects =
@@ -121,6 +133,12 @@ public class pickupobject : MonoBehaviour
             bool isBlock = candidate.CompareTag("Block");
 
             if (!isItem && !isBlock)
+            {
+                continue;
+            }
+
+            // Blocks cannot be picked up until a pickaxe has activated them.
+            if (isBlock && !candidate.IsBlockPickupUnlocked)
             {
                 continue;
             }
@@ -255,6 +273,53 @@ public class pickupobject : MonoBehaviour
         pickupDropSystem.ExecuteDropRelease();
     }
 
+    public void UnlockBlockForPickup()
+    {
+        if (!CompareTag("Block"))
+        {
+            return;
+        }
+
+        blockPickupUnlocked = true;
+        selectedBlock = this;
+
+        UnityEngine.Debug.Log(
+            $"{gameObject.name} has been activated by the pickaxe. " +
+            "The block can now be picked up."
+        );
+    }
+
+    public static bool IsPickaxeHeld()
+    {
+        if (heldObject == null)
+        {
+            return false;
+        }
+
+        string heldName =
+            heldObject.name.ToLowerInvariant();
+
+        return heldName.Contains("pickaxe");
+    }
+
+    public static void SelectBlock(pickupobject block)
+    {
+        if (block != null && block.CompareTag("Block"))
+        {
+            selectedBlock = block;
+        }
+    }
+
+    public static pickupobject GetSelectedBlock()
+    {
+        return selectedBlock;
+    }
+
+    public static void ClearSelectedBlock()
+    {
+        selectedBlock = null;
+    }
+
     public void ClearHeldState()
     {
         heldObject = null;
@@ -291,6 +356,19 @@ public class pickupobject : MonoBehaviour
 
         if (!isItem && !isBlock)
         {
+            return;
+        }
+
+        // A block must first be activated by a pickaxe.
+        if (isBlock && !blockPickupUnlocked)
+        {
+            Pressed = false;
+
+            UnityEngine.Debug.Log(
+                $"{gameObject.name} cannot be picked up yet. " +
+                "Use a pickaxe on the block first."
+            );
+
             return;
         }
 
@@ -332,5 +410,14 @@ public class pickupobject : MonoBehaviour
         block = isBlock;
         drop = false;
         PlayerMove = true;
+
+        if (isBlock)
+        {
+            blockPickupUnlocked = false;
+            if (selectedBlock == this)
+            {
+                selectedBlock = null;
+            }
+        }
     }
 }
