@@ -44,7 +44,8 @@ public class PickupDropSystem
         pickup.Pressed = false;
         pickup.held = false;
 
-        pickup.Tool = 
+        // Tools are tagged "Item" in the Unity scene.
+        pickup.Tool = pickup.gameObject.CompareTag("Item");
             pickup.gameObject.CompareTag("Item");
 
         pickup.block =
