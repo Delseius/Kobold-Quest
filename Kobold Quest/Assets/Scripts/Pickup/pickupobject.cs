@@ -128,7 +128,7 @@ public class pickupobject : MonoBehaviour
     {
         Pressed = true;
 
-        Debug.Log($"Pickup sequence triggered for: {gameObject.name}");
+        UnityEngine.Debug.Log($"Pickup sequence triggered for: {gameObject.name}");
 
         if (objectBody != null)
         {
@@ -169,7 +169,7 @@ public class pickupobject : MonoBehaviour
     {
         if (Pressed && gameObject.CompareTag("Tools") && !release)
         {
-            Debug.Log("pickuptool");
+            UnityEngine.Debug.Log("pickuptool");
 
             if (objectBody != null)
             {
@@ -198,7 +198,7 @@ public class pickupobject : MonoBehaviour
         }
         else if (Pressed && gameObject.CompareTag("Block") && !release)
         {
-            Debug.Log("pickupBlock");
+            UnityEngine.Debug.Log("pickupBlock");
 
             if (objectBody != null)
             {
