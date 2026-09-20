@@ -5,7 +5,7 @@ public class GriobjectPickup : GridObject
     private void Update()
     {
 
-        SnapToGrid();
+        //SnapToGrid();
 
     }
 }
