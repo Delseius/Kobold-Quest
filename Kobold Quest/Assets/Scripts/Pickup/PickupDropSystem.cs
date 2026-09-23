@@ -178,7 +178,7 @@ public class PickupDropSystem
         if (pickup.ObjectCollider != null)
         {
             pickup.ObjectCollider.enabled = true;
-            pickup.ObjectCollider.isTrigger = false;
+            pickup.ObjectCollider.isTrigger = true;
         }
 
         // Clear the held object.

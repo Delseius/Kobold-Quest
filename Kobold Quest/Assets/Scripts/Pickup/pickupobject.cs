@@ -2,15 +2,20 @@ using UnityEngine;
 
 public class pickupobject : MonoBehaviour
 {
-    [SerializeField] private Transform PlayerTransform;
+    [SerializeField] Transform PlayerTransform;
     [SerializeField] private Transform BlockTransform;
     [SerializeField] private Transform ToolTransform;
     [SerializeField] private Transform ConsumableTransform;
 
+    // MAKE SURE THIS LINE IS PRESENT INSIDE PICKUPOBJECT:
+    public Transform GetPlayerTransform => PlayerTransform;
+
+
+
     private Transform placeBlockTransform;
     private Vector3 calculatedDropTarget;
 
-    [SerializeField] private float holdOffsetDistance = 1.2f;
+    [SerializeField] private float holdOffsetDistance = 0.6f;
     [SerializeField] private float verticalDropOffset = 0.6f;
     [SerializeField] private float pickupRadius = 2.0f;
 
@@ -32,7 +37,9 @@ public class pickupobject : MonoBehaviour
     }
 
     // Remembers the last block clicked so F can activate it with a pickaxe.
-    private static pickupobject selectedBlock;
+    public static pickupobject selectedBlock;
+
+    
 
 
     public bool Pressed { get; set; }

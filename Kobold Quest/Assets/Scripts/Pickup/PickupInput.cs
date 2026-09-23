@@ -1,9 +1,11 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PickupInput
 {
     private pickupobject pickup;
+    
 
     public PickupInput(pickupobject pickup)
     {
@@ -138,6 +140,7 @@ public class PickupInput
             Keyboard.current.fKey.wasPressedThisFrame
         )
         {
+            // Checks a radius around the player instead of the mouse cursor
             if (TryActivateBlockUnderMouse())
             {
                 return;
@@ -263,6 +266,59 @@ public class PickupInput
 
         return true;
     }
+
+    /*private bool TryActivateBlockInRadius()
+    {
+        Transform playerTransform = pickup.GetPlayerTransform;
+
+        if (playerTransform == null)
+        {
+            Debug.LogError("PlayerTransform is not assigned on the pickupobject script!");
+            return false;
+        }
+
+        float interactionRadius = 3.0f; // Adjust this number for how close you want the player to stand
+
+        // 1. Find all 2D colliders inside a circle centered on the PLAYER
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(playerTransform.position, interactionRadius);
+
+        pickupobject closestBlock = null;
+        float closestDistance = Mathf.Infinity;
+
+        // 2. Find the closest valid block
+        foreach (var collider in hitColliders)
+        {
+            pickupobject foundBlock = collider.GetComponent<pickupobject>();
+
+            if (foundBlock != null)
+            {
+                float distance = Vector2.Distance(playerTransform.position, collider.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBlock = foundBlock;
+                }
+            }
+        }
+
+        if (closestBlock != null)
+        {
+            // Because it's public static, you can assign it directly like this!
+            pickupobject.selectedBlock = closestBlock;
+
+            closestBlock.UnlockBlockForPickup();
+            return true;
+        }
+
+
+        return false;
+    }*/
+
+
+
+
+
+
 
 
     private void UseHeldItem()

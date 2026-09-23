@@ -1859,7 +1859,7 @@ MonoBehaviour:
   BlockTransform: {fileID: 0}
   ToolTransform: {fileID: 1509189344}
   ConsumableTransform: {fileID: 0}
-  holdOffsetDistance: 1.2
+  holdOffsetDistance: 0.4
   verticalDropOffset: 0.6
   pickupRadius: 2
   speed: 5.5
@@ -2689,6 +2689,22 @@ PrefabInstance:
     - target: {fileID: 3553483380286377046, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4592656833019991901, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
+      propertyPath: m_Size.x
+      value: 0.13159811
+      objectReference: {fileID: 0}
+    - target: {fileID: 4592656833019991901, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
+      propertyPath: m_Size.y
+      value: 0.12226313
+      objectReference: {fileID: 0}
+    - target: {fileID: 4592656833019991901, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0026000552
+      objectReference: {fileID: 0}
+    - target: {fileID: 4592656833019991901, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.3021999
       objectReference: {fileID: 0}
     - target: {fileID: 4592656833019991901, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
       propertyPath: m_IsTrigger
