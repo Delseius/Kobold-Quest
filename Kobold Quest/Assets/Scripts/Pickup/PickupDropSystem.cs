@@ -124,11 +124,12 @@ public class PickupDropSystem
             pickup.CalculatedDropTarget;
 
         // ONLY Block objects use GridObject snapping.
-        GriobjectPickup gridPickup = pickupobject.heldObject.GetComponent<GriobjectPickup>();
+        GriobjectPickup gridPickup =
+            pickup.gameObject.GetComponent<GriobjectPickup>();
 
         if (gridPickup != null)
         {
-            gridPickup.OnDropped();
+            gridPickup.TestSnapToGrid();
         }
 
         // Set the released object's sorting order.
