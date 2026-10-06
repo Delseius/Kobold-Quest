@@ -124,19 +124,16 @@ public class PickupDropSystem
             pickup.CalculatedDropTarget;
 
         // ONLY Block objects use GridObject snapping.
-        if (pickup.gameObject.CompareTag("Block"))
+        // Blocks use the existing grid pickup/testing system.
+        // GriobjectPickup.TestSnapToGrid() uses GridSpace.WorldToGrid(),
+        // GridObject.SnapToGrid(), GridObject.GridPosition and
+        // GridSpace.DebugCell() without changing any of those scripts.
+        GriobjectPickup gridPickup =
+            pickup.gameObject.GetComponent<GriobjectPickup>();
+
+        if (gridPickup != null)
         {
-            GridObject gridObject =
-                pickup.gameObject.GetComponent<GridObject>();
-
-            if (gridObject != null)
-            {
-                gridObject.EnableGridObject();
-                gridObject.SnapToGrid();
-
-                pickup.CalculatedDropTarget =
-                    pickup.transform.position;
-            }
+            gridPickup.TestSnapToGrid();
         }
 
         // Set the released object's sorting order.
@@ -181,7 +178,7 @@ public class PickupDropSystem
         if (pickup.ObjectCollider != null)
         {
             pickup.ObjectCollider.enabled = true;
-            pickup.ObjectCollider.isTrigger = false;
+            pickup.ObjectCollider.isTrigger = true;
         }
 
         // Clear the held object.
