@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class pickupobject : MonoBehaviour
 {
-    [SerializeField] Transform PlayerTransform;
+    [SerializeField] private Transform PlayerTransform;
     [SerializeField] private Transform BlockTransform;
     [SerializeField] private Transform ToolTransform;
     [SerializeField] private Transform ConsumableTransform;
