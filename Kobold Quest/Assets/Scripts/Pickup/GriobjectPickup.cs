@@ -61,7 +61,7 @@ public class GriobjectPickup : MonoBehaviour
         // Get the final snapped position.
         Vector3 afterPosition = transform.position;
 
-        SnapToGrid();
+        //SnapToGrid();
         Debug.Log(
             "[TestGridObject] Block snapped to grid\n" +
             "Block: " + gameObject.name + "\n" +
