@@ -128,17 +128,6 @@ public class PickupDropSystem
         // GriobjectPickup.TestSnapToGrid() uses GridSpace.WorldToGrid(),
         // GridObject.SnapToGrid(), GridObject.GridPosition and
         // GridSpace.DebugCell() without changing any of those scripts.
-        // Re-enable the GridObject when the object returns to the world.
-        // While carried or stored in inventory it is deliberately disabled.
-        GridObject gridObject =
-            pickup.gameObject.GetComponent<GridObject>();
-
-        if (gridObject != null)
-        {
-            gridObject.EnableGridObject();
-        }
-
-        // ONLY Block objects use the existing grid snapping helper.
         GriobjectPickup gridPickup =
             pickup.gameObject.GetComponent<GriobjectPickup>();
 
@@ -185,11 +174,11 @@ public class PickupDropSystem
                 RigidbodyType2D.Static;
         }
 
-        // Re-enable the collider as a normal solid collider.
+        // Re-enable the collider as a normal collider.
         if (pickup.ObjectCollider != null)
         {
             pickup.ObjectCollider.enabled = true;
-            pickup.ObjectCollider.isTrigger = false;
+            pickup.ObjectCollider.isTrigger = true;
         }
 
         // Clear the held object.
