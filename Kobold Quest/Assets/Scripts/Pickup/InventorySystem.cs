@@ -3,14 +3,21 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 /// <summary>
-/// One-slot inventory matching the Kobold Quest pickup system.
+/// Separate one-slot inventory system for Kobold Quest.
 ///
-/// The hand slot mirrors the object currently held by pickupobject.heldObject.
-/// Press Q while holding something to move it into the inventory slot.
-/// Press Q again with an empty hand to take the inventory item back into the hand.
+/// This script does NOT modify pickupobject, PickupInput, PickupMovement,
+/// or PickupDropSystem. It uses their existing public interface:
+/// - pickupobject.heldObject
+/// - pickupobject.ClearHeldState()
+/// - pickupobject.InitiatePickup()
 ///
-/// The UI is created at runtime, so no Canvas or scene changes are required.
-/// It stays at the bottom of the screen because it uses Screen Space Overlay.
+/// Q:
+/// - If the hand contains an item and the inventory is empty, store it.
+/// - If the hand is empty and the inventory contains an item, retrieve it.
+///
+/// The inventory object is temporarily disabled while stored. This keeps
+/// the original pickup/drop scripts responsible for all normal world pickup
+/// and drop behavior.
 /// </summary>
 public class InventorySystem : MonoBehaviour
 {
@@ -40,7 +47,9 @@ public class InventorySystem : MonoBehaviour
             return;
         }
 
-        GameObject inventoryObject = new GameObject("InventorySystem");
+        GameObject inventoryObject =
+            new GameObject("InventorySystem");
+
         inventoryObject.AddComponent<InventorySystem>();
     }
 
@@ -63,9 +72,11 @@ public class InventorySystem : MonoBehaviour
 
     private void Update()
     {
-        if (useQKey &&
+        if (
+            useQKey &&
             Keyboard.current != null &&
-            Keyboard.current.qKey.wasPressedThisFrame)
+            Keyboard.current.qKey.wasPressedThisFrame
+        )
         {
             if (pickupobject.heldObject != null)
             {
@@ -90,6 +101,10 @@ public class InventorySystem : MonoBehaviour
         return inventoryObject;
     }
 
+    /// <summary>
+    /// Stores the object currently handled by the original pickup system.
+    /// The original pickup scripts are not changed.
+    /// </summary>
     public bool TryStoreHeldItem()
     {
         if (inventoryObject != null)
@@ -98,7 +113,8 @@ public class InventorySystem : MonoBehaviour
             return false;
         }
 
-        GameObject held = pickupobject.heldObject;
+        GameObject held =
+            pickupobject.heldObject;
 
         if (held == null)
         {
@@ -106,7 +122,8 @@ public class InventorySystem : MonoBehaviour
             return false;
         }
 
-        pickupobject heldPickup = held.GetComponent<pickupobject>();
+        pickupobject heldPickup =
+            held.GetComponent<pickupobject>();
 
         if (heldPickup == null)
         {
@@ -114,14 +131,23 @@ public class InventorySystem : MonoBehaviour
                 held.name +
                 " cannot be stored because it has no pickupobject script."
             );
+
             return false;
         }
 
+        // Remember the object before ClearHeldState clears the static
+        // pickupobject.heldObject reference.
         inventoryObject = held;
-        heldPickup.StoreInInventory();
+
+        // Use the original pickupobject API to leave the hand state.
+        heldPickup.ClearHeldState();
+
+        // The object is now owned by the inventory instead of the world.
+        // Disabling the GameObject also disables its collider and renderer.
+        inventoryObject.SetActive(false);
 
         Debug.Log(
-            held.name +
+            inventoryObject.name +
             " moved from the hand slot to the inventory slot."
         );
 
@@ -129,6 +155,10 @@ public class InventorySystem : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Returns the inventory item to the original pickup system.
+    /// No pickup scripts are modified.
+    /// </summary>
     public bool TryTakeInventoryItem()
     {
         if (pickupobject.heldObject != null)
@@ -143,28 +173,37 @@ public class InventorySystem : MonoBehaviour
             return false;
         }
 
-        GameObject item = inventoryObject;
-        pickupobject itemPickup = item.GetComponent<pickupobject>();
+        GameObject item =
+            inventoryObject;
+
+        pickupobject itemPickup =
+            item.GetComponent<pickupobject>();
 
         if (itemPickup == null)
         {
             Debug.LogWarning(
                 item.name +
-                " cannot be equipped because it has no pickupobject script."
+                " cannot be returned because it has no pickupobject script."
             );
+
             inventoryObject = null;
             RefreshUI();
             return false;
         }
 
-        inventoryObject = null;
-
+        // Give the GameObject back to the normal pickup system.
         item.SetActive(true);
-        itemPickup.EquipFromInventory();
+
+        // InitiatePickup() is an existing method in pickupobject.
+        // The original pickupobject Update() then performs the normal
+        // pickup sequence on its next Update.
+        itemPickup.InitiatePickup();
+
+        inventoryObject = null;
 
         Debug.Log(
             item.name +
-            " moved from the inventory slot to the hand slot."
+            " moved from the inventory slot back to the hand."
         );
 
         RefreshUI();
@@ -173,16 +212,21 @@ public class InventorySystem : MonoBehaviour
 
     private void CreateUI()
     {
-        GameObject canvasObject = new GameObject(
-            "KoboldInventoryCanvas",
-            typeof(RectTransform),
-            typeof(Canvas),
-            typeof(CanvasScaler),
-            typeof(GraphicRaycaster)
-        );
+        GameObject canvasObject =
+            new GameObject(
+                "KoboldInventoryCanvas",
+                typeof(RectTransform),
+                typeof(Canvas),
+                typeof(CanvasScaler),
+                typeof(GraphicRaycaster)
+            );
 
-        canvas = canvasObject.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas =
+            canvasObject.GetComponent<Canvas>();
+
+        canvas.renderMode =
+            RenderMode.ScreenSpaceOverlay;
+
         canvas.sortingOrder = 1000;
 
         CanvasScaler scaler =
@@ -194,25 +238,28 @@ public class InventorySystem : MonoBehaviour
         scaler.referenceResolution =
             new Vector2(1920f, 1080f);
 
-        slotSprite = CreateWhiteSprite();
+        slotSprite =
+            CreateWhiteSprite();
 
-        handIcon = CreateSlot(
-            "HandSlot",
-            new Vector2(
-                -(slotSize + slotSpacing) * 0.5f,
-                bottomOffset
-            ),
-            "HandIcon"
-        );
+        handIcon =
+            CreateSlot(
+                "HandSlot",
+                new Vector2(
+                    -(slotSize + slotSpacing) * 0.5f,
+                    bottomOffset
+                ),
+                "HandIcon"
+            );
 
-        inventoryIcon = CreateSlot(
-            "InventorySlot",
-            new Vector2(
-                (slotSize + slotSpacing) * 0.5f,
-                bottomOffset
-            ),
-            "InventoryIcon"
-        );
+        inventoryIcon =
+            CreateSlot(
+                "InventorySlot",
+                new Vector2(
+                    (slotSize + slotSpacing) * 0.5f,
+                    bottomOffset
+                ),
+                "InventoryIcon"
+            );
     }
 
     private Image CreateSlot(
@@ -221,11 +268,12 @@ public class InventorySystem : MonoBehaviour
         string iconName
     )
     {
-        GameObject slotObject = new GameObject(
-            slotName,
-            typeof(RectTransform),
-            typeof(Image)
-        );
+        GameObject slotObject =
+            new GameObject(
+                slotName,
+                typeof(RectTransform),
+                typeof(Image)
+            );
 
         slotObject.transform.SetParent(
             canvas.transform,
@@ -244,33 +292,52 @@ public class InventorySystem : MonoBehaviour
         slotRect.pivot =
             new Vector2(0.5f, 0f);
 
-        slotRect.anchoredPosition = position;
+        slotRect.anchoredPosition =
+            position;
+
         slotRect.sizeDelta =
-            new Vector2(slotSize, slotSize);
+            new Vector2(
+                slotSize,
+                slotSize
+            );
 
         Image slotImage =
             slotObject.GetComponent<Image>();
 
-        slotImage.sprite = slotSprite;
-        slotImage.color =
-            new Color(0.08f, 0.08f, 0.08f, 0.82f);
+        slotImage.sprite =
+            slotSprite;
 
-        slotImage.raycastTarget = false;
+        slotImage.color =
+            new Color(
+                0.08f,
+                0.08f,
+                0.08f,
+                0.82f
+            );
+
+        slotImage.raycastTarget =
+            false;
 
         Outline outline =
             slotObject.AddComponent<Outline>();
 
         outline.effectColor =
-            new Color(1f, 1f, 1f, 0.7f);
+            new Color(
+                1f,
+                1f,
+                1f,
+                0.7f
+            );
 
         outline.effectDistance =
             new Vector2(2f, 2f);
 
-        GameObject iconObject = new GameObject(
-            iconName,
-            typeof(RectTransform),
-            typeof(Image)
-        );
+        GameObject iconObject =
+            new GameObject(
+                iconName,
+                typeof(RectTransform),
+                typeof(Image)
+            );
 
         iconObject.transform.SetParent(
             slotObject.transform,
@@ -293,20 +360,29 @@ public class InventorySystem : MonoBehaviour
             Vector2.zero;
 
         iconRect.sizeDelta =
-            new Vector2(iconSize, iconSize);
+            new Vector2(
+                iconSize,
+                iconSize
+            );
 
         Image icon =
             iconObject.GetComponent<Image>();
 
-        icon.preserveAspect = true;
-        icon.raycastTarget = false;
+        icon.preserveAspect =
+            true;
+
+        icon.raycastTarget =
+            false;
 
         return icon;
     }
 
     private void RefreshUI()
     {
-        if (handIcon == null || inventoryIcon == null)
+        if (
+            handIcon == null ||
+            inventoryIcon == null
+        )
         {
             return;
         }
@@ -325,7 +401,9 @@ public class InventorySystem : MonoBehaviour
         );
     }
 
-    private Sprite GetSpriteFromObject(GameObject objectToRead)
+    private Sprite GetSpriteFromObject(
+        GameObject objectToRead
+    )
     {
         if (objectToRead == null)
         {
@@ -351,10 +429,14 @@ public class InventorySystem : MonoBehaviour
         return null;
     }
 
-    private void SetIcon(Image icon, Sprite sprite)
+    private void SetIcon(
+        Image icon,
+        Sprite sprite
+    )
     {
         icon.sprite = sprite;
-        icon.enabled = sprite != null;
+        icon.enabled =
+            sprite != null;
     }
 
     private Sprite CreateWhiteSprite()
@@ -367,14 +449,29 @@ public class InventorySystem : MonoBehaviour
                 false
             );
 
-        texture.name = "InventorySlotTexture";
-        texture.SetPixel(0, 0, Color.white);
+        texture.name =
+            "InventorySlotTexture";
+
+        texture.SetPixel(
+            0,
+            0,
+            Color.white
+        );
+
         texture.Apply();
 
         return Sprite.Create(
             texture,
-            new Rect(0f, 0f, 1f, 1f),
-            new Vector2(0.5f, 0.5f),
+            new Rect(
+                0f,
+                0f,
+                1f,
+                1f
+            ),
+            new Vector2(
+                0.5f,
+                0.5f
+            ),
             1f
         );
     }
