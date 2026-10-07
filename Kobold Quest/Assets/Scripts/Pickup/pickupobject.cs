@@ -407,6 +407,127 @@ public class pickupobject : MonoBehaviour
     
 
 
+    /// <summary>
+    /// Moves this object from the hand into the one inventory slot.
+    /// The InventorySystem owns the reference while the GameObject is inactive.
+    /// </summary>
+    public void StoreInInventory()
+    {
+        if (heldObject != gameObject)
+        {
+            return;
+        }
+
+        if (objectCollider != null)
+        {
+            objectCollider.enabled = false;
+        }
+
+        if (objectBody != null)
+        {
+            objectBody.linearVelocity = Vector2.zero;
+            objectBody.angularVelocity = 0f;
+            objectBody.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        // An item in the inventory is not occupying a world grid cell.
+        GridObject gridObject = GetComponent<GridObject>();
+        if (gridObject != null)
+        {
+            gridObject.DisableGridObject();
+        }
+
+        heldObject = null;
+
+        Pressed = false;
+        held = false;
+        release = false;
+        Tool = false;
+        block = false;
+        drop = false;
+        PlayerMove = false;
+        PlaceBlockTransform = null;
+        CalculatedDropTarget = Vector3.zero;
+
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Takes this object out of the inventory and places it in the hand.
+    /// </summary>
+    public void EquipFromInventory()
+    {
+        gameObject.SetActive(true);
+
+        // Keep the GridObject disabled while the object is being carried.
+        GridObject gridObject = GetComponent<GridObject>();
+        if (gridObject != null)
+        {
+            gridObject.DisableGridObject();
+        }
+
+        if (objectBody == null)
+        {
+            objectBody = GetComponent<Rigidbody2D>();
+        }
+
+        if (objectCollider == null)
+        {
+            objectCollider = GetComponent<Collider2D>();
+        }
+
+        if (objectSpriteRenderer == null)
+        {
+            objectSpriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        if (objectBody != null)
+        {
+            objectBody.linearVelocity = Vector2.zero;
+            objectBody.angularVelocity = 0f;
+            objectBody.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (objectCollider != null)
+        {
+            objectCollider.enabled = false;
+            objectCollider.isTrigger = false;
+        }
+
+        if (objectSpriteRenderer != null)
+        {
+            objectSpriteRenderer.sortingOrder = 15;
+        }
+
+        heldObject = gameObject;
+
+        Pressed = false;
+        release = true;
+        held = true;
+        Tool = CompareTag("Item");
+        block = CompareTag("Block");
+        drop = false;
+        PlayerMove = false;
+
+        Transform player = PlayerTransformReference;
+        if (player == null)
+        {
+            player = FindPlayerTransform();
+        }
+
+        if (player != null)
+        {
+            Vector3 facingDirection =
+                player.localScale.x < 0f
+                    ? Vector3.left
+                    : Vector3.right;
+
+            transform.position =
+                player.position +
+                facingDirection * HoldOffsetDistance;
+        }
+    }
+
     public void ClearHeldState()
     {
         if (heldObject == gameObject)
