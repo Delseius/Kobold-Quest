@@ -1397,6 +1397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0c644f1196db444b3ecef676d1384a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GriobjectPickup
+  objectType: 0
 --- !u!114 &1275131777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1776,18 +1777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0c644f1196db444b3ecef676d1384a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GriobjectPickup
---- !u!114 &1373572210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1373572203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8f25b3d13b0bc74fa9ae82f72845366, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlockGridObject
   objectType: 0
 --- !u!1 &1376393192
 GameObject:
@@ -2765,17 +2754,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2879010401383347704, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
   m_PrefabInstance: {fileID: 5228221365230779986}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1908360807 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7356440023384415660, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
-  m_PrefabInstance: {fileID: 5228221365230779986}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5faf300b30a35494685192f7a6d2b0f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::move
 --- !u!1 &1943421420
 GameObject:
   m_ObjectHideFlags: 0
@@ -3340,18 +3318,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8463309582552615741, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
-      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8463309582552615741, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
-      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1908360807}
-    - target: {fileID: 8463309582552615741, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
-      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMove
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3375,6 +3341,9 @@ SceneRoots:
   - {fileID: 1476548417819918788}
   - {fileID: 2030158416}
   - {fileID: 963657543}
+<<<<<<< HEAD
   - {fileID: 2117572485}
   - {fileID: 1554206910}
   - {fileID: 1579332640}
+=======
+>>>>>>> bbca0fb5fb130cef3894870784297b06755cbed3
