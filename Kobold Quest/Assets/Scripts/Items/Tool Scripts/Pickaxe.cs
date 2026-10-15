@@ -16,6 +16,7 @@ public class Pickaxe : Tool
         if (toolDurability <= 0)
         {
             Debug.Log("Pickaxe is broken.");
+            Destroy(gameObject);
             return;
         }
 
@@ -41,6 +42,14 @@ public class Pickaxe : Tool
 
         // Reduce durability only after a successful use.
         toolDurability -= toughness;
+
+        //Check tool durablity and break
+        if (toolDurability <= 0)
+        {
+            Debug.Log("Pickaxe is broken.");
+            Destroy(gameObject);
+            return;
+        }
 
         Debug.Log(
             "Pickaxe successfully used on grid cell " +

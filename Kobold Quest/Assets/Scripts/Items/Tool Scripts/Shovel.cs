@@ -17,7 +17,16 @@ public class Shovel : Tool
             // Code to make the block loose
             // or destroy the loose block.
 
-            toolDurability -= 1;
+            toolDurability -= toughness;
+            
+            //Check Durability
+            if (toolDurability <= 0)
+            {
+                Debug.Log("Shovel is broken.");
+                Destroy(gameObject);
+                return;
+            }
+
         }
         else
         {

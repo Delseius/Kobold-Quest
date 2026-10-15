@@ -24,6 +24,7 @@ public class Hoe : Tool, IUsable
         if (toolDurability <= 0)
         {
             Debug.Log("Hoe is broken.");
+            Destroy(gameObject);
             return false;
         }
 
@@ -79,6 +80,14 @@ public class Hoe : Tool, IUsable
 
         // Reduce durability only after a successful use.
         toolDurability -= 1;
+
+        //Check Durability
+        if (toolDurability <= 0)
+        {
+            Debug.Log("Hoe is broken.");
+            Destroy(gameObject);
+            return false;
+        }
 
 
         Debug.Log(
