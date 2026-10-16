@@ -26,6 +26,11 @@ public class InventorySystem : MonoBehaviour
 
     [Header("Controls")]
     [SerializeField] private bool useQKey = true;
+    [Tooltip("Press this key to show/hide the inventory slot.")]
+    [SerializeField] private Key toggleInventoryKey = Key.I;
+    [Tooltip("If true, Q does nothing while the inventory slot is hidden.")]
+    [SerializeField] private bool qRequiresInventoryOpen = true;
+    [SerializeField] private bool inventoryStartsVisible = false;
 
     [Header("UI (assign in Inspector)")]
     [SerializeField] private InventorySlotUI handSlot;
@@ -62,28 +67,54 @@ public class InventorySystem : MonoBehaviour
 
     private void Start()
     {
+        SetInventoryVisible(inventoryStartsVisible);
         RefreshUI();
     }
 
     private void Update()
     {
-        if (
-            useQKey &&
-            Keyboard.current != null &&
-            Keyboard.current.qKey.wasPressedThisFrame
-        )
+        Keyboard keyboard = Keyboard.current;
+
+        if (keyboard != null)
         {
-            if (pickupobject.heldObject != null)
+            // Show / hide the inventory slot.
+            if (keyboard[toggleInventoryKey].wasPressedThisFrame)
             {
-                TryStoreHeldItem();
+                SetInventoryVisible(!IsInventoryVisible);
             }
-            else
+
+            // Move items between the hand and the inventory slot.
+            if (useQKey && keyboard.qKey.wasPressedThisFrame)
             {
-                TryTakeInventoryItem();
+                if (qRequiresInventoryOpen && !IsInventoryVisible)
+                {
+                    Debug.Log("Open the inventory first.");
+                }
+                else if (pickupobject.heldObject != null)
+                {
+                    TryStoreHeldItem();
+                }
+                else
+                {
+                    TryTakeInventoryItem();
+                }
             }
         }
 
         RefreshUI();
+    }
+
+    public bool IsInventoryVisible =>
+        inventorySlot != null && inventorySlot.IsVisible;
+
+    // Uses a CanvasGroup (alpha) instead of SetActive, so the slot keeps
+    // its place in the hierarchy and nothing else in the layout moves.
+    public void SetInventoryVisible(bool visible)
+    {
+        if (inventorySlot != null)
+        {
+            inventorySlot.SetVisible(visible);
+        }
     }
 
     public bool HasInventoryItem()
