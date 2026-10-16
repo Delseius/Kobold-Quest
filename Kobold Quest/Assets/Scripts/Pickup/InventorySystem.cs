@@ -15,6 +15,8 @@ using UnityEngine.InputSystem;
 /// - If the hand contains an item and the inventory is empty, store it.
 /// - If the hand is empty and the inventory contains an item, retrieve it.
 ///
+/// This script also contains the hand-slot display that used to live in
+/// HandSlotSystem, so HandSlotSystem is no longer needed.
 /// The UI now lives in the scene hierarchy. Assign the two slot
 /// references in the Inspector.
 /// </summary>
@@ -40,6 +42,22 @@ public class InventorySystem : MonoBehaviour
         }
 
         Instance = this;
+
+        if (handSlot == null)
+        {
+            Debug.LogError(
+                "InventorySystem: Hand Slot is not assigned in the Inspector.",
+                this
+            );
+        }
+
+        if (inventorySlot == null)
+        {
+            Debug.LogError(
+                "InventorySystem: Inventory Slot is not assigned in the Inspector.",
+                this
+            );
+        }
     }
 
     private void Start()
@@ -165,15 +183,36 @@ public class InventorySystem : MonoBehaviour
 
     private void RefreshUI()
     {
-        if (handSlot != null)
+        RefreshHandSlot();
+        RefreshInventorySlot();
+    }
+
+    /// <summary>
+    /// Formerly HandSlotSystem: shows whatever the original pickup system
+    /// is currently holding.
+    /// </summary>
+    private void RefreshHandSlot()
+    {
+        if (handSlot == null)
         {
-            handSlot.SetSprite(GetSpriteFromObject(pickupobject.heldObject));
+            return;
         }
 
-        if (inventorySlot != null)
+        handSlot.SetSprite(
+            GetSpriteFromObject(pickupobject.heldObject)
+        );
+    }
+
+    private void RefreshInventorySlot()
+    {
+        if (inventorySlot == null)
         {
-            inventorySlot.SetSprite(GetSpriteFromObject(inventoryObject));
+            return;
         }
+
+        inventorySlot.SetSprite(
+            GetSpriteFromObject(inventoryObject)
+        );
     }
 
     private Sprite GetSpriteFromObject(GameObject objectToRead)
