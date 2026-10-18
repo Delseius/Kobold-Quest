@@ -459,7 +459,7 @@ public class pickupobject : MonoBehaviour
         }
 
         bool isItem =
-            gameObject.CompareTag("Item");
+            gameObject.CompareTag("Item") ||
             gameObject.CompareTag("Equipment");
             //gameObject.IsItemObject;
 
