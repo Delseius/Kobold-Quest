@@ -25,6 +25,11 @@ public class KoboldHunger : MonoBehaviour
         }
     }
 
+    public void LoseCaloriesOverTime(float calories)
+    {
+        LoseCalories(calories);
+    }
+
     public float GetHungerPercentage()
     {
         return currentCalories / maxCalories;
