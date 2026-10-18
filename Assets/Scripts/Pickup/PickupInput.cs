@@ -77,22 +77,11 @@ public class PickupInput
         // Shovel  -> dirt blocks
         if (currentObject.CompareTag("Block"))
         {
-            if (pickupobject.IsCorrectToolForBlock(currentObject))
-            {
-                pickup.UnlockBlockForPickup();
+            pickupobject clickedBlock = currentObject.GetComponent<pickupobject>();
 
-                UnityEngine.Debug.Log(
-                    $"{pickupobject.GetHeldToolName()} activated " +
-                    $"{currentObject.name}. Press C to pick it up."
-                );
-            }
-            else
+            if (clickedBlock != null)
             {
-                UnityEngine.Debug.Log(
-                    $"{currentObject.name} cannot be activated with " +
-                    $"{pickupobject.GetHeldToolName()}. " +
-                    "Use the correct tool."
-                );
+                TryUseHeldToolOnBlock(clickedBlock);
             }
 
             return;
@@ -262,12 +251,65 @@ public class PickupInput
             return false;
         }
 
+        return TryUseHeldToolOnBlock(block);
+    }
+
+    // Uses the actual tool component before making a block pickupable.
+    private bool TryUseHeldToolOnBlock(pickupobject block)
+    {
+        if (
+            block == null ||
+            pickupobject.heldObject == null ||
+            !pickupobject.IsCorrectToolForBlock(block.gameObject)
+        )
+        {
+            if (block != null)
+            {
+                UnityEngine.Debug.Log(
+                    $"{block.gameObject.name} cannot be activated with " +
+                    $"{pickupobject.GetHeldToolName()}. Use the correct tool."
+                );
+            }
+
+            return false;
+        }
+
+        // PickaxeUse checks the grid cell in front of the kobold and
+        // consumes durability only when that cell is valid.
+        if (pickupobject.IsPickaxeHeld())
+        {
+            Pickaxe pickaxe = pickupobject.heldObject.GetComponent<Pickaxe>();
+
+            if (pickaxe == null)
+            {
+                Debug.LogWarning(
+                    "The held object looks like a pickaxe by name, but it " +
+                    "does not have a Pickaxe component."
+                );
+                return false;
+            }
+
+            if (pickaxe.toolDurability <= 0)
+            {
+                pickaxe.pickaxeUse();
+                return false;
+            }
+
+            if (pickaxe.CheckSpace() == null)
+            {
+                Debug.Log("Pickaxe cannot be used: there is no valid target cell.");
+                return false;
+            }
+
+            pickaxe.pickaxeUse();
+        }
+
         pickupobject.SelectBlock(block);
         block.UnlockBlockForPickup();
 
         UnityEngine.Debug.Log(
-            $"F used {pickupobject.GetHeldToolName()} on " +
-            $"{block.gameObject.name}. The block can now be picked up."
+            $"{pickupobject.GetHeldToolName()} used on " +
+            $"{block.gameObject.name}. The block can now be picked up with C."
         );
 
         return true;
