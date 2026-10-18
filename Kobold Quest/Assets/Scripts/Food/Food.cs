@@ -11,12 +11,13 @@ public abstract class Food : MonoBehaviour, IUsable
     }
 
 
-    public virtual void Eat(GameObject consumer)
+
+    public virtual bool Eat(GameObject consumer)
     {
         if (consumer == null)
         {
             Debug.LogWarning("Cannot eat food without a consumer.");
-            return;
+            return false;
         }
 
         KoboldHunger hunger =
@@ -27,7 +28,7 @@ public abstract class Food : MonoBehaviour, IUsable
             Debug.LogWarning(
                 consumer.name + " cannot eat: no KoboldHunger component found."
             );
-            return;
+            return false;
         }
 
         hunger.ConsumeCalories(calories);
@@ -38,13 +39,13 @@ public abstract class Food : MonoBehaviour, IUsable
         );
 
         Destroy(gameObject);
-    }
-
-
-    public virtual bool Use(GameObject user)
-    {
-        Eat(user);
 
         return true;
     }
+
+    public virtual bool Use(GameObject user)
+    {
+        return Eat(user);
+    }
+
 }

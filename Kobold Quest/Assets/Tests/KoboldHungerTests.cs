@@ -192,6 +192,96 @@ public class KoboldHungerTests
         Object.DestroyImmediate(mushroom);
     }
 
+    [Test]
+    public void LosingNegativeCaloriesDoesNotIncreaseHunger()
+    {
+        GameObject kobold = new GameObject("Test Kobold");
+
+        KoboldHunger hunger =
+            kobold.AddComponent<KoboldHunger>();
+
+        hunger.LoseCalories(-100f);
+
+        Assert.AreEqual(1600f, hunger.currentCalories);
+
+        Object.DestroyImmediate(kobold);
+    }
+
+    [Test]
+    public void ConsumingNegativeCaloriesDoesNotReduceHunger()
+    {
+        GameObject kobold = new GameObject("Test Kobold");
+
+        KoboldHunger hunger =
+            kobold.AddComponent<KoboldHunger>();
+
+        hunger.ConsumeCalories(-100f);
+
+        Assert.AreEqual(1600f, hunger.currentCalories);
+
+        Object.DestroyImmediate(kobold);
+    }
+
+    [Test]
+    public void FoodUseFailsWhenConsumerIsNull()
+    {
+        GameObject mushroom = new GameObject("Test Mushroom");
+        TestFood food = mushroom.AddComponent<TestFood>();
+
+        bool result = food.Use(null);
+
+        Assert.IsFalse(result);
+
+        Object.DestroyImmediate(mushroom);
+    }
+
+    [Test]
+    public void FoodUseFailsWhenConsumerHasNoKoboldHunger()
+    {
+        GameObject consumer = new GameObject("Invalid Consumer");
+        GameObject mushroom = new GameObject("Test Mushroom");
+        TestFood food = mushroom.AddComponent<TestFood>();
+
+        bool result = food.Use(consumer);
+
+        Assert.IsFalse(result);
+
+        Object.DestroyImmediate(consumer);
+        Object.DestroyImmediate(mushroom);
+    }
+
+    [Test]
+    public void BrownMushroomRestores500Calories()
+    {
+        GameObject kobold = new GameObject("Test Kobold");
+
+        KoboldHunger hunger =
+            kobold.AddComponent<KoboldHunger>();
+
+        hunger.LoseCalories(600f);
+
+        GameObject mushroom =
+            new GameObject("Brown Mushroom");
+
+        BrownMushroom food =
+            mushroom.AddComponent<BrownMushroom>();
+
+        LogAssert.Expect(
+            LogType.Error,
+            "Brown Mushroom: Destroy may not be called from edit mode! Use DestroyImmediate instead.\n" +
+            "Destroying an object in edit mode destroys it permanently"
+        );
+
+        bool result = food.Use(kobold);
+
+        Assert.IsTrue(result);
+        Assert.AreEqual(1500f, hunger.currentCalories);
+
+        Object.DestroyImmediate(kobold);
+        Object.DestroyImmediate(mushroom);
+    }
+
+
 }
 
 public class TestFood : Food

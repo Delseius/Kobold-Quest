@@ -12,8 +12,14 @@ public class KoboldHunger : MonoBehaviour
         LoseCaloriesOverTime(Time.deltaTime);
     }
 
+
     public void ConsumeCalories(float calories)
     {
+        if (calories < 0f)
+        {
+            return;
+        }
+
         currentCalories += calories;
 
         if (currentCalories > maxCalories)
@@ -24,6 +30,11 @@ public class KoboldHunger : MonoBehaviour
 
     public void LoseCalories(float calories)
     {
+        if (calories < 0f)
+        {
+            return;
+        }
+
         currentCalories -= calories;
 
         if (currentCalories < 0f)
@@ -31,6 +42,7 @@ public class KoboldHunger : MonoBehaviour
             currentCalories = 0f;
         }
     }
+
 
     public void LoseCaloriesOverTime(float elapsedSeconds)
     {
