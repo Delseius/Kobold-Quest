@@ -6,18 +6,29 @@ public class ToggleImage : MonoBehaviour
     public GameObject playerSpriteImage;
     public GameObject worldSquare;
 
+    // A dedicated tracker variable
+    private bool isShown = false;
+
+    void Start()
+    {
+        // Enforce the default starting state when you press play
+        playerSpriteImage.SetActive(isShown);
+        worldSquare.SetActive(isShown);
+    }
+
     void Update()
     {
         if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
         {
-            // Read the current state, then invert it
-            bool nextState = !playerSpriteImage.activeSelf;
+            // Toggle the tracker
+            isShown = !isShown;
 
-            // Explicitly force both objects to match the exact same true/false state
-            playerSpriteImage.SetActive(nextState);
-            worldSquare.SetActive(nextState);
+            // Apply it strictly to both targets
+            playerSpriteImage.SetActive(isShown);
+            worldSquare.SetActive(isShown);
         }
     }
 }
+
 
 
