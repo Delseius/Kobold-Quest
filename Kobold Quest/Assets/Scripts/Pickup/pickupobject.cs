@@ -459,9 +459,9 @@ public class pickupobject : MonoBehaviour
         }
 
         bool isItem =
-            //gameObject.CompareTag("Item");
-            //gameObject.CompareTag("equipment");
-            gameObject.IsItemObject;
+            gameObject.CompareTag("Item");
+            gameObject.CompareTag("Equipment");
+            //gameObject.IsItemObject;
 
         bool isBlock =
             gameObject.CompareTag("Block");
