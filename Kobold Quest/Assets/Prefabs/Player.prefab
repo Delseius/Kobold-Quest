@@ -95,6 +95,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3995012510744358857}
+    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6642674923462406201}
   m_SourcePrefab: {fileID: -8435245712485981826, guid: 68a86ff502d92154a83b089d1472cd96, type: 3}
 --- !u!4 &2879010401383347704 stripped
 Transform:
@@ -330,3 +333,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.35, y: 0.52}
   m_EdgeRadius: 0
+--- !u!114 &6642674923462406201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033656189626637725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ffcf8ee9f31f2f4c860e45d9f87c1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::KoboldHunger
+  maxCalories: 1600
+  currentCalories: 1600
+  caloriesLostPerSecond: 10
