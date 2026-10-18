@@ -16,6 +16,7 @@ public class Pickaxe : Tool
         if (toolDurability <= 0)
         {
             Debug.Log("Pickaxe is broken.");
+            //Destroy(gameObject);
             return;
         }
 

@@ -23,6 +23,9 @@ public class pickupobject : MonoBehaviour
 
     public static GameObject heldObject;
 
+    public static Pickaxe playerPickaxe;
+
+
     private Rigidbody2D objectBody;
     private Collider2D objectCollider;
     private SpriteRenderer objectSpriteRenderer;
@@ -313,15 +316,20 @@ public class pickupobject : MonoBehaviour
         {
             return;
         }
+        //if (playerPickaxe != null)
+        //{
+            //playerPickaxe.pickaxeUse();
+            
+        //}
 
         blockPickupUnlocked = true;
         selectedBlock = this;
-
         UnityEngine.Debug.Log(
             $"{gameObject.name} has been activated " +
             "by the pickaxe. The block can now " +
             "be picked up."
         );
+        //Pickaxe.pickaxeUse();
     }
     // Checks whether the currently held object is a pickaxe.
     public static bool IsPickaxeHeld()
