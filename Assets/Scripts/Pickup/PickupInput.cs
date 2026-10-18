@@ -295,13 +295,34 @@ public class PickupInput
                 return false;
             }
 
-            if (pickaxe.CheckSpace() == null)
+            GridCell targetCell = pickaxe.CheckSpace();
+
+            if (targetCell == null || GridSpace.Instance == null)
             {
                 Debug.Log("Pickaxe cannot be used: there is no valid target cell.");
                 return false;
             }
 
+            Vector2Int clickedBlockPosition =
+                GridSpace.Instance.WorldToGrid(block.transform.position);
+
+            if (targetCell.Position != clickedBlockPosition)
+            {
+                Debug.Log(
+                    "The clicked block is not in the grid cell in front of the kobold."
+                );
+                return false;
+            }
+
+            int durabilityBeforeUse = pickaxe.toolDurability;
             pickaxe.pickaxeUse();
+
+            // pickaxeUse only reduces durability after it finds a valid cell.
+            // Do not unlock the clicked block if the tool did not successfully run.
+            if (pickaxe.toolDurability >= durabilityBeforeUse)
+            {
+                return false;
+            }
         }
 
         pickupobject.SelectBlock(block);
