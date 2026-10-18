@@ -14,6 +14,12 @@ public class PickupInput
 
     public void HandleMouseDown()
     {
+        // A click on a visible inventory slot belongs to the inventory UI,
+        // not to the world object sitting behind it.
+        if (InventorySystem.IsPointerOverInventorySlot())
+        {
+            return;
+        }
         GameObject currentObject =
             pickup.gameObject;
 

@@ -11,6 +11,7 @@ TagManager:
   - Thrown
   - DropZone
   - Item
+  - Equipment
   layers:
   - Default
   - TransparentFX
