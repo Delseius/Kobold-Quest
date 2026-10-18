@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PickupMovement
 {
-    private pickupobject pickup;
+    private readonly pickupobject pickup;
 
     public PickupMovement(pickupobject pickup)
     {
@@ -11,205 +11,80 @@ public class PickupMovement
 
     public void UpdateMovement()
     {
-        Transform player =
-            pickup.PlayerTransformReference;
+        Transform player = pickup.PlayerTransformReference;
+        Transform heldTransform = pickup.transform;
 
-        Transform tool =
-            pickup.ToolTransformReference;
-
-        Transform block =
-            pickup.BlockTransformReference;
-
-        if (player == null)
+        if (player == null || heldTransform == null)
         {
             return;
         }
 
         Vector3 facingDirection =
-            Vector3.right;
+            player.localScale.x < 0 ? Vector3.left : Vector3.right;
 
-        if (player.localScale.x < 0)
+        // While approaching the picked-up object, move the PLAYER toward
+        // this exact object. Do not use ToolTransform/BlockTransform here:
+        // those references may point at a different object.
+        if (pickup.held && pickup.PlayerMove)
         {
-            facingDirection =
-                Vector3.left;
-        }
+            player.position = Vector3.MoveTowards(
+                player.position,
+                heldTransform.position,
+                pickup.speed * Time.deltaTime
+            );
 
-        // Holding an Item or Equipment object and player is ready
-        if (
-            pickup.held &&
-            pickup.Tool &&
-            !pickup.PlayerMove
-        )
-        {
-            Vector3 targetHoldPos =
-                player.position +
-                (
-                    facingDirection *
-                    pickup.HoldOffsetDistance
-                );
-
-            if (tool != null)
-            {
-                tool.position =
-                    Vector3.MoveTowards(
-                        tool.position,
-                        targetHoldPos,
-                        pickup.speed *
-                        Time.deltaTime
-                    );
-            }
-        }
-
-        // Holding a block and player is ready
-        else if (
-            pickup.held &&
-            pickup.block &&
-            !pickup.PlayerMove
-        )
-        {
-            Vector3 targetHoldPos =
-                player.position +
-                (
-                    facingDirection *
-                    pickup.HoldOffsetDistance
-                );
-
-            if (block != null)
-            {
-                block.position =
-                    Vector3.MoveTowards(
-                        block.position,
-                        targetHoldPos,
-                        pickup.speed *
-                        Time.deltaTime
-                    );
-            }
-        }
-
-        // Move player toward the held Item or Equipment after pickup
-        else if (
-            pickup.held &&
-            pickup.PlayerMove &&
-            pickup.Tool
-        )
-        {
-            if (tool == null)
-            {
-                return;
-            }
-
-            player.position =
-                Vector3.MoveTowards(
-                    player.position,
-                    tool.position,
-                    pickup.speed *
-                    Time.deltaTime
-                );
-
-            if (
-                Vector3.Distance(
-                    player.position,
-                    tool.position
-                ) < 0.05f
-            )
+            if (Vector3.Distance(player.position, heldTransform.position) < 0.05f)
             {
                 pickup.PlayerMove = false;
-
-                Vector3 targetHoldPos =
-                    player.position +
-                    (
-                        facingDirection *
-                        pickup.HoldOffsetDistance
-                    );
-
-                tool.position =
-                    targetHoldPos;
+                heldTransform.position =
+                    player.position + facingDirection * pickup.HoldOffsetDistance;
             }
+
+            return;
         }
 
-        // Move player toward block after pickup
-        else if (
-            pickup.held &&
-            pickup.PlayerMove &&
-            pickup.block
-        )
+        // Items and Equipment follow the player at the hand offset.
+        if (pickup.held && pickup.Tool && !pickup.PlayerMove)
         {
-            if (block == null)
-            {
-                return;
-            }
+            heldTransform.position = Vector3.MoveTowards(
+                heldTransform.position,
+                player.position + facingDirection * pickup.HoldOffsetDistance,
+                pickup.speed * Time.deltaTime
+            );
 
-            player.position =
-                Vector3.MoveTowards(
-                    player.position,
-                    block.position,
-                    pickup.speed *
-                    Time.deltaTime
-                );
-
-            if (
-                Vector3.Distance(
-                    player.position,
-                    block.position
-                ) < 0.05f
-            )
-            {
-                pickup.PlayerMove = false;
-
-                Vector3 targetHoldPos =
-                    player.position +
-                    (
-                        facingDirection *
-                        pickup.HoldOffsetDistance
-                    );
-
-                block.position =
-                    targetHoldPos;
-            }
+            return;
         }
 
-        // Move object and player toward drop zone
-        else if (
-            pickup.drop &&
-            pickup.PlaceBlockTransform != null
-        )
+        // Blocks follow the same approach/hold movement once unlocked.
+        if (pickup.held && pickup.block && !pickup.PlayerMove)
         {
-            Transform transformToMove =
-                pickup.Tool
-                    ? tool
-                    : block;
+            heldTransform.position = Vector3.MoveTowards(
+                heldTransform.position,
+                player.position + facingDirection * pickup.HoldOffsetDistance,
+                pickup.speed * Time.deltaTime
+            );
 
-            if (transformToMove == null)
-            {
-                return;
-            }
+            return;
+        }
 
-            transformToMove.position =
-                Vector3.MoveTowards(
-                    transformToMove.position,
-                    pickup.CalculatedDropTarget,
-                    pickup.speed *
-                    Time.deltaTime
-                );
+        // Move the held object and player toward a clicked drop destination.
+        if (pickup.drop && pickup.PlaceBlockTransform != null)
+        {
+            heldTransform.position = Vector3.MoveTowards(
+                heldTransform.position,
+                pickup.CalculatedDropTarget,
+                pickup.speed * Time.deltaTime
+            );
 
-            player.position =
-                Vector3.MoveTowards(
-                    player.position,
-                    pickup.PlaceBlockTransform.position,
-                    pickup.speed *
-                    Time.deltaTime
-                );
+            player.position = Vector3.MoveTowards(
+                player.position,
+                pickup.PlaceBlockTransform.position,
+                pickup.speed * Time.deltaTime
+            );
 
             if (
-                Vector3.Distance(
-                    player.position,
-                    pickup.PlaceBlockTransform.position
-                ) < 0.1f
-                ||
-                Vector3.Distance(
-                    transformToMove.position,
-                    pickup.CalculatedDropTarget
-                ) < 0.1f
+                Vector3.Distance(player.position, pickup.PlaceBlockTransform.position) < 0.1f ||
+                Vector3.Distance(heldTransform.position, pickup.CalculatedDropTarget) < 0.1f
             )
             {
                 pickup.ExecuteDropRelease();
