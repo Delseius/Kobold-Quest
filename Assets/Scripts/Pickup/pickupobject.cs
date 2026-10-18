@@ -282,9 +282,55 @@ public class pickupobject : MonoBehaviour
 
         if (objectBody != null)
         {
-            objectBody.bodyType =
-                RigidbodyType2D.Kinematic;
+            objectBody.bodyType = RigidbodyType2D.Kinematic;
         }
+
+        // Start the pickup immediately. The object is nested under Tool/Pickaxe
+        // in this scene, so detach it from its parent before moving it in world space.
+        if (CompareTag("Block") && !blockPickupUnlocked)
+        {
+            Pressed = false;
+            return;
+        }
+
+        if (!IsItemObject && !CompareTag("Block"))
+        {
+            Pressed = false;
+            return;
+        }
+
+        if (heldObject != null && heldObject != gameObject)
+        {
+            Pressed = false;
+            return;
+        }
+
+        transform.SetParent(null, true);
+
+        if (objectCollider != null)
+        {
+            objectCollider.enabled = false;
+        }
+
+        GridObject gridObject = GetComponent<GridObject>();
+        if (gridObject != null)
+        {
+            gridObject.DisableGridObject();
+        }
+
+        if (objectSpriteRenderer != null)
+        {
+            objectSpriteRenderer.sortingOrder = 15;
+        }
+
+        heldObject = gameObject;
+        Pressed = false;
+        release = true;
+        held = true;
+        Tool = IsItemObject;
+        block = CompareTag("Block");
+        drop = false;
+        PlayerMove = true;
     }
 
     public void InitiateDropFromBlock(
