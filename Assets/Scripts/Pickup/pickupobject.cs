@@ -331,6 +331,12 @@ public class pickupobject : MonoBehaviour
             return false;
         }
 
+        // Equipment can be carried but must never unlock blocks.
+        if (heldObject.CompareTag("Equipment"))
+        {
+            return false;
+        }
+
         // Equipment may be held, but must never unlock blocks.
         if (heldObject.CompareTag("Equipment"))
         {
@@ -346,6 +352,12 @@ public class pickupobject : MonoBehaviour
     public static bool IsShovelHeld()
     {
         if (heldObject == null)
+        {
+            return false;
+        }
+
+        // Equipment can be carried but must never unlock blocks.
+        if (heldObject.CompareTag("Equipment"))
         {
             return false;
         }
