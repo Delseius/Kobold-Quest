@@ -15,7 +15,7 @@ public class AssemblyInventorySystem : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool assemblyStartsVisible = false;
 
-    private readonly GameObject[] storedItems = new GameObject[4];
+    private readonly GameObject[] storedItems = new GameObject[15];
     private pickupobject pickup;
 
     private void Awake()
@@ -27,9 +27,9 @@ public class AssemblyInventorySystem : MonoBehaviour
 
     private void Start()
     {
-        if (assemblySlots == null || assemblySlots.Length != 4)
+        if (assemblySlots == null || assemblySlots.Length != 15)
         {
-            Debug.LogError("AssemblyInventorySystem requires exactly four slots.", this);
+            Debug.LogError("AssemblyInventorySystem requires exactly fifteen slots.", this);
             return;
         }
 
