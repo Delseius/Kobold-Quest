@@ -12,6 +12,7 @@ TagManager:
   - DropZone
   - Item
   - Equipment
+  - workstations
   layers:
   - Default
   - TransparentFX
