@@ -7,7 +7,7 @@ public class AssemblyInventorySystem : MonoBehaviour
     [SerializeField] private GameObject assemblyUIPanel;
 
     [Header("Assembly Slots - Assign Four Different Slots")]
-    [SerializeField] private InventorySlotUI[] assemblySlots = new InventorySlotUI[4];
+    [SerializeField] private InventorySlotUI[] assemblySlots = new InventorySlotUI[15];
 
     [Header("Allowed Object Tags")]
     [SerializeField] private string[] allowedTags = { "Item", "Equipment" };
