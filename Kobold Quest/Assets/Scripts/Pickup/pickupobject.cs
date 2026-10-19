@@ -23,6 +23,9 @@ public class pickupobject : MonoBehaviour
 
     public static GameObject heldObject;
 
+    public static Pickaxe playerPickaxe;
+
+
     private Rigidbody2D objectBody;
     private Collider2D objectCollider;
     private SpriteRenderer objectSpriteRenderer;
@@ -34,6 +37,17 @@ public class pickupobject : MonoBehaviour
     public bool IsBlockPickupUnlocked
     {
         get { return blockPickupUnlocked; }
+    }
+
+    // Objects tagged "Equipment" behave exactly like "Item" objects
+    // (they can be picked up, held and used). The Equipment tag is also
+    // what lets InventorySystem store them in an inventory slot.
+    public bool IsItemObject
+    {
+        get
+        {
+            return CompareTag("Item") || CompareTag("Equipment");
+        }
     }
 
     // Remembers the last block clicked so F can activate it with a pickaxe.
@@ -142,7 +156,8 @@ public class pickupobject : MonoBehaviour
             }
 
             bool isItem =
-                candidate.CompareTag("Item");
+                //candidate.CompareTag("Item");
+                candidate.IsItemObject;
 
             bool isBlock =
                 candidate.CompareTag("Block");
@@ -300,15 +315,20 @@ public class pickupobject : MonoBehaviour
         {
             return;
         }
+        //if (playerPickaxe != null)
+        //{
+            //playerPickaxe.pickaxeUse();
+            
+        //}
 
         blockPickupUnlocked = true;
         selectedBlock = this;
-
         UnityEngine.Debug.Log(
             $"{gameObject.name} has been activated " +
             "by the pickaxe. The block can now " +
             "be picked up."
         );
+        //Pickaxe.pickaxeUse();
     }
     // Checks whether the currently held object is a pickaxe.
     public static bool IsPickaxeHeld()
@@ -445,8 +465,10 @@ public class pickupobject : MonoBehaviour
             return;
         }
 
+        //bool isItem =
+        //gameObject.CompareTag("Item");
         bool isItem =
-            gameObject.CompareTag("Item");
+            IsItemObject;
 
         bool isBlock =
             gameObject.CompareTag("Block");

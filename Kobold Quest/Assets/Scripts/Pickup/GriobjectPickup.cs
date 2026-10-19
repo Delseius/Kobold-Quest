@@ -5,7 +5,6 @@ using UnityEngine;
 public class GriobjectPickup : MonoBehaviour
 {
     private GridObject gridObject;
-
     private void Awake()
     {
         gridObject = GetComponent<GridObject>();
@@ -18,7 +17,6 @@ public class GriobjectPickup : MonoBehaviour
             );
         }
     }
-
     public void TestSnapToGrid()
     {
         if (gridObject == null)
@@ -40,7 +38,7 @@ public class GriobjectPickup : MonoBehaviour
 
             return;
         }
-
+        
         // Get the block's position before snapping.
         Vector3 beforePosition = transform.position;
 

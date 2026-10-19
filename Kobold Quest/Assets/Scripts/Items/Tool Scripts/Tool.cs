@@ -1,3 +1,4 @@
+//using System.Diagnostics;
 using UnityEngine;
 
 
@@ -68,7 +69,7 @@ public class Tool : MonoBehaviour
 
         // Find the grid cell immediately in front
         // of the kobold.
-        Vector2Int targetGridPosition =
+        /*Vector2Int targetGridPosition =
             koboldGridPosition +
             facingDirection;
 
@@ -87,6 +88,19 @@ public class Tool : MonoBehaviour
 
             return null;
         }
+
+        return targetCell;*/
+        // Calculate the cell immediately in front.
+        Vector2Int targetGridPosition =
+            koboldGridPosition + facingDirection;
+
+        // GetCell creates the cell if it doesn't exist.
+        GridCell targetCell =
+            GridSpace.Instance.GetCell(targetGridPosition);
+
+        Debug.Log(
+            $"Pickaxe target cell: {targetGridPosition}"
+        );
 
         return targetCell;
     }

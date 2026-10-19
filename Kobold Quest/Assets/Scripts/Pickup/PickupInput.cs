@@ -1,4 +1,6 @@
 
+//using System.Diagnostics;
+//using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +16,12 @@ public class PickupInput
 
     public void HandleMouseDown()
     {
+        // A click on a visible inventory slot belongs to the inventory UI,
+        // not to the world object sitting behind it.
+        if (InventorySystem.IsPointerOverInventorySlot())
+        {
+            return;
+        }
         GameObject currentObject =
             pickup.gameObject;
 
@@ -40,36 +48,24 @@ public class PickupInput
 
             return;
         }
-        // Clicking a block with a pickaxe activates it.
-        // It does NOT immediately pick it up.
-        /*if (currentObject.CompareTag("Block"))
+        // Clicking a block attempts to use the held tool on it.
+        if (currentObject.CompareTag("Block"))
         {
-            if (pickupobject.IsPickaxeHeld())
-            {
-                pickup.UnlockBlockForPickup();
+            pickupobject clickedBlock =
+                currentObject.GetComponent<pickupobject>();
 
-                UnityEngine.Debug.Log(
-                    $"Pickaxe activated " +
-                    $"{currentObject.name}. " +
-                    "The block can now be picked up."
-                );
-            }
-            else
+            if (clickedBlock != null)
             {
-                UnityEngine.Debug.Log(
-                    $"{currentObject.name} is locked. " +
-                    "Hold a pickaxe and activate " +
-                    "the block first."
-                );
+                TryUseHeldToolOnBlock(clickedBlock);
             }
 
             return;
-        }*/
+        }
 
         // Clicking a block with the correct tool activates the block.
         // Pickaxe -> stone blocks
         // Shovel  -> dirt blocks
-        if (currentObject.CompareTag("Block"))
+        /*if (currentObject.CompareTag("Block"))
         {
             if (pickupobject.IsCorrectToolForBlock(currentObject))
             {
@@ -90,7 +86,7 @@ public class PickupInput
             }
 
             return;
-        }
+        }*/
 
         if (
             pickupobject.heldObject == null &&
@@ -255,8 +251,9 @@ public class PickupInput
         {
             return false;
         }
+        return TryUseHeldToolOnBlock(block);
 
-        pickupobject.SelectBlock(block);
+        /*pickupobject.SelectBlock(block);
         block.UnlockBlockForPickup();
 
         UnityEngine.Debug.Log(
@@ -264,8 +261,112 @@ public class PickupInput
             $"{block.gameObject.name}. The block can now be picked up."
         );
 
+        return true;*/
+    }
+
+    private bool TryUseHeldToolOnBlock(pickupobject block)
+    {
+        if (
+            block == null ||
+            pickupobject.heldObject == null ||
+            !pickupobject.IsCorrectToolForBlock(block.gameObject)
+        )
+        {
+            if (block != null)
+            {
+                Debug.Log(
+                    $"{block.gameObject.name} cannot be activated with " +
+                    $"{pickupobject.GetHeldToolName()}. Use the correct tool."
+                );
+            }
+
+            return false;
+        }
+
+        // Handle pickaxe use.
+        if (pickupobject.IsPickaxeHeld())
+        {
+            Pickaxe pickaxe =
+                pickupobject.heldObject.GetComponent<Pickaxe>();
+
+            if (pickaxe == null)
+            {
+                Debug.LogWarning(
+                    "The held pickaxe does not have a Pickaxe component."
+                );
+                return false;
+            }
+
+            if (pickaxe.toolDurability <= 0)
+            {
+                Debug.Log("Pickaxe is broken.");
+                UnityEngine.Object.Destroy(pickupobject.heldObject);
+                pickupobject.heldObject = null; // Clear the reference
+                return false;
+            }
+
+
+            // Find the grid cell directly in front of the kobold.
+            GridCell targetCell = pickaxe.CheckSpace();
+
+            if (targetCell == null || GridSpace.Instance == null)
+            {
+                Debug.Log(
+                    "Pickaxe cannot be used: there is no valid target cell."
+                );
+                return false;
+            }
+
+            // Make sure the clicked block is the block in front of the kobold.
+            // Check whether the clicked block is close enough to mine.
+            Vector2Int clickedBlockPosition =
+                GridSpace.Instance.WorldToGrid(block.transform.position);
+
+            Vector2Int koboldPosition =
+                GridSpace.Instance.WorldToGrid(
+                    pickup.PlayerTransformReference != null
+                        ? pickup.PlayerTransformReference.position
+                        : pickupobject.FindPlayerTransform().position
+                );
+
+            int distanceX = Mathf.Abs(
+                clickedBlockPosition.x - koboldPosition.x
+            );
+
+            int distanceY = Mathf.Abs(
+                clickedBlockPosition.y - koboldPosition.y
+            );
+
+            if (distanceX > 1 || distanceY > 1)
+            {
+                Debug.Log("The block is too far away to mine.");
+                return false;
+            }
+
+            int durabilityBeforeUse = pickaxe.toolDurability;
+
+            // Call the method in the Pickaxe script.
+            pickaxe.pickaxeUse();
+
+            // Stop if the pickaxe was not successfully used.
+            if (pickaxe.toolDurability >= durabilityBeforeUse)
+            {
+                return false;
+            }
+        }
+
+        // Unlock the block so it can be picked up with C.
+        pickupobject.SelectBlock(block);
+        block.UnlockBlockForPickup();
+
+        Debug.Log(
+            $"{pickupobject.GetHeldToolName()} used on " +
+            $"{block.gameObject.name}. The block can now be picked up with C."
+        );
+
         return true;
     }
+
 
     /*private bool TryActivateBlockInRadius()
     {
