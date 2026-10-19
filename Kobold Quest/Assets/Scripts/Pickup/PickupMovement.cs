@@ -35,22 +35,22 @@ public class PickupMovement
         {
             nextDiagnosticTime = Time.unscaledTime + 0.5f;
             Debug.Log(
-                $"[PickupMovementDiag] BEFORE branch={branch}; object={pickup.name}#{pickup.GetInstanceID()}; " +
+                $"[PickupMovementDiag] BEFORE branch={branch}; object={pickup.name}; " +
                 $"held={pickup.held}; Tool={pickup.Tool}; block={pickup.block}; PlayerMove={pickup.PlayerMove}; " +
                 $"Pressed={pickup.Pressed}; release={pickup.release}; drop={pickup.drop}; " +
-                $"staticHeld={(pickupobject.heldObject != null ? pickupobject.heldObject.name + "#" + pickupobject.heldObject.GetInstanceID() : "NULL")}; " +
-                $"playerRef={(player != null ? player.name + "#" + player.GetInstanceID() : "NULL")}; " +
+                $"staticHeld={(pickupobject.heldObject != null ? pickupobject.heldObject.name : "NULL")}; " +
+                $"playerRef={(player != null ? player.name : "NULL")}; " +
                 $"playerPos={(player != null ? player.position.ToString("F3") : "NULL")}; selfPos={pickup.transform.position:F3}; " +
-                $"toolRef={(tool != null ? tool.name + "#" + tool.GetInstanceID() : "NULL")}; " +
+                $"toolRef={(tool != null ? tool.name : "NULL")}; " +
                 $"toolPos={(tool != null ? tool.position.ToString("F3") : "NULL")}; toolIsSelf={(tool == pickup.transform)}; " +
-                $"blockRef={(block != null ? block.name + "#" + block.GetInstanceID() : "NULL")}; offset={pickup.HoldOffsetDistance:F3}",
+                $"blockRef={(block != null ? block.name : "NULL")}; offset={pickup.HoldOffsetDistance:F3}",
                 pickup
             );
         }
 
         if (player == null)
         {
-            if (logNow) Debug.LogWarning($"[PickupMovementDiag] RETURN: player reference NULL for {pickup.name}#{pickup.GetInstanceID()}.", pickup);
+            if (logNow) Debug.LogWarning($"[PickupMovementDiag] RETURN: player reference NULL for {pickup.name}.", pickup);
             return;
         }
 
@@ -65,7 +65,7 @@ public class PickupMovement
                 tool.position = Vector3.MoveTowards(tool.position, target, pickup.speed * Time.deltaTime);
                 if (logNow) Debug.Log($"[PickupMovementDiag] TOOL_FOLLOW old={oldPos:F3}; target={target:F3}; newTool={tool.position:F3}; self={pickup.transform.position:F3}.", pickup);
             }
-            else if (logNow) Debug.LogWarning($"[PickupMovementDiag] TOOL_FOLLOW SKIPPED: tool reference NULL for {pickup.name}#{pickup.GetInstanceID()}.", pickup);
+            else if (logNow) Debug.LogWarning($"[PickupMovementDiag] TOOL_FOLLOW SKIPPED: tool reference NULL for {pickup.name}.", pickup);
         }
         else if (blockFollow)
         {
@@ -76,13 +76,13 @@ public class PickupMovement
                 block.position = Vector3.MoveTowards(block.position, target, pickup.speed * Time.deltaTime);
                 if (logNow) Debug.Log($"[PickupMovementDiag] BLOCK_FOLLOW old={oldPos:F3}; target={target:F3}; newBlock={block.position:F3}; self={pickup.transform.position:F3}.", pickup);
             }
-            else if (logNow) Debug.LogWarning($"[PickupMovementDiag] BLOCK_FOLLOW SKIPPED: block reference NULL for {pickup.name}#{pickup.GetInstanceID()}.", pickup);
+            else if (logNow) Debug.LogWarning($"[PickupMovementDiag] BLOCK_FOLLOW SKIPPED: block reference NULL for {pickup.name}.", pickup);
         }
         else if (toolPickup)
         {
             if (tool == null)
             {
-                if (logNow) Debug.LogWarning($"[PickupMovementDiag] PLAYER_TO_TOOL SKIPPED: tool reference NULL for {pickup.name}#{pickup.GetInstanceID()}.", pickup);
+                if (logNow) Debug.LogWarning($"[PickupMovementDiag] PLAYER_TO_TOOL SKIPPED: tool reference NULL for {pickup.name}.", pickup);
                 return;
             }
 
@@ -98,7 +98,7 @@ public class PickupMovement
         {
             if (block == null)
             {
-                if (logNow) Debug.LogWarning($"[PickupMovementDiag] PLAYER_TO_BLOCK SKIPPED: block reference NULL for {pickup.name}#{pickup.GetInstanceID()}.", pickup);
+                if (logNow) Debug.LogWarning($"[PickupMovementDiag] PLAYER_TO_BLOCK SKIPPED: block reference NULL for {pickup.name}.", pickup);
                 return;
             }
 
@@ -115,7 +115,7 @@ public class PickupMovement
             Transform transformToMove = pickup.Tool ? tool : block;
             if (transformToMove == null)
             {
-                if (logNow) Debug.LogWarning($"[PickupMovementDiag] DROP SKIPPED: selected transform NULL for {pickup.name}#{pickup.GetInstanceID()}.", pickup);
+                if (logNow) Debug.LogWarning($"[PickupMovementDiag] DROP SKIPPED: selected transform NULL for {pickup.name}.", pickup);
                 return;
             }
 
@@ -127,7 +127,7 @@ public class PickupMovement
         }
 
         if (logNow)
-            Debug.Log($"[PickupMovementDiag] AFTER branch={branch}; object={pickup.name}#{pickup.GetInstanceID()}; self={pickup.transform.position:F3}; " +
+            Debug.Log($"[PickupMovementDiag] AFTER branch={branch}; object={pickup.name}; self={pickup.transform.position:F3}; " +
                       $"tool={(tool != null ? tool.position.ToString("F3") : "NULL")}; player={player.position:F3}; toolIsSelf={(tool == pickup.transform)}.", pickup);
     }
 }
