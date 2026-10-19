@@ -5,7 +5,7 @@ public class AssemblyStations : MonoBehaviour
     public Recipes RecipeCatalogue;
     private GameObject[] AssemblyInventory;
     
-
+    
     //Takes a recipe and checks if the required materials are available
     //Then returns int. Returns 1 if it can be crafted, returns 0 if it can't, anything else is an error
     public int CanCraft(Recipes.Recipe Recipe)
@@ -86,8 +86,5 @@ public class AssemblyStations : MonoBehaviour
         Debug.LogError("Failed to craft " + temp.RecipeName + ".");
         return 0;
     }
-
-
-
 
 }
