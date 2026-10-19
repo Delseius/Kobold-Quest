@@ -5,5 +5,6 @@ public enum ItemID
 {
     Stick,
     Log,
-    Plank
+    Plank,
+    Stone
 }
