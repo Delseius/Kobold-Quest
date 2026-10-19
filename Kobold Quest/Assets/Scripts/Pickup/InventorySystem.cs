@@ -1,8 +1,6 @@
 //using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-/// <summary>
 /// Inventory for Kobold Quest: a hand slot plus a list of inventory slots.
 ///
 /// This script does NOT modify pickupobject, PickupInput, PickupMovement,
@@ -21,7 +19,6 @@ using UnityEngine.InputSystem;
 ///                It triggers once per hover, when the mouse ENTERS the slot.
 ///
 /// The UI lives in the scene hierarchy. Assign the slots in the Inspector.
-/// </summary>
 public class InventorySystem : MonoBehaviour
 {
     public static InventorySystem Instance { get; private set; }
@@ -169,10 +166,10 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// True when the mouse is over a visible inventory slot.
-    /// PickupInput uses this so world objects behind a slot ignore the click.
-    /// </summary>
+    
+    // True when the mouse is over a visible inventory slot.
+    // PickupInput uses this so world objects behind a slot ignore the click.
+   
     public static bool IsPointerOverInventorySlot()
     {
         if (
@@ -187,11 +184,9 @@ public class InventorySystem : MonoBehaviour
             Mouse.current.position.ReadValue()
         ) >= 0;
     }
-
-    /// <summary>
     /// Returns the index of the visible slot under the screen position,
     /// or -1 if there is none.
-    /// </summary>
+    
     private int GetSlotIndexAt(Vector2 screenPosition)
     {
         if (requiresInventoryOpen && !IsInventoryVisible)
@@ -247,10 +242,6 @@ public class InventorySystem : MonoBehaviour
             TryTakeFromSlot(index);
         }
     }
-
-    // ------------------------------------------------------------
-    // Public API
-    // ------------------------------------------------------------
 
     public bool IsInventoryVisible
     {
@@ -314,10 +305,9 @@ public class InventorySystem : MonoBehaviour
         return TryTakeFromSlot(0);
     }
 
-    /// <summary>
     /// Stores the object currently handled by the original pickup system
     /// into one specific inventory slot.
-    /// </summary>
+    
     public bool TryStoreHeldItemInSlot(int index)
     {
         if (!IsValidSlot(index))
@@ -382,9 +372,9 @@ public class InventorySystem : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Returns one slot's item to the original pickup system.
-    /// </summary>
+    
+    // Returns one slot's item to the original pickup system.
+    
     public bool TryTakeFromSlot(int index)
     {
         if (!IsValidSlot(index))
@@ -452,9 +442,9 @@ public class InventorySystem : MonoBehaviour
         return true;
     }
 
-    // ------------------------------------------------------------
-    // UI
-    // ------------------------------------------------------------
+    
+    // set the UI
+    
 
     private bool IsValidSlot(int index)
     {
