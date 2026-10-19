@@ -397,9 +397,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 185739523}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec08197fe854f7249b6bf14dc65376d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 162f9cf401ea46444990ca398b110bfd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: GameAssembly::InventorySlotUI
   iconImage: {fileID: 1428771531}
 --- !u!1 &228134523
 GameObject:
@@ -1545,9 +1545,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1257733196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec08197fe854f7249b6bf14dc65376d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 162f9cf401ea46444990ca398b110bfd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: GameAssembly::InventorySlotUI
   iconImage: {fileID: 555307851}
 --- !u!114 &1257733199
 MonoBehaviour:
@@ -2727,9 +2727,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1495552248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec08197fe854f7249b6bf14dc65376d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 162f9cf401ea46444990ca398b110bfd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: GameAssembly::InventorySlotUI
   iconImage: {fileID: 1472280656}
 --- !u!224 &1495552250
 RectTransform:
@@ -3104,7 +3104,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fb41875e180b3d42a5ff22085f5746b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventorySystem
+  m_EditorClassIdentifier: GameAssembly::InventorySystem
   useQKey: 1
   useMouseHover: 1
   hoverTakesItems: 1
