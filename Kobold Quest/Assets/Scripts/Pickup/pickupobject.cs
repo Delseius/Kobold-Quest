@@ -159,7 +159,6 @@ public class pickupobject : MonoBehaviour
                 //candidate.CompareTag("Item");
                 candidate.IsItemObject;
 
-
             bool isBlock =
                 candidate.CompareTag("Block");
 
@@ -466,10 +465,10 @@ public class pickupobject : MonoBehaviour
             return;
         }
 
+        //bool isItem =
+        //gameObject.CompareTag("Item");
         bool isItem =
-            gameObject.CompareTag("Item") ||
-            gameObject.CompareTag("Equipment");
-            //gameObject.IsItemObject;
+            IsItemObject;
 
         bool isBlock =
             gameObject.CompareTag("Block");
