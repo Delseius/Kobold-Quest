@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 103854080}
   - component: {fileID: 103854078}
   m_Layer: 5
-  m_Name: Crafting Slot (1)
+  m_Name: Assembly Slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1164,7 +1164,7 @@ RectTransform:
   m_GameObject: {fileID: 507398530}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.8875, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1966054295}
@@ -1714,7 +1714,7 @@ RectTransform:
   m_GameObject: {fileID: 648841730}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0875, y: 2.86875, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 284774702}
@@ -2008,7 +2008,7 @@ GameObject:
   - component: {fileID: 832734845}
   - component: {fileID: 832734848}
   m_Layer: 5
-  m_Name: 'Crafting Slot '
+  m_Name: 'Assembly Slot '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2134,7 +2134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 74.5, y: 5.7}
+  m_AnchoredPosition: {x: 35, y: 10.3}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &838241440
@@ -2184,8 +2184,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2687,7 +2687,7 @@ GameObject:
   - component: {fileID: 1234758382}
   - component: {fileID: 1234758381}
   m_Layer: 5
-  m_Name: Crafting Slot (3)
+  m_Name: Assembly Slot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3652,7 +3652,7 @@ GameObject:
   - component: {fileID: 1381373884}
   - component: {fileID: 1381373883}
   m_Layer: 5
-  m_Name: Crafting Slot (2)
+  m_Name: Assembly Slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4921,8 +4921,8 @@ MonoBehaviour:
   - {fileID: 1495552249}
   - {fileID: 832734848}
   - {fileID: 103854078}
-  - {fileID: 103854078}
-  - {fileID: 103854078}
+  - {fileID: 1381373883}
+  - {fileID: 1234758381}
   - {fileID: 103854078}
   - {fileID: 103854078}
 --- !u!4 &1579332640
