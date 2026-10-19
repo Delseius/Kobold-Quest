@@ -293,11 +293,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c593d8ff118827418763eba35f0a6e8, type: 3}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &185739523
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,11 +326,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1428771530}
-<<<<<<< HEAD
-=======
   - {fileID: 1816571109}
   - {fileID: 1450736146}
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
   m_Father: {fileID: 784586609}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -597,10 +589,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &451622345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,11 +1097,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::dirt_Floor
   objectType: 0
   isTillable: 1
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &784586608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,10 +1126,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 185739524}
-<<<<<<< HEAD
   - {fileID: 1495552250}
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
   - {fileID: 1257733197}
   m_Father: {fileID: 2117572485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1155,10 +1135,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 28}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &916796103
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,11 +2354,6 @@ Transform:
   - {fileID: 451622346}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &1428771529
 GameObject:
   m_ObjectHideFlags: 0
@@ -2458,9 +2429,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428771529}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
 --- !u!1 &1450736145
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,7 +2525,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &1471810399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,11 +2997,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3553483380286377046, guid: d3eda675c585cba4f952a26c00b8ce48, type: 3}
   m_PrefabInstance: {fileID: 4490597325178215831}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &1554206907
 GameObject:
   m_ObjectHideFlags: 0
@@ -3144,26 +3106,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySystem
   useQKey: 1
-<<<<<<< HEAD
   useMouseHover: 1
   hoverTakesItems: 1
   toggleInventoryKey: 23
   requiresInventoryOpen: 1
-=======
-  toggleInventoryKey: 23
-  qRequiresInventoryOpen: 1
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
   inventoryStartsVisible: 0
   onlyAllowTag: 1
   allowedTag: Equipment
   handSlot: {fileID: 1257733198}
-<<<<<<< HEAD
   inventorySlots:
   - {fileID: 185739528}
   - {fileID: 1495552249}
-=======
-  inventorySlot: {fileID: 185739528}
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!4 &1579332640
 Transform:
   m_ObjectHideFlags: 0
@@ -3179,10 +3132,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> e484ff5b2aa5e8d8df74da555f163e1b2c4b766d
 --- !u!1 &1637988236
 GameObject:
   m_ObjectHideFlags: 0
