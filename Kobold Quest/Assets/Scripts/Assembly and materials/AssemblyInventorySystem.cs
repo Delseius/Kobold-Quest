@@ -1,5 +1,3 @@
-
-//using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,86 +6,65 @@ public class AssemblyInventorySystem : MonoBehaviour
     [Header("Assembly UI")]
     [SerializeField] private GameObject assemblyUIPanel;
 
-    [Header("Assembly Slots - Assign Exactly Four")]
-    [SerializeField]
-    private InventorySlotUI[] assemblySlots =
-        new InventorySlotUI[4];
+    [Header("Assembly Slots - Assign Four Different Slots")]
+    [SerializeField] private InventorySlotUI[] assemblySlots = new InventorySlotUI[4];
 
     [Header("Allowed Object Tags")]
-    [SerializeField]
-    private string[] allowedTags =
-        { "Item", "Equipment" };
+    [SerializeField] private string[] allowedTags = { "Item", "Equipment" };
 
     [Header("Settings")]
     [SerializeField] private bool assemblyStartsVisible = false;
 
     private readonly GameObject[] storedItems = new GameObject[4];
-
     private pickupobject pickup;
 
     private void Awake()
     {
         pickup = GetComponent<pickupobject>();
-
         if (pickup == null)
-        {
-            Debug.LogError(
-                "AssemblyInventorySystem requires pickupobject " +
-                "on the same GameObject.",
-                this
-            );
-        }
+            Debug.LogError("AssemblyInventorySystem requires pickupobject on the same GameObject.", this);
     }
 
     private void Start()
     {
         if (assemblySlots == null || assemblySlots.Length != 4)
         {
-            Debug.LogError(
-                "AssemblyInventorySystem requires exactly four slots.",
-                this
-            );
+            Debug.LogError("AssemblyInventorySystem requires exactly four slots.", this);
             return;
         }
 
+        for (int i = 0; i < assemblySlots.Length; i++)
+        {
+            if (assemblySlots[i] == null)
+                Debug.LogError("Assembly slot " + (i + 1) + " is not assigned.", this);
+
+            for (int j = i + 1; j < assemblySlots.Length; j++)
+            {
+                if (assemblySlots[i] != null && assemblySlots[i] == assemblySlots[j])
+                    Debug.LogError("Assembly slots " + (i + 1) + " and " + (j + 1) +
+                                   " reference the same UI object. Assign four different slot objects.", this);
+            }
+        }
+
         if (assemblyUIPanel != null)
-        {
             assemblyUIPanel.SetActive(assemblyStartsVisible);
-        }
         else
-        {
-            Debug.LogError(
-                "Assign KoboldAssemblystations to Assembly UI Panel.",
-                this
-            );
-        }
+            Debug.LogError("Assign KoboldAssemblystations to Assembly UI Panel.", this);
 
         RefreshSlots();
     }
 
     private void Update()
     {
-        if (assemblyUIPanel == null ||
-            !assemblyUIPanel.activeInHierarchy)
-        {
-            return;
-        }
-
-        if (assemblySlots == null ||
-            Mouse.current == null ||
+        if (assemblyUIPanel == null || !assemblyUIPanel.activeInHierarchy ||
+            assemblySlots == null || Mouse.current == null ||
             !Mouse.current.leftButton.wasPressedThisFrame)
-        {
             return;
-        }
 
         for (int i = 0; i < assemblySlots.Length; i++)
         {
             InventorySlotUI slot = assemblySlots[i];
-
-            if (slot == null)
-                continue;
-
-            if (IsMouseOverSlot(slot))
+            if (slot != null && IsMouseOverSlot(slot))
             {
                 HandleSlotClick(i);
                 return;
@@ -97,30 +74,17 @@ public class AssemblyInventorySystem : MonoBehaviour
 
     private bool IsMouseOverSlot(InventorySlotUI slot)
     {
-        if (Mouse.current == null)
-            return false;
-
         RectTransform rect = slot.GetComponent<RectTransform>();
-
         if (rect == null)
             return false;
 
         Canvas canvas = rect.GetComponentInParent<Canvas>();
         Camera uiCamera = null;
-
-        if (canvas != null &&
-            canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-        {
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             uiCamera = canvas.worldCamera;
-        }
-
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
 
         return RectTransformUtility.RectangleContainsScreenPoint(
-            rect,
-            mousePosition,
-            uiCamera
-        );
+            rect, Mouse.current.position.ReadValue(), uiCamera);
     }
 
     private void HandleSlotClick(int slotIndex)
@@ -128,24 +92,16 @@ public class AssemblyInventorySystem : MonoBehaviour
         if (pickup == null)
             return;
 
-        GameObject heldItem = pickupobject.heldObject;
-
         if (storedItems[slotIndex] != null)
         {
-            // Retrieve an item only if the Kobold's hands are empty.
-            if (heldItem == null)
-            {
+            if (pickupobject.heldObject == null)
                 TakeItemFromSlot(slotIndex);
-            }
-
             return;
         }
 
-        // Store the currently held item in an empty slot.
+        GameObject heldItem = pickupobject.heldObject;
         if (heldItem != null)
-        {
             StoreHeldItemInSlot(slotIndex, heldItem);
-        }
     }
 
     private bool HasAllowedTag(GameObject item)
@@ -155,11 +111,8 @@ public class AssemblyInventorySystem : MonoBehaviour
 
         foreach (string allowedTag in allowedTags)
         {
-            if (!string.IsNullOrEmpty(allowedTag) &&
-                item.tag == allowedTag)
-            {
+            if (!string.IsNullOrEmpty(allowedTag) && item.tag == allowedTag)
                 return true;
-            }
         }
 
         return false;
@@ -167,42 +120,34 @@ public class AssemblyInventorySystem : MonoBehaviour
 
     public bool StoreHeldItemInSlot(int slotIndex, GameObject item)
     {
-        if (pickup == null)
-            return false;
-
-        if (slotIndex < 0 || slotIndex >= storedItems.Length)
-            return false;
-
-        if (item == null || storedItems[slotIndex] != null)
+        if (pickup == null || slotIndex < 0 || slotIndex >= storedItems.Length ||
+            item == null || storedItems[slotIndex] != null)
             return false;
 
         if (!HasAllowedTag(item))
         {
-            Debug.Log(
-                item.name +
-                " cannot be stored. Allowed tags: Item, Equipment."
-            );
+            Debug.Log(item.name + " cannot be stored. Allowed tags: Item, Equipment.");
             return false;
         }
 
         if (pickupobject.heldObject != item)
             return false;
 
-        // Clear the held state using the pickupobject component.
-        pickup.ClearHeldState();
+        // Clear state on the ITEM's pickupobject. heldObject is static,
+        // so clearing the Kobold's component would not clear the item's held state.
+        pickupobject itemPickup = item.GetComponent<pickupobject>();
+        if (itemPickup == null)
+        {
+            Debug.LogWarning(item.name + " has no pickupobject component and cannot be stored.", item);
+            return false;
+        }
 
         storedItems[slotIndex] = item;
-
-        // Hide the object while it is stored.
+        itemPickup.ClearHeldState();
         item.SetActive(false);
-
         RefreshSlot(slotIndex);
 
-        Debug.Log(
-            item.name + " stored in assembly slot " +
-            (slotIndex + 1) + "."
-        );
-
+        Debug.Log(item.name + " stored in assembly slot " + (slotIndex + 1) + ".");
         return true;
     }
 
@@ -212,45 +157,45 @@ public class AssemblyInventorySystem : MonoBehaviour
             return false;
 
         GameObject item = storedItems[slotIndex];
-
-        if (item == null)
+        if (item == null || pickup == null || pickupobject.heldObject != null)
             return false;
 
-        if (pickup == null || pickupobject.heldObject != null)
+        pickupobject itemPickup = item.GetComponent<pickupobject>();
+        if (itemPickup == null)
+        {
+            Debug.LogWarning(item.name + " has no pickupobject component and cannot be returned to the hand.", item);
             return false;
+        }
 
+        Transform playerTransform = pickup.GetPlayerTransform;
+        if (playerTransform == null)
+            playerTransform = pickupobject.FindPlayerTransform();
+
+        // Remove it from the slot before starting the normal pickup sequence.
         storedItems[slotIndex] = null;
+        if (playerTransform != null)
+        {
+            item.transform.position = new Vector3(
+                playerTransform.position.x,
+                playerTransform.position.y,
+                item.transform.position.z);
+        }
 
-        // Restore the object to the scene.
         item.SetActive(true);
-
+        itemPickup.InitiatePickup();
         RefreshSlot(slotIndex);
 
-        Debug.Log(
-            item.name + " taken from assembly slot " +
-            (slotIndex + 1) + "."
-        );
-
+        Debug.Log(item.name + " taken from assembly slot " + (slotIndex + 1) + " and returned to the hand.");
         return true;
     }
 
     public GameObject GetAssemblyItem(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= storedItems.Length)
-            return null;
-
-        return storedItems[slotIndex];
+        return slotIndex >= 0 && slotIndex < storedItems.Length ? storedItems[slotIndex] : null;
     }
 
-    public bool HasAssemblyItem(int slotIndex)
-    {
-        return GetAssemblyItem(slotIndex) != null;
-    }
-
-    public bool IsSlotOccupied(int slotIndex)
-    {
-        return HasAssemblyItem(slotIndex);
-    }
+    public bool HasAssemblyItem(int slotIndex) => GetAssemblyItem(slotIndex) != null;
+    public bool IsSlotOccupied(int slotIndex) => HasAssemblyItem(slotIndex);
 
     private void RefreshSlots()
     {
@@ -258,50 +203,30 @@ public class AssemblyInventorySystem : MonoBehaviour
             return;
 
         for (int i = 0; i < assemblySlots.Length; i++)
-        {
             RefreshSlot(i);
-        }
     }
 
     private void RefreshSlot(int slotIndex)
     {
-        if (assemblySlots == null ||
-            slotIndex < 0 ||
-            slotIndex >= assemblySlots.Length)
-        {
+        if (assemblySlots == null || slotIndex < 0 || slotIndex >= assemblySlots.Length)
             return;
-        }
 
         InventorySlotUI slot = assemblySlots[slotIndex];
-
         if (slot == null)
             return;
 
         GameObject item = storedItems[slotIndex];
+        SpriteRenderer spriteRenderer = item != null
+            ? item.GetComponentInChildren<SpriteRenderer>(true)
+            : null;
 
-        if (item == null)
-        {
-            slot.SetSprite(null);
-        }
-        else
-        {
-            SpriteRenderer spriteRenderer =
-                item.GetComponent<SpriteRenderer>();
-
-            slot.SetSprite(
-                spriteRenderer != null ? spriteRenderer.sprite : null
-            );
-        }
-
+        slot.SetSprite(spriteRenderer != null ? spriteRenderer.sprite : null);
         slot.SetVisible(true);
     }
 
     public void SetAssemblyVisible(bool visible)
     {
         if (assemblyUIPanel != null)
-        {
             assemblyUIPanel.SetActive(visible);
-        }
     }
 }
-
