@@ -1,8 +1,6 @@
 //using System.Diagnostics;
-//using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
-//using static System.Net.Mime.MediaTypeNames;
 
 
 /// <summary>

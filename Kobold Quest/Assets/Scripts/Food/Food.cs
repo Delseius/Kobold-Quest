@@ -10,27 +10,42 @@ public abstract class Food : MonoBehaviour, IUsable
         get { return calories; }
     }
 
-    public virtual void Eat(GameObject consumer)
+
+
+    public virtual bool Eat(GameObject consumer)
     {
-        //KoboldHunger hunger =
-            //consumer.GetComponent<KoboldHunger>();
+        if (consumer == null)
+        {
+            Debug.LogWarning("Cannot eat food without a consumer.");
+            return false;
+        }
 
-        //if (hunger == null)
-        //{
-            //return;
-       // }
+        KoboldHunger hunger =
+            consumer.GetComponent<KoboldHunger>();
 
-        //hunger.ConsumeCalories(calories);
+        if (hunger == null)
+        {
+            Debug.LogWarning(
+                consumer.name + " cannot eat: no KoboldHunger component found."
+            );
+            return false;
+        }
+
+        hunger.ConsumeCalories(calories);
+
+        Debug.Log(
+            "Food eaten by " + consumer.name +
+            ". Calories restored: " + calories
+        );
 
         Destroy(gameObject);
-        Debug.Log("Food eaten by " + consumer.name + ". Calories consumed: " + calories);
 
+        return true;
     }
 
     public virtual bool Use(GameObject user)
     {
-        Eat(user);
-
-        return true;
+        return Eat(user);
     }
+
 }
