@@ -1,19 +1,22 @@
 using UnityEngine;
 
 /// <summary>
-/// Temporary diagnostics for investigating pickup selection and held-item movement.
-/// Attach to scene instances of pickupable objects during testing.
-/// Does not modify the pickup system or change item behaviour.
+/// Temporary diagnostics for pickup selection, held-item movement, and drop position.
+/// Attach to each scene instance of a pickupable object during testing.
+/// Logs observations only; it does not change pickup behaviour.
 /// </summary>
 [DisallowMultipleComponent]
 public class PickupRuntimeDiagnostics : MonoBehaviour
 {
     [SerializeField] private bool logWhilePickupIsActive = true;
     [SerializeField, Min(0.1f)] private float logIntervalSeconds = 0.5f;
+    [SerializeField, Min(1)] private int framesToTraceAfterRelease = 4;
 
     private pickupobject pickup;
     private float nextLogTime;
     private string previousState;
+    private bool wasHeld;
+    private int releaseFramesRemaining;
 
     private void Awake()
     {
@@ -26,7 +29,10 @@ public class PickupRuntimeDiagnostics : MonoBehaviour
                 this
             );
             enabled = false;
+            return;
         }
+
+        wasHeld = pickup.held || pickupobject.heldObject == gameObject;
     }
 
     private void Update()
@@ -42,6 +48,22 @@ public class PickupRuntimeDiagnostics : MonoBehaviour
         {
             Debug.Log($"[PickupDiagnostics] STATE {state}", this);
             previousState = state;
+        }
+
+        bool isHeldNow = pickup.held || pickupobject.heldObject == gameObject;
+
+        if (wasHeld && !isHeldNow)
+        {
+            releaseFramesRemaining = framesToTraceAfterRelease;
+            LogSnapshot("RELEASE_TRANSITION");
+        }
+
+        wasHeld = isHeldNow;
+
+        if (releaseFramesRemaining > 0)
+        {
+            LogSnapshot($"POST_RELEASE_FRAME_{framesToTraceAfterRelease - releaseFramesRemaining + 1}");
+            releaseFramesRemaining--;
         }
 
         bool activePickup =
@@ -102,8 +124,11 @@ public class PickupRuntimeDiagnostics : MonoBehaviour
 
         Debug.Log(
             $"[PickupDiagnostics] {phase} item={name}; " +
+            $"parent={(transform.parent != null ? transform.parent.name : "NULL")}; " +
+            $"itemPos={transform.position:F3}; " +
+            $"dropTarget={pickup.CalculatedDropTarget:F3}; " +
             $"heldObject={(pickupobject.heldObject != null ? pickupobject.heldObject.name : "NULL")}; " +
-            $"itemPos={transform.position:F3}; playerPos={playerPosition}; " +
+            $"playerPos={playerPosition}; " +
             $"toolRef={(tool != null ? tool.name : "NULL")}; toolPos={toolPosition}; " +
             $"distance={(distance >= 0f ? distance.ToString("F3") : "no player")}; " +
             $"bodyType={bodyType}; simulated={(body != null && body.simulated)}; " +
