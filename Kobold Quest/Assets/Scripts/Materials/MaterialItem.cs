@@ -11,6 +11,12 @@ public class MaterialItem : MonoBehaviour
     // real-world reference for the game's generic surface wood.
     public const float DefaultWoodDensityKgPerCubicMetre = 535f;
 
+    // Representative density for common solid rock, approximated using granite.
+    public const float DefaultStoneDensityKgPerCubicMetre = 2700f;
+
+    // Approximate volume of a regulation-size soccer ball (about 22 cm diameter).
+    public const float DefaultStoneVolumeCubicMetres = 0.0055f;
+
     [Header("Identity")]
     [SerializeField] private ItemID itemID;
     [SerializeField] private MaterialType materialType = MaterialType.SurfaceWood;
