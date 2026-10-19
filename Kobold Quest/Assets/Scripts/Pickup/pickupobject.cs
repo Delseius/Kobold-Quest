@@ -36,6 +36,17 @@ public class pickupobject : MonoBehaviour
         get { return blockPickupUnlocked; }
     }
 
+    // Objects tagged "Equipment" behave exactly like "Item" objects
+    // (they can be picked up, held and used). The Equipment tag is also
+    // what lets InventorySystem store them in an inventory slot.
+    public bool IsItemObject
+    {
+        get
+        {
+            return CompareTag("Item") || CompareTag("Equipment");
+        }
+    }
+
     // Remembers the last block clicked so F can activate it with a pickaxe.
     public static pickupobject selectedBlock;
 
@@ -142,7 +153,8 @@ public class pickupobject : MonoBehaviour
             }
 
             bool isItem =
-                candidate.CompareTag("Item");
+                //candidate.CompareTag("Item");
+                candidate.IsItemObject;
 
             bool isBlock =
                 candidate.CompareTag("Block");
@@ -445,8 +457,10 @@ public class pickupobject : MonoBehaviour
             return;
         }
 
+        //bool isItem =
+        //gameObject.CompareTag("Item");
         bool isItem =
-            gameObject.CompareTag("Item");
+            IsItemObject;
 
         bool isBlock =
             gameObject.CompareTag("Block");
