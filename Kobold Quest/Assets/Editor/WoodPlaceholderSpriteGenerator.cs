@@ -104,7 +104,14 @@ public static class WoodPlaceholderSpriteGenerator
         try
         {
             item.tag = "Item";
-            item.transform.localScale = Vector3.one;
+            // The Player prefab is scaled 2x; material sizes are relative to that visual size.
+            item.transform.localScale = itemID switch
+            {
+                ItemID.Log => Vector3.one,
+                ItemID.Plank => new Vector3(0.5f, 0.5f, 1f),
+                ItemID.Stick => new Vector3(0.25f, 0.25f, 1f),
+                _ => Vector3.one
+            };
 
             SpriteRenderer renderer = item.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
