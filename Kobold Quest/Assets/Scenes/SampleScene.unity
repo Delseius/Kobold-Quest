@@ -6116,6 +6116,7 @@ GameObject:
   - component: {fileID: 1373572205}
   - component: {fileID: 1373572209}
   - component: {fileID: 1373572210}
+  - component: {fileID: 1373572211}
   m_Layer: 0
   m_Name: stone_Block
   m_TagString: Block
@@ -6316,6 +6317,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockGridObject
   objectType: 0
+--- !u!114 &1373572211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373572203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7f98f5e3e94d2bbf93a0b21c64a9ef, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: GameAssembly::StoneBlockSplitter
+  stoneMaterialPrefab: {fileID: 100100000, guid: a31fc902c9248b444b44cdf83bafed76, type: 3}
+  materialYield: 2
+  spawnSeparation: 0.35
+  spawnYOffset: -0.25
 --- !u!1 &1376393192
 GameObject:
   m_ObjectHideFlags: 0

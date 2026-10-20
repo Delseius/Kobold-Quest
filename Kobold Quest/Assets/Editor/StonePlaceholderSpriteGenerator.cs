@@ -110,7 +110,7 @@ public static class StonePlaceholderSpriteGenerator
         try
         {
             item.tag = "Item";
-            item.transform.localScale = Vector3.one;
+            item.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
 
             SpriteRenderer renderer = item.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
