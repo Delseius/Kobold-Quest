@@ -6328,7 +6328,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a7f98f5e3e94d2bbf93a0b21c64a9ef, type: 3}
   m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::StoneBlockSplitter
+  m_EditorClassIdentifier: GameAssembly::StoneBlockSplitter
   stoneMaterialPrefab: {fileID: 100100000, guid: a31fc902c9248b444b44cdf83bafed76, type: 3}
   materialYield: 2
   spawnSeparation: 0.35
