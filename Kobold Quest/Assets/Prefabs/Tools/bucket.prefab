@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2424268145978293200}
   - component: {fileID: 1035085432331647691}
   - component: {fileID: 8518474518153989212}
+  - component: {fileID: -128892009504573323}
   m_Layer: 0
   m_Name: bucket
   m_TagString: Equipment
@@ -110,7 +111,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -136,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameAssembly::pickupobject
   PlayerTransform: {fileID: 0}
   BlockTransform: {fileID: 0}
-  ToolTransform: {fileID: 0}
+  ToolTransform: {fileID: 1296583667218859240}
   ConsumableTransform: {fileID: 0}
   holdOffsetDistance: 0.6
   verticalDropOffset: 0.6
@@ -159,3 +160,15 @@ MonoBehaviour:
   hydrationPerSip: 20
   emptySprite: {fileID: 5478006001266077498, guid: a464e550142da884d9baeeabd8392798, type: 3}
   filledSprite: {fileID: -6284160668498821034, guid: 244e53422da43d24d901d7838b62379f, type: 3}
+--- !u!114 &-128892009504573323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889376573280171575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9a42d6e2c74b9d9d0f7b3a6c5e1f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::PickupPlayerBinder

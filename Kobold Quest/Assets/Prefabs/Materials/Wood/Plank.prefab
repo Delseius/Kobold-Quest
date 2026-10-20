@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3305825762887317112}
   - component: {fileID: 473057483073901266}
   - component: {fileID: 7819803452640224849}
+  - component: {fileID: -2540767335189949421}
   m_Layer: 0
   m_Name: Plank
   m_TagString: Item
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037496e14e0f81b4e9def15598617aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GameAssembly::pickupobject
-  PlayerTransform: {fileID: 2879010401383347704, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
+  PlayerTransform: {fileID: 0}
   BlockTransform: {fileID: 0}
   ToolTransform: {fileID: 4103500396569359676}
   ConsumableTransform: {fileID: 0}
@@ -205,3 +206,15 @@ MonoBehaviour:
   verticalDropOffset: 0.6
   pickupRadius: 2
   speed: 5.5
+--- !u!114 &-2540767335189949421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3435386864629670323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9a42d6e2c74b9d9d0f7b3a6c5e1f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::PickupPlayerBinder
