@@ -81,6 +81,13 @@ public class pickupobject : MonoBehaviour
         get { return PlayerTransform; }
     }
 
+    // Objects spawned at runtime from a prefab need the scene's player
+    // assigned, because a prefab can't reference scene objects.
+    public void SetPlayerTransform(Transform player)
+    {
+        PlayerTransform = player;
+    }
+
     public Transform BlockTransformReference
     {
         get { return BlockTransform; }
