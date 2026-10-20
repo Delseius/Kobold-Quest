@@ -1,0 +1,316 @@
+@startuml KoboldQuestClassDiagram
+' Simplified class diagram for the GameAssembly (Kobold Quest/Assets/Scripts).
+' Shows public members only. Classes marked <<MB>> are MonoBehaviours.
+' Unity message methods and the Testing scripts are left out.
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+' ============================================================
+package "Player" {
+  class KoboldHunger <<MB>> {
+    + currentCalories : float
+    + ConsumeCalories(calories : float)
+    + GetHungerPercentage() : float
+  }
+
+  class KoboldThirst <<MB>> {
+    + currentHydration : float
+    + Drink(amount : float)
+    + GetThirstPercentage() : float
+  }
+
+  class move <<MB>> {
+    + moveSpeed : float
+    + OnMove(context)
+  }
+}
+
+' ============================================================
+package "Grid" {
+  class GridSpace <<MB>> {
+    + {static} Instance : GridSpace
+    + WorldToGrid(pos : Vector3) : Vector2Int
+    + GridToWorld(pos : Vector2Int) : Vector3
+    + GetCell(pos : Vector2Int) : GridCell
+    + TryHoe(pos : Vector2Int) : bool
+  }
+
+  class GridCell {
+    + Position : Vector2Int
+    + Block : GameObject
+    + WorldObject : GameObject
+    + Item : GameObject
+    + TerrainTile : GridTile
+  }
+
+  class GridTile {
+    + Position : Vector2Int
+    + Type : TerrainType
+    + TryHoe() : bool
+  }
+
+  enum TerrainType {
+    Dirt
+    TilledDirt
+    Grass
+    Water
+  }
+
+  class TilemapRenderer <<MB>> {
+    + DrawTile(x : int, y : int, type : TerrainType) : bool
+    + TryHoe(pos : Vector2Int) : bool
+    + RemoveTile(x : int, y : int)
+  }
+
+  abstract class GridObject <<MB>> {
+    + GridPosition : Vector2Int
+    + SnapToGrid()
+    + DisableGridObject()
+    + EnableGridObject()
+  }
+
+  class worldObject
+  class Floor {
+    + getTill() : bool
+  }
+  class dirt_Floor
+  class BlockGridObject
+}
+
+' ============================================================
+package "World Objects" {
+  class SurfaceEntrance <<MB>> {
+    + TryInteract() : bool
+  }
+
+  class WaterPool <<MB>> {
+    + IsInRange(pos : Vector3) : bool
+    + {static} FindPoolInRange(pos : Vector3) : WaterPool
+  }
+}
+
+' ============================================================
+package "Pickup & Inventory" {
+  class pickupobject <<MB>> {
+    + {static} heldObject : GameObject
+    + held : bool
+    + InitiatePickup()
+    + DropAtFeet()
+    + ClearHeldState()
+    + UnlockBlockForPickup()
+    + {static} FindNearestPickupable(player, radius) : pickupobject
+    + {static} IsCorrectToolHeld() : bool
+  }
+
+  class PickupInput {
+    + HandleMouseDown()
+    + HandleKeyboardInput()
+  }
+
+  class PickupMovement {
+    + UpdateMovement()
+  }
+
+  class PickupDropSystem {
+    + DropAtFeet()
+    + ExecuteDropRelease()
+  }
+
+  class InventorySystem <<MB>> {
+    + {static} Instance : InventorySystem
+    + TryStoreHeldItem() : bool
+    + TryTakeInventoryItem() : bool
+  }
+
+  class InventorySlotUI <<MB>> {
+    + SetVisible(visible : bool)
+    + SetSprite(sprite : Sprite)
+  }
+}
+
+' ============================================================
+package "Items" {
+  interface IUsable {
+    + Use(user : GameObject) : bool
+  }
+
+  class Bucket <<MB>> {
+    + IsEmpty : bool
+    + IsFull : bool
+    + Fill(pool : WaterPool)
+    + Drink(drinker : GameObject) : bool
+  }
+
+  class Tool <<MB>> {
+    + toolDurability : int
+    + CheckSpace() : GridCell
+  }
+
+  class Pickaxe {
+    + pickaxeUse()
+  }
+  class Shovel {
+    + shovelUse()
+  }
+  class Hoe {
+    + spawnFarmPlot(pos : Vector3)
+  }
+  class Hammer
+
+  class stone_Pickaxe
+  class stone_Shovel
+  class stone_Hoe
+  class mallet_Hammer
+}
+
+' ============================================================
+package "Consumables" {
+  abstract class Food <<MB>> {
+    + Calories : float
+    + Eat(consumer : GameObject) : bool
+  }
+  class BrownMushroom
+}
+
+' ============================================================
+package "Farming" {
+  class FarmPlot <<MB>> {
+    + State : FarmPlotState
+    + Plant() : bool
+    + Harvest()
+  }
+
+  enum FarmPlotState {
+    Empty
+    Growing
+    Mature
+  }
+
+  abstract class Crop <<MB>> {
+    + IsMature : bool
+    + ResetGrowth()
+  }
+
+  class CropHarvest {
+    + GetQuantity() : int
+  }
+
+  class BrownMushroomCrop
+  class MushroomPlantGrowth
+}
+
+' ============================================================
+package "Materials" {
+  class MaterialItem <<MB>> {
+    + ItemID : ItemID
+    + MaterialType : MaterialType
+    + MassKg : float
+  }
+
+  enum ItemID {
+    Stick
+    Log
+    Plank
+    Stone
+  }
+
+  enum MaterialType {
+    SurfaceWood
+    SurfaceStone
+  }
+
+  class StoneBlockSplitter <<MB>>
+}
+
+' ============================================================
+package "Crafting" {
+  class Assembly <<MB>> {
+    + SelectRecipe(index : int)
+    + CraftSelectedRecipe()
+  }
+
+  class AssemblyStations <<MB>> {
+    + CanCraft(recipe : Recipe) : int
+    + CraftItem(recipe : Recipe) : int
+  }
+
+  class AssemblyInventorySystem <<MB>> {
+    + StoreHeldItemInSlot(slot : int, item : GameObject) : bool
+    + ConsumeAssemblyItem(slot : int) : bool
+  }
+
+  class AssemblyStationUI <<MB>> {
+    + OnRecipeButtonClicked(index : int)
+  }
+
+  class Recipes <<MB>> {
+    + AllRecipes : Recipe[]
+  }
+
+  class Recipe <<struct>> {
+    + RecipeName : string
+    + RecipeProduct : GameObject
+    + RecipeUnlocked : bool
+  }
+}
+
+' ============================================================
+' Inheritance
+GridObject <|-- worldObject
+worldObject <|-- Floor
+Floor <|-- dirt_Floor
+GridObject <|-- BlockGridObject
+
+Tool <|-- Pickaxe
+Tool <|-- Shovel
+Tool <|-- Hoe
+Tool <|-- Hammer
+Pickaxe <|-- stone_Pickaxe
+Shovel <|-- stone_Shovel
+Hoe <|-- stone_Hoe
+Hammer <|-- mallet_Hammer
+
+Food <|-- BrownMushroom
+Crop <|-- BrownMushroomCrop
+Crop <|-- MushroomPlantGrowth
+
+IUsable <|.. Food
+IUsable <|.. Bucket
+IUsable <|.. Hoe
+IUsable <|.. StoneBlockSplitter
+
+' Ownership
+GridSpace *-- "*" GridCell
+GridCell o-- GridTile
+GridTile --> TerrainType
+TilemapRenderer --> GridTile
+
+pickupobject *-- PickupInput
+pickupobject *-- PickupMovement
+pickupobject *-- PickupDropSystem
+InventorySystem o-- "*" InventorySlotUI
+
+FarmPlot o-- Crop
+Crop o-- "*" CropHarvest
+
+MaterialItem --> ItemID
+MaterialItem --> MaterialType
+
+Recipes *-- "*" Recipe
+Assembly --> AssemblyStations
+AssemblyStations --> AssemblyInventorySystem
+AssemblyStationUI --> Assembly
+
+' Key dependencies
+GridObject ..> GridSpace
+Tool ..> GridSpace
+Hoe ..> FarmPlot : spawns
+PickupInput ..> IUsable : uses held item
+Food ..> KoboldHunger : restores calories
+Bucket ..> KoboldThirst : restores hydration
+Bucket ..> WaterPool : fills from
+SurfaceEntrance ..> pickupobject
+
+@enduml
