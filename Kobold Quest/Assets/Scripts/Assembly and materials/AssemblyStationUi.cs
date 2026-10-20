@@ -3,6 +3,8 @@
 //using System.Diagnostics;
 //using System.Diagnostics;
 //using System.Diagnostics;
+//using System.Diagnostics;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -28,6 +30,10 @@ public class AssemblyStationUI : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float stoppingDistance = 1f;
+
+    [Header("reference to other scripts")]
+    [SerializeField] private int recipeIndex = 0;
+    [SerializeField] private Assembly assembly;
 
     //private bool nearAssemblyStation = false;
     //private bool uiIsOpen = false;
@@ -64,10 +70,13 @@ public class AssemblyStationUI : MonoBehaviour
         }
 
         // Register button click event listener
+        // Register button click event listener
         if (recipeButton != null)
         {
-            recipeButton.onClick.AddListener(OnRecipeButtonClicked);
+            recipeButton.onClick.AddListener(() => OnRecipeButtonClicked(recipeIndex));
         }
+
+
     }
 
     private void Update()
@@ -206,12 +215,18 @@ public class AssemblyStationUI : MonoBehaviour
         }
     }*/
 
-    public void OnRecipeButtonClicked()
+    public void OnRecipeButtonClicked(int recipeIndex)
     {
         // Core Logic: Only open recipe tab if Assembly UI is actively open
         if (uiIsOpen && recipeTabPanel != null)
         {
+            if (assembly == null)
+            {
+                Debug.LogError("Assembly reference is not assigned!", this);
+                return;
+            }
 
+            assembly.SelectRecipe(recipeIndex);
             recipeTabPanel.SetActive(true);
             Debug.Log("Successfully opened the Recipe Tab!");
             
