@@ -46,9 +46,32 @@ public class WaterPool : MonoBehaviour
         return Vector2.Distance(transform.position, position);
     }
 
+    // The fill area is the pool's collider box grown by fillRadius on
+    // every side (the cyan box drawn when selected).
     public bool IsInRange(Vector3 position)
     {
-        return DistanceTo(position) <= fillRadius;
+        Bounds area = GetFillArea();
+
+        return
+            position.x >= area.min.x && position.x <= area.max.x &&
+            position.y >= area.min.y && position.y <= area.max.y;
+    }
+
+    private Bounds GetFillArea()
+    {
+        Collider2D areaCollider =
+            poolCollider != null
+                ? poolCollider
+                : GetComponent<Collider2D>();
+
+        Bounds area =
+            areaCollider != null
+                ? areaCollider.bounds
+                : new Bounds(transform.position, Vector3.zero);
+
+        area.Expand(new Vector3(fillRadius * 2f, fillRadius * 2f, 0f));
+
+        return area;
     }
 
     /// <summary>
@@ -81,7 +104,9 @@ public class WaterPool : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        Bounds area = GetFillArea();
+
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, fillRadius);
+        Gizmos.DrawWireCube(area.center, area.size);
     }
 }
