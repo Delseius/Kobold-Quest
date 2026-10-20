@@ -155,14 +155,6 @@ public class AssemblyStationUI : MonoBehaviour
             OpenUI();
         }
     }
-
-    /*private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("workstations"))
-        {
-            nearAssemblyStation = true;
-        }
-    }*/
     private void OnTriggerEnter2D(Collider2D other)
     {
         Transform station = FindWorkstationParent(other.transform);
@@ -173,15 +165,6 @@ public class AssemblyStationUI : MonoBehaviour
             nearAssemblyStation = true;
         }
     }
-
-    /*private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("workstations"))
-        {
-            nearAssemblyStation = false;
-            CloseUI();
-        }
-    }*/
     private void OnTriggerExit2D(Collider2D other)
     {
         Transform station = FindWorkstationParent(other.transform);
@@ -208,22 +191,7 @@ public class AssemblyStationUI : MonoBehaviour
     }
 
 
-    /*private void ToggleUI()
-    {
-        if (koboldAssemblystations == null)
-            return;
-
-        uiIsOpen = !uiIsOpen;
-        koboldAssemblystations.SetActive(uiIsOpen);
-        //  If closing the main UI, hide the recipe tab too
-        if (!uiIsOpen && recipeTabPanel != null)
-        {
-            recipeTabPanel.SetActive(false);
-        }
-    }
-
-
-    private void CloseUI()
+    /*private void CloseUI()
     {
         uiIsOpen = false;
 
@@ -243,6 +211,7 @@ public class AssemblyStationUI : MonoBehaviour
         // Core Logic: Only open recipe tab if Assembly UI is actively open
         if (uiIsOpen && recipeTabPanel != null)
         {
+
             recipeTabPanel.SetActive(true);
             Debug.Log("Successfully opened the Recipe Tab!");
             

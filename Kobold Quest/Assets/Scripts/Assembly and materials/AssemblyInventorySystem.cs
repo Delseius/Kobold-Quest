@@ -1,3 +1,4 @@
+//using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ public class AssemblyInventorySystem : MonoBehaviour
     [Header("Assembly UI")]
     [SerializeField] private GameObject assemblyUIPanel;
 
-    [Header("Assembly Slots - Assign Four Different Slots")]
+    [Header("Assembly Slots - Assign fifteen Different Slots")]
     [SerializeField] private InventorySlotUI[] assemblySlots = new InventorySlotUI[15];
 
     [Header("Allowed Object Tags")]
@@ -196,6 +197,25 @@ public class AssemblyInventorySystem : MonoBehaviour
 
     public bool HasAssemblyItem(int slotIndex) => GetAssemblyItem(slotIndex) != null;
     public bool IsSlotOccupied(int slotIndex) => HasAssemblyItem(slotIndex);
+
+    // Removes an ingredient and updates the slot UI.
+    public bool ConsumeAssemblyItem(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= storedItems.Length)
+            return false;
+
+        GameObject item = storedItems[slotIndex];
+
+        if (item == null)
+            return false;
+
+        storedItems[slotIndex] = null;
+        RefreshSlot(slotIndex);
+        Destroy(item);
+
+        Debug.Log("Consumed ingredient from slot " + (slotIndex + 1));
+        return true;
+    }
 
     private void RefreshSlots()
     {
