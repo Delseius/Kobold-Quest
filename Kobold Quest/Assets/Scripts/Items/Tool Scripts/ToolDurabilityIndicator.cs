@@ -14,36 +14,38 @@ public class ToolDurabilityIndicator : MonoBehaviour
     [SerializeField] private Color backgroundColor = Color.gray;
     [SerializeField] private Color fillColor = Color.green;
 
-    private Pickaxe pickaxe;
+    private Tool tool;
     private SpriteRenderer spriteRenderer;
 
     private Canvas barCanvas;
     private Image backgroundImage;
     private Image fillImage;
+    private RectTransform fillRectTransform;
 
     private float hideTime;
     private bool isVisible;
-
     private int observedMaxDurability;
-    private int previousDurability = int.MinValue;
-    private RectTransform fillRectTransform;
-    private float fullFillWidth;
 
     private void Awake()
     {
-        pickaxe = GetComponent<Pickaxe>();
+        tool = GetComponent<Tool>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if (pickaxe == null)
+        if (tool == null)
         {
             Debug.LogWarning(
-                "ToolDurabilityIndicator requires a Pickaxe component.",
+                "ToolDurabilityIndicator requires a Tool component.",
                 this
             );
 
             enabled = false;
             return;
         }
+
+        observedMaxDurability = Mathf.Max(
+            maxDurability,
+            tool.toolDurability
+        );
 
         CreateBar();
         UpdateBar();
@@ -52,7 +54,7 @@ public class ToolDurabilityIndicator : MonoBehaviour
 
     private void Update()
     {
-        if (pickaxe == null)
+        if (tool == null)
         {
             return;
         }
@@ -67,13 +69,12 @@ public class ToolDurabilityIndicator : MonoBehaviour
 
     public void ShowIndicator()
     {
-        if (pickaxe == null)
+        if (tool == null)
         {
             return;
         }
 
         UpdateBar();
-
         hideTime = Time.time + displayDuration;
         SetVisible(true);
     }
@@ -91,31 +92,24 @@ public class ToolDurabilityIndicator : MonoBehaviour
         barCanvas = canvasObject.GetComponent<Canvas>();
         barCanvas.renderMode = RenderMode.WorldSpace;
         barCanvas.overrideSorting = true;
-        barCanvas.sortingLayerID = spriteRenderer != null
-            ? spriteRenderer.sortingLayerID
-            : 0;
-
-        barCanvas.sortingOrder = spriteRenderer != null
-            ? spriteRenderer.sortingOrder + 10
-            : 10;
 
         if (spriteRenderer != null)
         {
             barCanvas.sortingLayerID = spriteRenderer.sortingLayerID;
-            barCanvas.sortingOrder = spriteRenderer.sortingOrder + 1;
+            barCanvas.sortingOrder = spriteRenderer.sortingOrder + 10;
         }
-
-        barCanvas.sortingOrder = spriteRenderer != null
-            ? spriteRenderer.sortingOrder + 10
-            : 10;
+        else
+        {
+            barCanvas.sortingOrder = 10;
+        }
 
         RectTransform canvasRect =
             canvasObject.GetComponent<RectTransform>();
 
-        canvasRect.sizeDelta = new Vector2(100f, 12f);
         canvasRect.sizeDelta = new Vector2(
             barSize.x * 100f,
-            barSize.y * 100f );
+            barSize.y * 100f
+        );
 
         canvasRect.localScale = new Vector3(0.01f, 0.01f, 0.01f);
 
@@ -160,37 +154,68 @@ public class ToolDurabilityIndicator : MonoBehaviour
 
         fillObject.transform.SetParent(backgroundObject.transform, false);
 
-        RectTransform fillRect =
+        fillRectTransform =
             fillObject.GetComponent<RectTransform>();
 
-        fillRect.anchorMin = Vector2.zero;
-        fillRect.anchorMax = Vector2.one;
-        fillRect.offsetMin = new Vector2(1f, 1f);
-        fillRect.offsetMax = new Vector2(-1f, -1f);
+        fillRectTransform.anchorMin = Vector2.zero;
+        fillRectTransform.anchorMax = Vector2.one;
+        fillRectTransform.offsetMin = new Vector2(1f, 1f);
+        fillRectTransform.offsetMax = new Vector2(-1f, -1f);
 
         fillImage = fillObject.GetComponent<Image>();
-        fillRectTransform = fillObject.GetComponent<RectTransform>();
-        fullFillWidth = fillRectTransform.rect.width;
         fillImage.color = fillColor;
-        fillImage.type = Image.Type.Filled;
-        fillImage.fillMethod = Image.FillMethod.Horizontal;
-        fillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
-        fillImage.fillAmount = 1f;
+        fillImage.type = Image.Type.Simple;
         fillImage.raycastTarget = false;
     }
 
     private void UpdateBar()
     {
-        if (fillImage == null || pickaxe == null)
+        if (fillImage == null || tool == null)
         {
             return;
         }
 
-        float durabilityRatio = maxDurability > 0
-            ? (float)pickaxe.toolDurability / maxDurability
+        if (tool.toolDurability > observedMaxDurability)
+        {
+            observedMaxDurability = tool.toolDurability;
+        }
+
+        float durabilityRatio = observedMaxDurability > 0
+            ? (float)tool.toolDurability / observedMaxDurability
             : 0f;
 
-        fillImage.fillAmount = Mathf.Clamp01(durabilityRatio);
+        durabilityRatio = Mathf.Clamp01(durabilityRatio);
+
+        // Change the width of the fill directly.
+        if (fillRectTransform != null)
+        {
+            fillRectTransform.anchorMax = new Vector2(
+                durabilityRatio,
+                1f
+            );
+
+            fillRectTransform.offsetMax = new Vector2(-1f, -1f);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (spriteRenderer == null || barCanvas == null)
+        {
+            return;
+        }
+
+        RectTransform canvasRect =
+            barCanvas.GetComponent<RectTransform>();
+
+        Vector3 worldPosition = new Vector3(
+            spriteRenderer.bounds.center.x,
+            spriteRenderer.bounds.max.y + verticalOffset,
+            spriteRenderer.bounds.center.z
+        );
+
+        canvasRect.localPosition =
+            transform.InverseTransformPoint(worldPosition);
     }
 
     private void SetVisible(bool visible)
@@ -202,64 +227,4 @@ public class ToolDurabilityIndicator : MonoBehaviour
             barCanvas.gameObject.SetActive(visible);
         }
     }
-
-    private void LateUpdate()
-    {
-        if (pickaxe == null || fillImage == null)
-        {
-            return;
-        }
-
-        if (pickaxe.toolDurability != previousDurability)
-        {
-            Debug.Log(
-                "Durability indicator detected change: " +
-                previousDurability + " -> " +
-                pickaxe.toolDurability,
-                this );
-
-            previousDurability = pickaxe.toolDurability;
-        }
-
-        // Track the highest durability value this tool has reached.
-        if (pickaxe.toolDurability > observedMaxDurability)
-        {
-            observedMaxDurability = pickaxe.toolDurability;
-            }
-
-        // Update the green bar using the tool's actual durability.
-        if (observedMaxDurability > 0)
-        {
-            fillImage.fillAmount = Mathf.Clamp01(
-                (float)pickaxe.toolDurability / observedMaxDurability
-            );
-        }
-
-        // Position the bar above the actual sprite bounds.
-        if (spriteRenderer != null && barCanvas != null)
-        {
-            RectTransform canvasRect =
-                barCanvas.GetComponent<RectTransform>();
-
-            Vector3 worldPosition = new Vector3(
-                spriteRenderer.bounds.center.x,
-                spriteRenderer.bounds.max.y + verticalOffset,
-                spriteRenderer.bounds.center.z
-            );
-
-            canvasRect.localPosition =
-                transform.InverseTransformPoint(worldPosition);
-        }
-        if (fillRectTransform != null && observedMaxDurability > 0)
-        {
-            float ratio = Mathf.Clamp01(
-                (float)pickaxe.toolDurability / observedMaxDurability);
-
-            fillRectTransform.anchorMax = new Vector2(ratio, 1f);
-            fillRectTransform.offsetMax = new Vector2(-1f, -1f);
-        }
-        
-    }
-
-
 }
