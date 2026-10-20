@@ -8,7 +8,9 @@ using UnityEngine;
 /// </summary>
 public class StoneBlockSplitter : MonoBehaviour, IUsable
 {
-    [SerializeField] private GameObject stoneMaterialPrefab;
+    // Use UnityEngine.Object because this Unity version serializes the assigned asset as a Prefab,
+    // which does not deserialize into a GameObject-typed field.
+    [SerializeField] private UnityEngine.Object stoneMaterialPrefab;
     [SerializeField, Min(2)] private int materialYield = 2;
     [SerializeField, Min(0.1f)] private float spawnSeparation = 0.35f;
     [SerializeField] private float spawnYOffset = -0.25f;
@@ -72,11 +74,26 @@ public class StoneBlockSplitter : MonoBehaviour, IUsable
                 facing * (side * spawnSeparation * (row + 1)) +
                 Vector3.down * (row * spawnSeparation);
 
-            GameObject stone = Instantiate(
+            UnityEngine.Object spawnedObject = Instantiate(
                 stoneMaterialPrefab,
                 spawnPosition,
                 Quaternion.identity
             );
+
+            GameObject stone = spawnedObject as GameObject;
+            if (stone == null)
+            {
+                Debug.LogError(
+                    "The Stone material reference instantiated as a non-GameObject. " +
+                    "Assign the Stone prefab asset in the Inspector.",
+                    this
+                );
+                if (spawnedObject != null)
+                {
+                    Destroy(spawnedObject);
+                }
+                continue;
+            }
 
             pickupobject stonePickup = stone.GetComponent<pickupobject>();
             if (stonePickup == null)
