@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4090700782044639731}
   - component: {fileID: 3458053946251832026}
   - component: {fileID: 619966176505124474}
+  - component: {fileID: 2518823287372212999}
   m_Layer: 0
   m_Name: Log
   m_TagString: Item
@@ -205,3 +206,15 @@ MonoBehaviour:
   verticalDropOffset: 0.6
   pickupRadius: 2
   speed: 5.5
+--- !u!114 &2518823287372212999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023246931916413555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9a42d6e2c74b9d9d0f7b3a6c5e1f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::PickupPlayerBinder
