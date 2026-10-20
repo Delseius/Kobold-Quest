@@ -106,9 +106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f0a15c066a363c49a82d525cf003d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hoe
-  toolDurability: 64
+  toolDurability: 5
   toolType: 2
-  toughness: 64
+  toughness: 1
   farmPlotPrefab: {fileID: 1300503445955425157, guid: bc03ce872a914214a9754852e675f27c, type: 3}
 --- !u!114 &397107758153771427
 MonoBehaviour:

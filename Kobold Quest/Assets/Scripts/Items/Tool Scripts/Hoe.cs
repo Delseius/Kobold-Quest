@@ -24,7 +24,8 @@ public class Hoe : Tool, IUsable
         if (toolDurability <= 0)
         {
             Debug.Log("Hoe is broken.");
-            return false;
+            UnityEngine.Object.Destroy(pickupobject.heldObject);
+            return true;
         }
 
         // Find the grid cell in front of the kobold.
@@ -78,14 +79,21 @@ public class Hoe : Tool, IUsable
         spawnFarmPlot(spawnPosition);
 
         // Reduce durability only after a successful use.
-        toolDurability -= 1;
+        toolDurability -= toughness;
+        ToolDurabilityIndicator indicator =
+        GetComponent<ToolDurabilityIndicator>();
+
+        if (indicator != null)
+        {
+            indicator.ShowIndicator();
+        }
 
 
         Debug.Log(
             "Hoe successfully used on grid cell " +
             targetCell.Position
         );
-        return true;
+        return false;
     }
 
     /// <summary>

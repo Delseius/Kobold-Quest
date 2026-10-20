@@ -42,6 +42,13 @@ public class Pickaxe : Tool
 
         // Reduce durability only after a successful use.
         toolDurability -= toughness;
+        ToolDurabilityIndicator durabilityIndicator =
+        GetComponent<ToolDurabilityIndicator>();
+
+        if (durabilityIndicator != null)
+        {
+            durabilityIndicator.ShowIndicator();
+        }
 
         Debug.Log(
             "Pickaxe successfully used on grid cell " +
