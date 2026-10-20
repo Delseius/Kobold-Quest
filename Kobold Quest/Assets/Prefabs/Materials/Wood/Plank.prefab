@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037496e14e0f81b4e9def15598617aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GameAssembly::pickupobject
-  PlayerTransform: {fileID: 2879010401383347704, guid: 2c4cfc18580248e4daecc75ddcb471c7, type: 3}
+  PlayerTransform: {fileID: 0}
   BlockTransform: {fileID: 0}
   ToolTransform: {fileID: 4103500396569359676}
   ConsumableTransform: {fileID: 0}
